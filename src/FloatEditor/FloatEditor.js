@@ -2,11 +2,13 @@ import React from 'react'
 import { browserHistory } from 'react-router'
 
 import { Icon, Form, Button } from 'semantic-ui-react'
+import map from './emotions'
 import './FloatEditor.css'
 
 class FloatEditor extends React.PureComponent {
   state = {
     replying: false,
+    showIcons: false,
     title: '',
     content: '',
   }
@@ -77,6 +79,18 @@ class FloatEditor extends React.PureComponent {
     const handleTitleChange = this.handleChange.bind(this, 'title')
     const handleContentChange = this.handleChange.bind(this, 'content')
     const handleSubmit = this.handleSubmit.bind(this)
+    const toggleIcons = e => {
+      e.preventDefault()
+      this.setState({ showIcons: !this.state.showIcons })
+    }
+    const iconTray = (
+      <div className="FloatEditor-quickReply-editor-iconTray">{
+        Object.keys(map).map(k => {
+          const addIcon = () => this.setState({ content: this.state.content + map[k] + ' ' })
+          return <img key={ k } alt="" src={ `https://lihkg.com/assets/faces${ k }` } onClick={ addIcon }/>
+        })
+      }</div>
+    )
 
     if (this.props.app.user.user) {
       if (this.props.threadId) {
@@ -88,10 +102,12 @@ class FloatEditor extends React.PureComponent {
             </div>
             <div className="FloatEditor-quickReply-editor" style={{ marginBottom: this.state.replying ? 0 : '-110%' }}>
               <Form className="FloatEditor-quickReply-editorInner" onSubmit={ handleSubmit }>
-                <Form.Field>
+                <Form.Field className="FloatEditor-quickReply-editor-main">
                   <Form.TextArea name="content" placeholder="輸入回覆內文" value={ this.state.content } onChange={ handleContentChange }/>
+                  { this.state.showIcons ? iconTray : null }
                 </Form.Field>
-                <Form.Field style={{ textAlign: 'right' }}>
+                <Form.Field className="FloatEditor-quickReply-editor-buttons">
+                  <Button compact onClick={ toggleIcons }><img alt="" src="https://lihkg.com/assets/faces/normal/smile.gif"/></Button>
                   <Button compact>回覆</Button>
                 </Form.Field>
               </Form>
@@ -110,10 +126,12 @@ class FloatEditor extends React.PureComponent {
                 <Form.Field>
                   <Form.Input name="title" placeholder="輸入貼文標題" value={ this.state.title } onChange={ handleTitleChange }/>
                 </Form.Field>
-                <Form.Field>
+                <Form.Field className="FloatEditor-quickReply-editor-main">
                   <Form.TextArea name="content" placeholder="輸入貼文內文" value={ this.state.content } onChange={ handleContentChange }/>
+                  { this.state.showIcons ? iconTray : null }
                 </Form.Field>
-                <Form.Field style={{ textAlign: 'right' }}>
+                <Form.Field className="FloatEditor-quickReply-editor-buttons">
+                  <Button compact onClick={ toggleIcons }><img alt="" src="https://lihkg.com/assets/faces/normal/smile.gif"/></Button>
                   <Button compact>貼文</Button>
                 </Form.Field>
               </Form>

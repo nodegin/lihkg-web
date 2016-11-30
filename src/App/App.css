@@ -2,15 +2,11 @@
   min-height: 100vh;
 }
 .App.dark {
-  background: #000;
-  background-image: repeating-radial-gradient(center center, rgba(255, 255, 255, .1), rgba(255, 255, 255, .1) 1px, transparent 1px, transparent 100%);
-  background-size: 8px 8px;
+  background: #1d1d1d;
   color: #eee;
 }
 .App.light {
   background: #f9f9f9;
-  background-image: repeating-radial-gradient(center center, rgba(0, 0, 0, .1), rgba(0, 0, 0, .1) 1px, transparent 1px, transparent 100%);
-  background-size: 8px 8px;
   color: #333;
 }
 .App.light a {

@@ -4,7 +4,7 @@ import moment from 'moment'
 
 import { Dropdown, Icon } from 'semantic-ui-react'
 import FloatEditor from '../FloatEditor/FloatEditor'
-import map from './emotions'
+import map from '../FloatEditor/emotions'
 import './Thread.css'
 
 class Thread extends React.PureComponent {
@@ -17,13 +17,13 @@ class Thread extends React.PureComponent {
   /*  https://gist.github.com/soyuka/6183947  */
   htmlToBBCode(html) {
     let match
-  	// extra lines
-  	html = html.replace(/<br(.*?)>\n<br(.*?)>/gi, '<br/><br/>')
-  	html = html.replace(/\/>\s<br(.*?)>/gi, '/>\n')
-  	html = html.replace(/<br(.*?)>/gi, '\n')
-  	html = html.replace(/(\S)\n/gi, '$1')
+    // extra lines
+    html = html.replace(/<br(.*?)>\n<br(.*?)>/gi, '<br/><br/>')
+    html = html.replace(/\/>\s<br(.*?)>/gi, '/>\n')
+    html = html.replace(/<br(.*?)>/gi, '\n')
+    html = html.replace(/(\S)\n/gi, '$1')
 
-  	// color & size
+    // color & size
     html = html.replace(/<span(.*?)(black|red|green|blue|purple|violet|brown|pink|orange|gold|maroon|teal|navy|limegreen)(.*?)>(.*?)<\/span>/gmi, '[$2]$4[/$2]')
     html = html.replace(/<span(.*?)x-small(.*?)>(.*?)<\/span>/gmi, '[size=1]$3[/size=1]')
     html = html.replace(/<span(.*?)small(.*?)>(.*?)<\/span>/gmi, '[size=2]$3[/size=2]')
@@ -32,18 +32,17 @@ class Thread extends React.PureComponent {
     html = html.replace(/<span(.*?)x-large(.*?)>(.*?)<\/span>/gmi, '[size=5]$3[/size=5]')
     html = html.replace(/<span(.*?)xx-large(.*?)>(.*?)<\/span>/gmi, '[size=6]$3[/size=6]')
 
-    // quote
-    const quoteRegex = /<blockquote>(.*?)<\/blockquote>/gmi
-    /* eslint no-cond-assign: 0 */
-    while (match = quoteRegex.exec(html)) {
-      html = html.replace(quoteRegex, '[quote]$1[/quote]')
-    }
-
-    // format
-    html = html.replace(/<strong>(.*?)<\/strong>/gmi, '[b]$1[/b]')
-    html = html.replace(/<em>(.*?)<\/em>/gmi, '[i]$1[/i]')
-    html = html.replace(/<del>(.*?)<\/del>/gmi, '[s]$1[/s]')
-    html = html.replace(/<ins>(.*?)<\/ins>/gmi, '[u]$1[/u]')
+    // quote & format
+    html = html.replace(/<blockquote>/gi, '[quote]')
+    html = html.replace(/<\/blockquote>/gi, '[/quote]')
+    html = html.replace(/<strong>/gi, '[b]')
+    html = html.replace(/<\/strong>/gi, '[/b]')
+    html = html.replace(/<em>/gi, '[i]')
+    html = html.replace(/<\/em>/gi, '[/i]')
+    html = html.replace(/<del>/gi, '[s]')
+    html = html.replace(/<\/del>/gi, '[/s]')
+    html = html.replace(/<ins>/gi, '[u]')
+    html = html.replace(/<\/ins>/gi, '[/u]')
 
     // align
     html = html.replace(/<div(.*?)left(.*?)>(.*?)<\/div>/gmi, '[left]$3[/left]')
@@ -51,22 +50,23 @@ class Thread extends React.PureComponent {
     html = html.replace(/<div(.*?)right(.*?)>(.*?)<\/div>/gmi, '[right]$3[/right]')
 
     // list
-  	html = html.replace(/<ul(.*?)>/gi, '[list]')
-  	html = html.replace(/<li>(.*?)\n/gi, '[*]$1\n')
-  	html = html.replace(/<\/ul>/gi, '[/list]')
+    html = html.replace(/<ul(.*?)>/gi, '[list]')
+    html = html.replace(/<li>(.*?)\n/gi, '[*]$1\n')
+    html = html.replace(/<\/ul>/gi, '[/list]')
 
     // img & url
-  	html = html.replace(/<img(.*?)src="(.*?)"(.*?)>/gi, '[img]$2[/img]')
-  	html = html.replace(/<a(.*?)>(.*?)<\/a>/gi, '[url]$2[/url]')
+    html = html.replace(/<img(.*?)src="(.*?)"(.*?)>/gi, '[img]$2[/img]')
+    html = html.replace(/<a(.*?)>(.*?)<\/a>/gi, '[url]$2[/url]')
 
-  	// icons
-  	const iconsRegex = /\[img\].*?assets\/faces(.*?)\[\/img\]/
+    // icons
+    const iconsRegex = /\[img\].*?assets\/faces(.*?)\[\/img\]/
+    /* eslint no-cond-assign: 0 */
     while (match = iconsRegex.exec(html)) {
       const url = match[1]
       html = html.replace(iconsRegex, map[url])
     }
 
-  	return html
+    return html
   }
 
   async reloadPosts(page) {

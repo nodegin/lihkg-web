@@ -37,8 +37,46 @@
   border-radius: 4px 4px 0 0;
   display: inline-block;
   padding: 8px;
-  width: 360px;
+  width: 440px;
 }
 .App.light .FloatEditor-quickReply-editorInner {
   background: #999;
+}
+.FloatEditor-quickReply-editor-main {
+  height: 200px;
+  position: relative;
+}
+.FloatEditor-quickReply-editor-main > .field {
+  height: 100%;
+}
+.FloatEditor-quickReply-editor-main > .field > textarea {
+  height: 100% !important;
+  resize: none !important;
+}
+.FloatEditor-quickReply-editor-iconTray {
+  background: rgba(255, 255, 255, .75);
+  border-radius: 4px;
+  bottom: 0;
+  left: 0;
+  overflow-x: hidden;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+.FloatEditor-quickReply-editor-iconTray > img {
+  cursor: pointer;
+  margin: 4px;
+  max-width: 50%;
+}
+.FloatEditor-quickReply-editor-buttons {
+  align-items: stretch;
+  display: flex;
+  height: 36px;
+  justify-content: flex-end;
+  line-height: 36px;
+  margin-bottom: 8px !important;
+  text-align: right;
+}
+.FloatEditor-quickReply-editor-buttons > * {
+  margin-left: 8px !important;
 }
