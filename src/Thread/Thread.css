@@ -1,0 +1,87 @@
+.Thread-main h2 {
+  display: flex;
+  margin: 1em 0 2em;
+  text-align: center;
+}
+@media only screen and (max-width: 1023px) {
+  .Thread-main h2 {
+    font-size: 1.2rem;
+  }
+}
+.Thread-main h2 > span {
+  flex: 1;
+}
+.Thread-main h2 > a {
+  margin-right: 1em;
+}
+.Thread-choosePage {
+  margin-left: 1em;
+}
+.Thread-replyBlock {
+  background: rgba(61, 61, 61, .75);
+  border-radius: 4px;
+  line-height: 24px;
+  margin-bottom: 1em;
+  padding: 1em;
+}
+.App.light .Thread-replyBlock {
+  background: rgba(170, 170, 170, .25);
+}
+.Thread-blockHeader {
+  margin-bottom: 1em;
+}
+.Thread-blockHeader-floor {
+  color: #ccc;
+  display: inline-block;
+  width: 58px;
+}
+.App.light .Thread-blockHeader-floor {
+  color: #7d7d7d;
+}
+.Thread-blockHeader-info {
+  margin-left: 1em;
+}
+.Thread-blockHeader-quoteButton {
+  cursor: pointer;
+  float: right;
+}
+.Thread-content blockquote {
+  border-left: 2px solid #BBDEFB;
+  margin-left: 8px;
+  padding-left: 8px;
+}
+.App.light .Thread-content blockquote {
+  border-left: 2px solid #90CAF9;
+}
+.Thread-content img {
+  max-width: 100%;
+}
+
+/*  Buttons  */
+.Thread-buttons {
+  margin: 2em 0;
+  text-align: center;
+}
+.Thread-buttons-btn {
+  background: #dedede;
+  border-bottom: 4px solid #777;
+  border-radius: 2px;
+  color: #000;
+  cursor: pointer;
+  display: inline-block;
+  font-weight: bold;
+  height: 48px;
+  line-height: 48px;
+  margin: 0 2em;
+  position: relative;
+  text-align: center;
+  width: 48px;
+}
+.Thread-buttons-btn:hover {
+  color: #000;
+  text-decoration: none;
+}
+.Thread-buttons-btn:active {
+  border-bottom: 0;
+  top: 4px;
+}

@@ -1,0 +1,11 @@
+.Login-flexCenter {
+  align-items: center;
+  display: flex;
+  height: calc(100vh - 80px - 94px);
+  justify-content: center;
+  text-align: center;
+}
+.Login-logo {
+  margin: 2em;
+  width: 160px;
+}

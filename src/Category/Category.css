@@ -1,0 +1,29 @@
+.Category-main h2 {
+  margin: 1em 0 2em;
+  text-align: center;
+}
+.Category-row {
+  margin-bottom: 16px;
+  padding-bottom: 16px;
+}
+.Category-row:not(:last-child) {
+  border-bottom: 1px solid #333;
+}
+.App.light .Category-row:not(:last-child) {
+  border-bottom: 1px solid #aaa;
+}
+.Category-row > small {
+  color: #bdbdbd;
+  display: block;
+  margin-bottom: 8px;
+}
+.App.light .Category-row:not(:last-child) {
+  color: #7d7d7d;
+}
+.Category-more {
+  padding: 1em 0 2em;
+  text-align: center;
+}
+.Category-more > span {
+  cursor: pointer;
+}

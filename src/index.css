@@ -1,0 +1,17 @@
+@import 'https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.2/semantic.min.css';
+
+body {
+  font-family: sans-serif;
+  margin: 0;
+  overflow-y: scroll;
+  padding: 0;
+}
+a {
+  color: #90CAF9;
+  text-decoration: none;
+  transition: all .25s ease;
+}
+a:hover {
+  color: #fff;
+  text-decoration: underline;
+}

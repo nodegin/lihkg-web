@@ -1,0 +1,8 @@
+.Categories-container {
+  display: inline-block;
+  margin-top: 2em;
+}
+.Categories-item {
+  float: left;
+  padding: 1em;
+}

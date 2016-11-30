@@ -1,0 +1,72 @@
+.App {
+  min-height: 100vh;
+}
+.App.dark {
+  background: #000;
+  background-image: repeating-radial-gradient(center center, rgba(255, 255, 255, .1), rgba(255, 255, 255, .1) 1px, transparent 1px, transparent 100%);
+  background-size: 8px 8px;
+  color: #eee;
+}
+.App.light {
+  background: #f9f9f9;
+  background-image: repeating-radial-gradient(center center, rgba(0, 0, 0, .1), rgba(0, 0, 0, .1) 1px, transparent 1px, transparent 100%);
+  background-size: 8px 8px;
+  color: #333;
+}
+.App.light a {
+  color: #1565C0;
+}
+.App.light a:hover {
+  color: #2196F3;
+}
+header {
+  height: 80px;
+  line-height: 80px;
+  position: relative;
+  text-align: center;
+}
+header > a {
+  color: #eee;
+}
+.App.light header > a {
+  color: #333;
+}
+.App-logo {
+  background: url(https://x.lihkg.com/assets/img/logo2.png) left center no-repeat;
+  background-size: contain;
+  display: inline-block;
+  height: 64px;
+  vertical-align: middle;
+  width: 64px;
+}
+.App-headerLeft, .App-headerRight {
+  position: absolute;
+  top: 0;
+}
+.App-headerLeft {
+  left: 0;
+}
+.App-headerRight {
+  right: 0;
+}
+.App header, .App-content, .App footer {
+  margin: 0 auto;
+  width: 960px;
+}
+@media only screen and (max-width: 1023px) {
+  .App header, .App-content, .App footer {
+    min-width: 360px;
+    width: calc(100% - 2em);
+  }
+}
+.App footer {
+  color: #555;
+  font-size: 12px;
+  padding: 1em 0 2em;
+  opacity: .6;
+  text-align: center;
+  transition: opacity .1s;
+}
+.App footer:hover {
+  opacity: 1;
+}
