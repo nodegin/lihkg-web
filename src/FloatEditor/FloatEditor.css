@@ -2,6 +2,7 @@
   bottom: 0;
   right: calc((100vw - 960px) / 2 - 8px);
   position: fixed;
+  pointer-events: none;
   z-index: 20;
 }
 @media only screen and (max-width: 1023px) {
@@ -20,6 +21,7 @@
   height: 54px;
   line-height: 54px;
   margin: 2em;
+  pointer-events: auto;
   text-align: center;
   vertical-align: bottom;
   width: 54px;

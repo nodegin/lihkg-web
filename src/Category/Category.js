@@ -32,21 +32,21 @@ class Category extends React.PureComponent {
     error: null,
   }
 
-  async loadThreads(page) {
+  async loadThreads(catId, page) {
     let url
-    if (this.props.params.id === '2') {
+    if (catId === '2') {
       url = 'hot?'    // 熱門
-    } else if (this.props.params.id === '3') {
+    } else if (catId === '3') {
       url = 'latest?' // 最新
     } else {
-      url = `category?cat_id=${ this.props.params.id }&`
+      url = `category?cat_id=${ catId }&`
     }
     let list
     try {
-      list = await fetch(`https://lihkg.com/api_v1/thread/${ url }page=${ this.state.page }&count=50`)
+      list = await fetch(`https://lihkg.com/api_v1/thread/${ url }page=${ page }&count=50`)
       list = await list.json()
     } catch(e) {
-      this.loadThreads(page)
+      this.loadThreads(catId, page)
       return
     }
     if (list.success) {
@@ -89,7 +89,9 @@ class Category extends React.PureComponent {
           </div>
         )
       })
-      threads = [ ...this.state.threads, ...threads ]
+      if (page !== 1) {
+        threads = [ ...this.state.threads, ...threads ]
+      }
       threads = threads.reduce((all, current) => ({
         ...all,
         [current.key]: current,
@@ -105,7 +107,7 @@ class Category extends React.PureComponent {
       this.setState({
         threads,
         category: list.response.category.name,
-        page: this.state.page + 1,
+        page,
       }, () => {
         window.scrollTo(0, scrollY)
       })
@@ -116,11 +118,17 @@ class Category extends React.PureComponent {
   }
 
   componentDidMount() {
-    this.loadThreads(1)
+    this.loadThreads(this.props.params.id, 1)
+  }
+
+  componentWillReceiveProps({ params }) {
+    if (this.props.params.id !== params.id) {
+      this.loadThreads(params.id, 1)
+    }
   }
 
   render() {
-    const loadMore = this.loadThreads.bind(this, this.state.page + 1)
+    const loadMore = this.loadThreads.bind(this, this.props.params.id, this.state.page + 1)
     return (
       <div className="Category-main">
         { this.state.error || (

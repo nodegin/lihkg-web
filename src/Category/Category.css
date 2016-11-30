@@ -1,5 +1,5 @@
 .Category-main h2 {
-  margin: 1em 0 2em;
+  margin: 1em 0 2em !important;
   text-align: center;
 }
 .Category-row {

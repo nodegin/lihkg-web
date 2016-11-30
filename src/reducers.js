@@ -1,9 +1,10 @@
 import * as types from './actions'
 
-export const initialStates = {
+const initialStates = {
   user: {},
-  pageTitle: 'LIHKG 討論區 Web',
+  pageTitle: 'LIHKG Web',
   darkMode: true,
+  categories: [],
 }
 const app = (state = initialStates, action = {}) => {
   switch (action.type) {
@@ -22,6 +23,11 @@ const app = (state = initialStates, action = {}) => {
       return {
         ...state,
         darkMode: !state.darkMode,
+      }
+    case types.SET_CATEGORIES:
+      return {
+        ...state,
+        categories: action.categories,
       }
     default:
       return state

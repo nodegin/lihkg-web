@@ -1,5 +1,6 @@
 .App {
-  min-height: 100vh;
+  height: 100vh;
+  overflow-y: scroll;
 }
 .App.dark {
   background: #1d1d1d;
@@ -10,11 +11,13 @@
   color: #333;
 }
 .App.light a {
-  color: #1565C0;
+  color: #333;
 }
 .App.light a:hover {
   color: #2196F3;
 }
+
+/*  Header  */
 header {
   height: 80px;
   line-height: 80px;
@@ -31,9 +34,9 @@ header > a {
   background: url(https://x.lihkg.com/assets/img/logo2.png) left center no-repeat;
   background-size: contain;
   display: inline-block;
-  height: 64px;
+  height: 54px;
   vertical-align: middle;
-  width: 64px;
+  width: 54px;
 }
 .App-headerLeft, .App-headerRight {
   position: absolute;
@@ -41,6 +44,9 @@ header > a {
 }
 .App-headerLeft {
   left: 0;
+}
+.App-headerLeft > *:not(:first-child) {
+  margin-left: 1.5em;
 }
 .App-headerRight {
   right: 0;
@@ -55,6 +61,44 @@ header > a {
     width: calc(100% - 2em);
   }
 }
+
+/*  Drawer  */
+.App-drawerOverlay {
+  background: rgba(0, 0, 0, .5);
+  bottom: 0;
+  left: 0;
+  position: fixed;
+  right: 0;
+  top: 0;
+  z-index: 40;
+}
+.App-drawer {
+  background: #333;
+  height: 100%;
+  left: 0;
+  max-width: 320px;
+  overflow-x: hidden;
+  position: absolute;
+  top: 0;
+  width: 40%;
+  z-index: 41;
+}
+.App.light .App-drawer {
+  background: #eee;
+}
+.App-drawer-item {
+  cursor: pointer;
+  font-size: 1.25rem;
+  padding: 1em;
+}
+.App-drawer-item:hover {
+  background: rgba(255, 255, 255, .1);
+}
+.App.light .App-drawer-item:hover {
+  background: rgba(0, 0, 0, .1);
+}
+
+/*  Footer  */
 .App footer {
   color: #555;
   font-size: 12px;

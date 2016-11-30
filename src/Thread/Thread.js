@@ -110,21 +110,35 @@ class Thread extends React.PureComponent {
       }
     */
     if (list.success) {
+      console.log(list)
       const pages = Math.ceil(list.response.no_of_reply / 25)
-      const prevPage = page <= pages && page > 1 ? <Link to={`/thread/${ this.props.params.id }/page/${ page - 1 }`} className="Thread-buttons-btn">上頁</Link> : null
-      const nextPage = pages > 1 && page < pages ? <Link to={`/thread/${ this.props.params.id }/page/${ page + 1 }`} className="Thread-buttons-btn">下頁</Link> : null
+      const emptyBtn = <b className="Thread-buttons-btnSpace"/>
+      const prevPage = page <= pages && page > 1 ? <Link to={`/thread/${ this.props.params.id }/page/${ page - 1 }`} className="Thread-buttons-btn">上頁</Link> : emptyBtn
+      const nextPage = pages > 1 && page < pages ? <Link to={`/thread/${ this.props.params.id }/page/${ page + 1 }`} className="Thread-buttons-btn">下頁</Link> : emptyBtn
       const reload = () => location.reload(true)
       const pagesOptions = new Array(pages).fill().map((_, i) => {
         return { text: `第 ${ i + 1 } 頁`, value: i + 1 }
       })
       const handlePageChange = (e, item) => browserHistory.push(`/thread/${ this.props.params.id }/page/${ item.value }`)
+      const buttons = (
+        <div className="Thread-buttons">
+          <div className="Thread-leftAbs">
+            <Link to={`/category/${ list.response.cat_id }`}>‹ 返回</Link>
+          </div>
+          <b className="Thread-spaceFill"/>
+          { prevPage }
+          <div className="Thread-buttons-btn" onClick={ reload }>F5</div>
+          { nextPage }
+          <b className="Thread-spaceFill"/>
+          <div className="Thread-rightAbs">
+            <Dropdown inline text="㨂頁數" options={ pagesOptions } onChange={ handlePageChange }/>
+          </div>
+        </div>
+      )
       const posts = (
         <div className="Thread-main">
-          <h2>
-            <Link to={`/category/${ list.response.cat_id }`}>‹ 返回</Link>
-            <span>{ list.response.title }</span>
-            <Dropdown className="Thread-choosePage" inline text="㨂頁數" options={ pagesOptions } onChange={ handlePageChange }/>
-          </h2>
+          <h2>{ list.response.title }</h2>
+          { buttons }
           { list.response.item_data.map((c, i) => {
             let msg = c.msg.replace(/\/assets/g, 'https://lihkg.com/assets').replace(/><br\s?\/>/g, '>')
             const quote = () => this.editor.updateContent(`[quote]${ this.htmlToBBCode(c.msg) }[/quote]\n`)
@@ -142,11 +156,7 @@ class Thread extends React.PureComponent {
               </div>
             )
           }) }
-          <div className="Thread-buttons">
-            { prevPage }
-            <div className="Thread-buttons-btn" onClick={ reload }>F5</div>
-            { nextPage }
-          </div>
+          { buttons }
         </div>
       )
       this.setState({ posts, pages })

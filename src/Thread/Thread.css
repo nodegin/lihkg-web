@@ -1,21 +1,11 @@
 .Thread-main h2 {
-  display: flex;
-  margin: 1em 0 2em;
+  margin: 1em 0 !important;
   text-align: center;
 }
 @media only screen and (max-width: 1023px) {
   .Thread-main h2 {
     font-size: 1.2rem;
   }
-}
-.Thread-main h2 > span {
-  flex: 1;
-}
-.Thread-main h2 > a {
-  margin-right: 1em;
-}
-.Thread-choosePage {
-  margin-left: 1em;
 }
 .Thread-replyBlock {
   background: rgba(61, 61, 61, .75);
@@ -59,8 +49,30 @@
 
 /*  Buttons  */
 .Thread-buttons {
+  display: flex;
+  font-size: 1.2rem;
+  height: 48px;
+  line-height: 48px;
   margin: 2em 0;
+  position: relative;
   text-align: center;
+}
+.Thread-leftAbs, .Thread-rightAbs {
+  position: absolute;
+}
+.Thread-leftAbs {
+  left: 0;
+}
+.Thread-rightAbs {
+  right: 0;
+}
+.Thread-spaceFill {
+  flex: 1;
+}
+.Thread-buttons-btnSpace, .Thread-buttons-btn {
+  display: inline-block;
+  margin: 0 4%;
+  width: 48px;
 }
 .Thread-buttons-btn {
   background: #dedede;
@@ -68,14 +80,9 @@
   border-radius: 2px;
   color: #000;
   cursor: pointer;
-  display: inline-block;
   font-weight: bold;
-  height: 48px;
-  line-height: 48px;
-  margin: 0 2em;
   position: relative;
   text-align: center;
-  width: 48px;
 }
 .Thread-buttons-btn:hover {
   color: #000;

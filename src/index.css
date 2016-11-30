@@ -3,13 +3,13 @@
 body {
   font-family: sans-serif;
   margin: 0;
-  overflow-y: scroll;
+  overflow: hidden;
   padding: 0;
 }
 a {
   color: #90CAF9;
   text-decoration: none;
-  transition: all .25s ease;
+  transition: all .2s ease;
 }
 a:hover {
   color: #fff;

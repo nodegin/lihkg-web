@@ -93,6 +93,7 @@ class FloatEditor extends React.PureComponent {
     )
 
     if (this.props.app.user.user) {
+      const editorStyle = { marginBottom: this.state.replying ? 0 : '-110%', pointerEvents: this.state.replying ? 'auto' : 'none' }
       if (this.props.threadId) {
         // Reply
         return (
@@ -100,7 +101,7 @@ class FloatEditor extends React.PureComponent {
             <div className="FloatEditor-quickReply-toggle" onClick={ toggleReplying }>
               <Icon name={ this.state.replying ? 'minus' : 'reply' } size="large"/>
             </div>
-            <div className="FloatEditor-quickReply-editor" style={{ marginBottom: this.state.replying ? 0 : '-110%' }}>
+            <div className="FloatEditor-quickReply-editor" style={ editorStyle }>
               <Form className="FloatEditor-quickReply-editorInner" onSubmit={ handleSubmit }>
                 <Form.Field className="FloatEditor-quickReply-editor-main">
                   <Form.TextArea name="content" placeholder="輸入回覆內文" value={ this.state.content } onChange={ handleContentChange }/>
@@ -121,7 +122,7 @@ class FloatEditor extends React.PureComponent {
             <div className="FloatEditor-quickReply-toggle" onClick={ toggleReplying }>
               <Icon name={ this.state.replying ? 'minus' : 'plus' } size="large"/>
             </div>
-            <div className="FloatEditor-quickReply-editor" style={{ marginBottom: this.state.replying ? 0 : '-110%' }}>
+            <div className="FloatEditor-quickReply-editor" style={ editorStyle }>
               <Form className="FloatEditor-quickReply-editorInner" onSubmit={ handleSubmit }>
                 <Form.Field>
                   <Form.Input name="title" placeholder="輸入貼文標題" value={ this.state.title } onChange={ handleTitleChange }/>
