@@ -119,10 +119,11 @@ class Thread extends React.PureComponent {
         return { text: `第 ${ i + 1 } 頁`, value: i + 1 }
       })
       const handlePageChange = (e, item) => browserHistory.push(`/thread/${ this.props.params.id }/page/${ item.value }`)
+      const category = this.props.app.categories.find(c => c.cat_id === list.response.cat_id)
       const buttons = (
         <div className="Thread-buttons">
           <div className="Thread-leftAbs">
-            <Link to={`/category/${ list.response.cat_id }`}>‹ 返回</Link>
+            <Link to={`/category/${ list.response.cat_id }`}>‹ { category.name }</Link>
           </div>
           <b className="Thread-spaceFill"/>
           { prevPage }
@@ -134,17 +135,19 @@ class Thread extends React.PureComponent {
           </div>
         </div>
       )
+      const likeThis = this.rateThread.bind(this, 'like')
+      const dislikeThis = this.rateThread.bind(this, 'dislike')
       const posts = (
         <div>
           <h2 className="Thread-header">
-            <div style={{ color: '#7CB342' }}>
+            <div className="Thread-header-rate" style={{ color: '#7CB342' }} onClick={ likeThis }>
               <Icon name="thumbs up"/>
               { list.response.like_count }
             </div>
             <div className="Thread-header-center">
             { list.response.title }
             </div>
-            <div style={{ color: '#EF5350' }}>
+            <div className="Thread-header-rate" style={{ color: '#EF5350' }} onClick={ dislikeThis }>
               <Icon name="thumbs down"/>
               { list.response.dislike_count }
             </div>
@@ -182,6 +185,28 @@ class Thread extends React.PureComponent {
       this.setState({ error: list.error_message })
     }
     window.scrollTo(0, 0)
+  }
+
+  async rateThread(action) {
+    let list
+    try {
+      list = await fetch(`https://lihkg.na.cx/mirror/thread/${ this.props.params.id }/${ action }`, {
+        headers: {
+          'X-DEVICE': localStorage.getItem('dt'),
+          'X-DIGEST': 'ffffffffffffffffffffffffffffffffffffffff',
+          'X-USER': this.props.app.user.user.user_id,
+        },
+      })
+      list = await list.json()
+      if (!list.success) {
+        throw new Error(list.error_message)
+      }
+      const page = +(this.props.params.page || '1')
+      this.reloadPosts(page)
+      alert('皮己' + (action === 'like' ? '正' : '負'))
+    } catch(e) {
+      alert(e.message)
+    }
   }
 
   componentDidMount() {

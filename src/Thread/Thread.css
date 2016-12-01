@@ -8,6 +8,9 @@
     font-size: 1.2rem;
   }
 }
+.Thread-header-rate {
+  cursor: pointer;
+}
 .Thread-header-center {
   flex: 1;
   padding: 0 1em;
