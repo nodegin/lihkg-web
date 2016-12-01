@@ -93,6 +93,7 @@ header > a {
   max-width: 320px;
   -webkit-overflow-scrolling: touch;
   overflow-x: hidden;
+  padding: 1em 0;
   position: fixed;
   top: 0;
   width: 40%;

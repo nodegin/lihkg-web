@@ -31,14 +31,17 @@ class Category extends React.PureComponent {
     threads: [],
     page: 1,
     error: null,
+    bwAll: true,
   }
 
   async loadThreads(catId, page) {
     let url
-    if (catId === '2') {
+    if (catId === '1' && this.state.bwAll) {
+      url = 'latest?' // 吹水台 (全部)
+    } else if (catId === '2') {
       url = 'hot?'    // 熱門
     } else if (catId === '3') {
-      url = 'latest?' // 最新
+      url = 'news?' // 最新
     } else {
       url = `category?cat_id=${ catId }&`
     }
@@ -138,11 +141,21 @@ class Category extends React.PureComponent {
 
   render() {
     const loadMore = this.loadThreads.bind(this, this.props.params.id, this.state.page + 1)
+    const toggleBwMode = e => {
+      e.preventDefault()
+      this.setState({ bwAll: !this.state.bwAll }, () => {
+        this.loadThreads(this.props.params.id, 1)
+      })
+    }
+    let titleExtra = null
+    if (this.props.params.id === '1') {
+      titleExtra = <a href="#" onClick={ toggleBwMode }>{ ` (${ this.state.bwAll ? '只顯示吹水台文章' : '顯示所有台的文章' })` }</a>
+    }
     return (
       <div className="Category-main">
         { this.state.error || (
           <div>
-            <h2>{ this.state.category }</h2>
+            <h2>{ this.state.category }{ titleExtra }</h2>
             { this.state.threads }
             { this.state.threads.length < 1 || this.props.params.id === '2' ? null : <div className="Category-more" onClick={ loadMore }>
               <span>蘇咪摩牙 <img alt="more" src="https://lihkg.com/assets/faces/normal/tongue.gif"/></span>
