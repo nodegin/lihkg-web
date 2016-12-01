@@ -41,6 +41,11 @@
   padding: 8px;
   width: 440px;
 }
+@media only screen and (max-width: 960px) {
+  .FloatEditor-quickReply-editorInner {
+    width: calc(100vw - 8px * 2);
+  }
+}
 .App.light .FloatEditor-quickReply-editorInner {
   background: #999;
 }

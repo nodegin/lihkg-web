@@ -93,7 +93,7 @@ class FloatEditor extends React.PureComponent {
     )
 
     if (this.props.app.user.user) {
-      const editorStyle = { marginBottom: this.state.replying ? 0 : '-110%', pointerEvents: this.state.replying ? 'auto' : 'none' }
+      const editorStyle = { marginBottom: this.state.replying ? 0 : -400, pointerEvents: this.state.replying ? 'auto' : 'none' }
       if (this.props.threadId) {
         // Reply
         return (

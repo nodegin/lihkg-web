@@ -2,10 +2,11 @@ import * as types from './actions'
 
 const initialStates = {
   user: {},
-  pageTitle: 'LIHKG Web',
+  pageTitle: window.document.title,
   darkMode: true,
   categories: [],
 }
+
 const app = (state = initialStates, action = {}) => {
   switch (action.type) {
     case types.SET_USER:

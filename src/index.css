@@ -3,7 +3,7 @@
 body {
   font-family: sans-serif;
   margin: 0;
-  overflow: hidden;
+  overflow-y: scroll;
   padding: 0;
 }
 a {

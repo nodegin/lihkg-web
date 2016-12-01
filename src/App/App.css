@@ -1,6 +1,6 @@
 .App {
-  height: 100vh;
-  overflow-y: scroll;
+  min-height: 100vh;
+  padding-top: 48px;
 }
 .App.dark {
   background: #1d1d1d;
@@ -19,10 +19,22 @@
 
 /*  Header  */
 header {
-  height: 80px;
-  line-height: 80px;
-  position: relative;
+  background: #1d1d1d;
+  background: linear-gradient(to bottom, #1d1d1d 50%, transparent 100%);
+  box-sizing: content-box;
+  height: 48px;
+  line-height: 48px;
+  left: 0;
+  padding-bottom: 8px;
+  position: fixed;
+  right: 0;
   text-align: center;
+  top: 0;
+  z-index: 40;
+}
+.App.light header {
+  background: #f9f9f9;
+  background: linear-gradient(to bottom, #f9f9f9 50%, transparent 100%);
 }
 header > a {
   color: #eee;
@@ -33,10 +45,11 @@ header > a {
 .App-logo {
   background: url(https://x.lihkg.com/assets/img/logo2.png) left center no-repeat;
   background-size: contain;
+  cursor: pointer;
   display: inline-block;
-  height: 54px;
+  height: 44px;
   vertical-align: middle;
-  width: 54px;
+  width: 44px;
 }
 .App-headerLeft, .App-headerRight {
   position: absolute;
@@ -51,12 +64,13 @@ header > a {
 .App-headerRight {
   right: 0;
 }
-.App header, .App-content, .App footer {
+.App header > div, .App-content, .App footer {
   margin: 0 auto;
+  position: relative;
   width: 960px;
 }
 @media only screen and (max-width: 1023px) {
-  .App header, .App-content, .App footer {
+  .App header > div, .App-content, .App footer {
     min-width: 360px;
     width: calc(100% - 2em);
   }
@@ -77,8 +91,9 @@ header > a {
   height: 100%;
   left: 0;
   max-width: 320px;
+  -webkit-overflow-scrolling: touch;
   overflow-x: hidden;
-  position: absolute;
+  position: fixed;
   top: 0;
   width: 40%;
   z-index: 41;

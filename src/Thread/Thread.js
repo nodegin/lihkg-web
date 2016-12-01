@@ -110,7 +110,6 @@ class Thread extends React.PureComponent {
       }
     */
     if (list.success) {
-      console.log(list)
       const pages = Math.ceil(list.response.no_of_reply / 25)
       const emptyBtn = <b className="Thread-buttons-btnSpace"/>
       const prevPage = page <= pages && page > 1 ? <Link to={`/thread/${ this.props.params.id }/page/${ page - 1 }`} className="Thread-buttons-btn">上頁</Link> : emptyBtn
@@ -136,23 +135,41 @@ class Thread extends React.PureComponent {
         </div>
       )
       const posts = (
-        <div className="Thread-main">
-          <h2>{ list.response.title }</h2>
+        <div>
+          <h2 className="Thread-header">
+            <div style={{ color: '#7CB342' }}>
+              <Icon name="thumbs up"/>
+              { list.response.like_count }
+            </div>
+            <div className="Thread-header-center">
+            { list.response.title }
+            </div>
+            <div style={{ color: '#EF5350' }}>
+              <Icon name="thumbs down"/>
+              { list.response.dislike_count }
+            </div>
+          </h2>
           { buttons }
           { list.response.item_data.map((c, i) => {
             let msg = c.msg.replace(/\/assets/g, 'https://lihkg.com/assets').replace(/><br\s?\/>/g, '>')
             const quote = () => this.editor.updateContent(`[quote]${ this.htmlToBBCode(c.msg) }[/quote]\n`)
+            const removeDepth = document.createElement('div')
+            removeDepth.innerHTML = msg
+            const result = removeDepth.querySelector('blockquote' + ' > blockquote'.repeat(5 - 1))
+            if (result) {
+              result.parentNode.removeChild(result)
+            }
             return (
               <div key={ c.post_id } className="Thread-replyBlock">
                 <div className="Thread-blockHeader">
                   <span className="Thread-blockHeader-floor">#{ i + (page - 1) * 25 }</span>
                   <span style={{ color: c.user.gender === 'M' ? '#7986CB' : '#F06292' }}>{ c.user.nickname }</span>
-                  <span className="Thread-blockHeader-info">{ moment(c.reply_time * 1000).fromNow() }</span>
+                  <span className="Thread-blockHeader-info">{ moment(c.reply_time * 1000).format('DD/MM/YY hh:mm:ss') }</span>
                   <div className="Thread-blockHeader-quoteButton">
                     <Icon name="reply" onClick={ quote } />
                   </div>
                 </div>
-                <div className="Thread-content" dangerouslySetInnerHTML={{ __html: msg }}/>
+                <div className="Thread-content" dangerouslySetInnerHTML={{ __html: removeDepth.innerHTML }}/>
               </div>
             )
           }) }
@@ -171,14 +188,14 @@ class Thread extends React.PureComponent {
     const page = +(this.props.params.page || '1')
     this.reloadPosts(page)
 
-    window.addEventListener('keyup', this.handleKeyUp.bind(this))
+    window.addEventListener('keyup', this.handleKeyUp)
   }
 
   componentWillUnmount() {
-    window.removeEventListener('keyup', this.handleKeyUp.bind(this))
+    window.removeEventListener('keyup', this.handleKeyUp)
   }
 
-  handleKeyUp(e) {
+  handleKeyUp = e => {
     if (e.target.nodeName !== 'BODY') {
       return
     }
@@ -188,6 +205,8 @@ class Thread extends React.PureComponent {
       browserHistory.push(`/thread/${ this.props.params.id }${ params }`)
     } else if (e.which === 39 && this.state.pages > 1 && page < this.state.pages) {
       browserHistory.push(`/thread/${ this.props.params.id }/page/${ page + 1 }`)
+    } else if (e.which === 8) {
+      browserHistory.goBack()
     }
   }
 

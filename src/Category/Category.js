@@ -1,7 +1,8 @@
 import React from 'react'
-import { Link } from 'react-router'
+import { Link, browserHistory } from 'react-router'
 import moment from 'moment'
 
+import { Dropdown } from 'semantic-ui-react'
 import FloatEditor from '../FloatEditor/FloatEditor'
 import './Category.css'
 
@@ -79,6 +80,11 @@ class Category extends React.PureComponent {
         user_nickname: "10000米"
       */
       let threads = list.response.items.map(c => {
+        const pages = Math.ceil(c.no_of_reply / 25)
+        const pagesOptions = new Array(pages).fill().map((_, i) => {
+          return { text: `第 ${ i + 1 } 頁`, value: i + 1 }
+        })
+        const handlePageChange = (e, item) => browserHistory.push(`/thread/${ c.thread_id }/page/${ item.value }`)
         return (
           <div key={ `${ c.thread_id }|${ c.last_reply_time }` } className="Category-row">
             <small>
@@ -86,6 +92,9 @@ class Category extends React.PureComponent {
               &emsp;{ c.like_count } 正皮 { c.dislike_count } 負皮 - { moment(c.last_reply_time * 1000).fromNow() } - { c.no_of_reply - 1 } 回覆
             </small>
             <Link to={ `/thread/${ c.thread_id }` }>{ c.title }</Link>
+            <div style={{ float: 'right' }}>
+              <Dropdown inline text={ `${ pages } 頁` } options={ pagesOptions } onChange={ handlePageChange }/>
+            </div>
           </div>
         )
       })
@@ -135,7 +144,7 @@ class Category extends React.PureComponent {
           <div>
             <h2>{ this.state.category }</h2>
             { this.state.threads }
-            { this.state.threads.length < 1 ? null : <div className="Category-more" onClick={ loadMore }>
+            { this.state.threads.length < 1 || this.props.params.id === '2' ? null : <div className="Category-more" onClick={ loadMore }>
               <span>蘇咪摩牙 <img alt="more" src="https://lihkg.com/assets/faces/normal/tongue.gif"/></span>
             </div> }
             <FloatEditor { ...this.props } catId={ this.props.params.id } />

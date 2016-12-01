@@ -1,12 +1,19 @@
-.Thread-main h2 {
+.Thread-header {
+  display: flex;
   margin: 1em 0 !important;
   text-align: center;
 }
 @media only screen and (max-width: 1023px) {
-  .Thread-main h2 {
+  .Thread-header {
     font-size: 1.2rem;
   }
 }
+.Thread-header-center {
+  flex: 1;
+  padding: 0 1em;
+}
+
+/*  Reply block  */
 .Thread-replyBlock {
   background: rgba(61, 61, 61, .75);
   border-radius: 4px;
@@ -44,7 +51,12 @@
   border-left: 2px solid #90CAF9;
 }
 .Thread-content img {
-  max-width: 100%;
+  max-width: calc(960px / 2);
+}
+@media only screen and (max-width: 1023px) {
+  .Thread-content img {
+    max-width: calc((100vw - 1em * 2) / 2);
+  }
 }
 
 /*  Buttons  */
@@ -58,7 +70,7 @@
   text-align: center;
 }
 .Thread-leftAbs, .Thread-rightAbs {
-  position: absolute;
+  top: 0;
 }
 .Thread-leftAbs {
   left: 0;

@@ -1,4 +1,5 @@
 import 'isomorphic-fetch'
+import 'array.prototype.fill'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Router, IndexRedirect, Route, browserHistory } from 'react-router'
@@ -23,7 +24,7 @@ browserHistory.listen(location => {
 })
 
 ReactDOM.render(
-  <Provider store={store}>
+  <Provider store={ store }>
     <Router history={ browserHistory }>
       <Route path="/" component={ App }>
         <IndexRedirect to="/category/1"/>

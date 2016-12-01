@@ -1,5 +1,4 @@
 import React from 'react'
-import './NotFound.css'
 
 class NotFound extends React.PureComponent {
   componentDidMount() {
