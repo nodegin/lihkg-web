@@ -20,12 +20,12 @@
 /*  Header  */
 header {
   background: #1d1d1d;
-  background: linear-gradient(to bottom, #1d1d1d 50%, transparent 100%);
+  background: linear-gradient(to bottom, #1d1d1d 50%, rgba(29, 29, 29, 0) 100%);
   box-sizing: content-box;
   height: 48px;
   line-height: 48px;
   left: 0;
-  padding-bottom: 8px;
+  padding-bottom: 12px;
   position: fixed;
   right: 0;
   text-align: center;
@@ -34,7 +34,7 @@ header {
 }
 .App.light header {
   background: #f9f9f9;
-  background: linear-gradient(to bottom, #f9f9f9 50%, transparent 100%);
+  background: linear-gradient(to bottom, #f9f9f9 50%, rgba(249, 249, 249, 0) 100%);
 }
 header > a {
   color: #eee;

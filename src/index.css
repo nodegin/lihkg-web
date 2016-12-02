@@ -1,7 +1,8 @@
 @import 'https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.2/semantic.min.css';
 
 body {
-  font-family: sans-serif;
+  font: 1.15rem 'HelveticaNeue-Light', 'Helvetica Neue', 'Lantinghei TC', 'Segoe UI Light', 'Segoe UI', '微軟正黑體', 'Microsoft JhengHei UI', 'WenQuanYi Zen Hei', Helvetica, Arial, sans-serif;
+  line-height: 1.15rem;
   margin: 0;
   overflow-y: scroll;
   padding: 0;

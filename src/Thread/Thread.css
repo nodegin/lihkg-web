@@ -1,5 +1,6 @@
 .Thread-header {
   display: flex;
+  font-family: inherit;
   margin: 1em 0 !important;
   text-align: center;
 }

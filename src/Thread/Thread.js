@@ -16,39 +16,29 @@ class Thread extends React.PureComponent {
 
   /*  https://gist.github.com/soyuka/6183947  */
   htmlToBBCode(html) {
-    let match
     // extra lines
-    html = html.replace(/<br(.*?)>/gi, '');
-    html = html.replace(/\n/g, '[br]');
+    html = html.replace(/<br(.*?)>/gi, '')
+    html = html.replace(/\n/g, '[br]')
 
     // quote & format
-    html = html.replace(/<blockquote>/gi, '[quote]');
-    html = html.replace(/<\/blockquote>/gi, '[/quote]');
-    html = html.replace(/<strong>/gi, '[b]');
-    html = html.replace(/<\/strong>/gi, '[/b]');
-    html = html.replace(/<em>/gi, '[i]');
-    html = html.replace(/<\/em>/gi, '[/i]');
-    html = html.replace(/<del>/gi, '[s]');
-    html = html.replace(/<\/del>/gi, '[/s]');
-    html = html.replace(/<ins>/gi, '[u]');
-    html = html.replace(/<\/ins>/gi, '[/u]');
+    html = html.replace(/<blockquote>/gi, '[quote]')
+    html = html.replace(/<\/blockquote>/gi, '[/quote]')
+    html = html.replace(/<strong>/gi, '[b]')
+    html = html.replace(/<\/strong>/gi, '[/b]')
+    html = html.replace(/<em>/gi, '[i]')
+    html = html.replace(/<\/em>/gi, '[/i]')
+    html = html.replace(/<del>/gi, '[s]')
+    html = html.replace(/<\/del>/gi, '[/s]')
+    html = html.replace(/<ins>/gi, '[u]')
+    html = html.replace(/<\/ins>/gi, '[/u]')
 
     // list
-    html = html.replace(/<ul(.*?)>/gi, '[list]');
-    html = html.replace(/<li>(.*?)\n/gi, '[*]$1\n');
-    html = html.replace(/<\/ul>/gi, '[/list]');
+    html = html.replace(/<ul(.*?)>/gi, '[list]')
+    html = html.replace(/<li>(.*?)\n/gi, '[*]$1\n')
+    html = html.replace(/<\/ul>/gi, '[/list]')
 
-    // img & url
-    html = html.replace(/<img(.*?)src="(.*?)"(.*?)>/gi, '[img]$2[/img]');
-    html = html.replace(/<a(.*?)>(.*?)<\/a>/gi, '[url]$2[/url]');
-
-    // icons
-    const iconsRegex = /\[img\].*?assets\/faces(.*?)\[\/img\]/
-    /* eslint no-cond-assign: 0 */
-    while (match = iconsRegex.exec(html)) {
-      const url = match[1]
-      html = html.replace(iconsRegex, map[url])
-    }
+    // url
+    html = html.replace(/<a(.*?)>(.*?)<\/a>/gi, '[url]$2[/url]')
 
     // color, font size
     const sizes = {
@@ -59,6 +49,7 @@ class Thread extends React.PureComponent {
       'x-large': 5,
       'xx-large': 6,
     }
+    /* eslint no-cond-assign: 0 */
     const msg = document.createElement('div')
     msg.innerHTML = html
     let elem
@@ -78,6 +69,19 @@ class Thread extends React.PureComponent {
       const align = elem.style.textAlign
       if (align) {
         elem.outerHTML = `[${ align }]` + elem.innerHTML + `[/${ align }]`
+      }
+    }
+
+    // image & icon
+    while(elem = msg.querySelector('img')) {
+      let src = elem.src
+      if (src) {
+        const iconIndex = src.indexOf('/assets/faces')
+        if (iconIndex > 0) {
+          elem.outerHTML = map[src.slice(iconIndex + '/assets/faces'.length)]
+        } else {
+          elem.outerHTML = `[img]` + src + `[/img]`
+        }
       }
     }
 
