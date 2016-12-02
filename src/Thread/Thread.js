@@ -189,23 +189,28 @@ class Thread extends React.PureComponent {
 
   async rateThread(action) {
     let list
-    try {
-      list = await fetch(`https://lihkg.na.cx/mirror/thread/${ this.props.params.id }/${ action }`, {
-        headers: {
-          'X-DEVICE': localStorage.getItem('dt'),
-          'X-DIGEST': 'ffffffffffffffffffffffffffffffffffffffff',
-          'X-USER': this.props.app.user.user.user_id,
-        },
-      })
-      list = await list.json()
-      if (!list.success) {
-        throw new Error(list.error_message)
+    const user = this.props.app.user.user
+    if (user == null) {
+      alert('未登入!')
+    } else {
+      try {
+        list = await fetch(`https://lihkg.na.cx/mirror/thread/${ this.props.params.id }/${ action }`, {
+          headers: {
+            'X-DEVICE': localStorage.getItem('dt'),
+            'X-DIGEST': 'ffffffffffffffffffffffffffffffffffffffff',
+            'X-USER': user.user_id,
+          },
+        })
+        list = await list.json()
+        if (!list.success) {
+          throw new Error(list.error_message)
+        }
+        const page = +(this.props.params.page || '1')
+        this.reloadPosts(page)
+        alert('皮己' + (action === 'like' ? '正' : '負'))
+      } catch(e) {
+        alert(e.message)
       }
-      const page = +(this.props.params.page || '1')
-      this.reloadPosts(page)
-      alert('皮己' + (action === 'like' ? '正' : '負'))
-    } catch(e) {
-      alert(e.message)
     }
   }
 
