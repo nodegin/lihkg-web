@@ -13,7 +13,7 @@ https://lihkg.na.cx
 ### Develop
 
 ```zsh
-npm i
+npm install
 npm start
 ```
 
