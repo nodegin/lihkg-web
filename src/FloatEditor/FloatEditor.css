@@ -39,7 +39,7 @@
   border-radius: 4px 4px 0 0;
   display: inline-block;
   padding: 8px;
-  width: 440px;
+  width: 480px;
 }
 @media only screen and (max-width: 960px) {
   .FloatEditor-quickReply-editorInner {
@@ -49,19 +49,31 @@
 .App.light .FloatEditor-quickReply-editorInner {
   background: #999;
 }
+.FloatEditor-quickReply-editor-buttons,
 .FloatEditor-quickReply-editor-main {
-  height: 200px;
+  margin-bottom: 8px !important;
   position: relative;
 }
-.FloatEditor-quickReply-editor-main > .field {
-  height: 100%;
+.FloatEditor-quickReply-editor-buttons {
+  align-items: stretch;
+  display: flex;
+  height: 36px;
+  justify-content: flex-end;
+  line-height: 36px;
+  text-align: right;
+}
+.FloatEditor-quickReply-editor-buttons > * {
+  margin-left: 8px !important;
+}
+.FloatEditor-quickReply-editor-main > textarea {
+  height: 260px !important;
 }
 .FloatEditor-quickReply-editor-main > .field > textarea {
   height: 100% !important;
   resize: none !important;
 }
 .FloatEditor-quickReply-editor-iconTray {
-  background: rgba(255, 255, 255, .75);
+  background: rgba(255, 255, 255, .6);
   border-radius: 4px;
   bottom: 0;
   left: 0;
@@ -74,16 +86,4 @@
   cursor: pointer;
   margin: 4px;
   max-width: 50%;
-}
-.FloatEditor-quickReply-editor-buttons {
-  align-items: stretch;
-  display: flex;
-  height: 36px;
-  justify-content: flex-end;
-  line-height: 36px;
-  margin-bottom: 8px !important;
-  text-align: right;
-}
-.FloatEditor-quickReply-editor-buttons > * {
-  margin-left: 8px !important;
 }

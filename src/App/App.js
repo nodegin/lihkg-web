@@ -75,7 +75,7 @@ class App extends Component {
       <div className="App-drawer">
         { this.props.app.categories.map(c => {
           const click = e => {
-            browserHistory.push(`/category/${ c.cat_id }`)
+            setTimeout(browserHistory.push.bind(null, `/category/${ c.cat_id }`), 250)
             toggleDrawer(e)
           }
           return <div key={ c.cat_id } className="App-drawer-item" onClick={ click }>{ c.name }</div>

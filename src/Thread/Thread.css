@@ -45,6 +45,9 @@
   cursor: pointer;
   float: right;
 }
+.Thread-content {
+  word-break: break-word;
+}
 .Thread-content blockquote {
   border-left: 2px solid #BBDEFB;
   margin-left: 8px;
