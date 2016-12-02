@@ -166,7 +166,7 @@ class Thread extends React.PureComponent {
               <div key={ c.post_id } className="Thread-replyBlock">
                 <div className="Thread-blockHeader">
                   <span className="Thread-blockHeader-floor">#{ i + (page - 1) * 25 }</span>
-                  <span style={{ color: c.user.gender === 'M' ? '#7986CB' : '#F06292' }}>{ c.user.nickname }</span>
+                  <span style={{ color: c.user.level === '999' ? '#FBC308' : ( c.user.gender === 'M' ? '#7986CB' : '#F06292' ) }}>{ c.user.nickname }</span>
                   <span className="Thread-blockHeader-info">{ moment(c.reply_time * 1000).format('DD/MM/YY hh:mm:ss') }</span>
                   <div className="Thread-blockHeader-quoteButton">
                     <Icon name="reply" onClick={ quote } />
