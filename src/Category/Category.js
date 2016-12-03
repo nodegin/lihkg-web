@@ -96,7 +96,7 @@ class Category extends React.PureComponent {
             </small>
             <Link to={ `/thread/${ c.thread_id }` }>{ c.title }</Link>
             <div style={{ float: 'right' }}>
-              <Dropdown inline scrolling text={ `${ pages } 頁` } options={ pagesOptions } onChange={ handlePageChange }/>
+              <Dropdown inline scrolling text={ `${ pages } 頁` } options={ pagesOptions } onChange={ handlePageChange } selectOnBlur={false} />
             </div>
           </div>
         )
