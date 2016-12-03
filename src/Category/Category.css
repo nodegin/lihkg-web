@@ -25,11 +25,8 @@
 .Category-row .title {
   flex: 1;
   padding-right: 1em;
-  display: inline-block;
-  line-height: 16px;
 }
 .Category-row .page {
-  float: right;
   margin: auto;
 }
 .App.light .Category-row:not(:last-child) {
