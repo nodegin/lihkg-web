@@ -144,19 +144,26 @@ class Thread extends React.PureComponent {
       })
       const handlePageChange = (e, item) => browserHistory.push(`/thread/${ this.props.params.id }/page/${ item.value }`)
       const category = this.props.app.categories.find(c => c.cat_id === list.response.cat_id)
-      const buttons = (
-        <div className="Thread-buttons">
-          <div className="Thread-leftAbs">
+      const links = (
+        <div className="Thread-links">
+          <div className="Thread-links-left">
             <Link to={`/category/${ list.response.cat_id }`}>‹ { category.name }</Link>
+            { list.response.cat_id === '1' ? null : <Link to="/category/1" style={{ marginLeft: 8 }}>(吹水台)</Link> }
           </div>
-          <b className="Thread-spaceFill"/>
-          { prevPage }
-          <div className="Thread-buttons-btn" onClick={ reload }>F5</div>
-          { nextPage }
-          <b className="Thread-spaceFill"/>
-          <div className="Thread-rightAbs">
-            <Dropdown inline scrolling text="㨂頁數" options={ pagesOptions } onChange={ handlePageChange } value={ page }/>
+          <Dropdown className="Thread-links-right" inline scrolling text="㨂頁數" options={ pagesOptions } onChange={ handlePageChange } value={ page } selectOnBlur={ false }/>
+        </div>
+      )
+      const buttons = (top, bottom) => (
+        <div>
+          { top }
+          <div className="Thread-buttons">
+            <b className="Thread-spaceFill"/>
+            { prevPage }
+            <div className="Thread-buttons-btn" onClick={ reload }>F5</div>
+            { nextPage }
+            <b className="Thread-spaceFill"/>
           </div>
+          { bottom }
         </div>
       )
       const likeThis = this.rateThread.bind(this, 'like')
@@ -176,7 +183,7 @@ class Thread extends React.PureComponent {
               { list.response.dislike_count }
             </div>
           </h2>
-          { buttons }
+          { buttons(null, links) }
           { list.response.item_data.map((c, i) => {
             let msg = c.msg.replace(/src="\/assets/g, 'src="https://lihkg.com/assets').replace(/><br\s?\/>/g, '>')
             const quote = () => this.editor.updateContent(`[quote]${ this.htmlToBBCode(c.msg) }[/quote]\n`)
@@ -201,7 +208,7 @@ class Thread extends React.PureComponent {
               </div>
             )
           }) }
-          { buttons }
+          { buttons(links, null) }
         </div>
       )
       this.setState({ posts, pages })
