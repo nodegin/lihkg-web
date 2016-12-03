@@ -25,6 +25,9 @@ moment.updateLocale('en', {
   }
 })
 
+const cf = (targetClassName, condition) => { return (condition)?targetClassName:''; }
+const highlightThreshold = 100;
+
 class Category extends React.PureComponent {
   state = {
     category: '',
@@ -92,7 +95,7 @@ class Category extends React.PureComponent {
           <div key={ `${ c.thread_id }|${ c.last_reply_time }` } className="Category-row">
             <small>
               <span style={{ color: c.user.gender === 'M' ? '#7986CB' : '#F06292' }}>{ c.user.nickname }</span>
-              &emsp;{ c.like_count } 正皮 { c.dislike_count } 負皮 - { moment(c.last_reply_time * 1000).fromNow() } - { c.no_of_reply - 1 } 回覆
+              &emsp;<span className={ cf('Category-many-like', (c.like_count>highlightThreshold && c.like_count>c.dislike_count)) }>{ c.like_count } 正皮</span> <span className={ cf('Category-many-dislike', (c.dislike_count>highlightThreshold && c.dislike_count>c.like_count)) }>{ c.dislike_count } 負皮</span> - { moment(c.last_reply_time * 1000).fromNow() } - <span className={ cf('Category-hot-thread', (c.no_of_reply>highlightThreshold)) }>{ c.no_of_reply - 1 } 回覆</span>
             </small>
             <Link to={ `/thread/${ c.thread_id }` }>{ c.title }</Link>
             <div style={{ float: 'right' }}>
