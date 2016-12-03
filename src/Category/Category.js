@@ -88,15 +88,20 @@ class Category extends React.PureComponent {
           return { text: `第 ${ i + 1 } 頁`, value: i + 1 }
         })
         const handlePageChange = (e, item) => browserHistory.push(`/thread/${ c.thread_id }/page/${ item.value }`)
+        const color = c.user.level === '999' ? '#FF9800' : (c.user.gender === 'M' ? '#7986CB' : '#F06292')
         return (
           <div key={ `${ c.thread_id }|${ c.last_reply_time }` } className="Category-row">
             <small>
-              <span style={{ color: c.user.gender === 'M' ? '#7986CB' : '#F06292' }}>{ c.user.nickname }</span>
+              <span style={{ color }}>{ c.user.nickname }</span>
               &emsp;{ c.like_count } 正皮 { c.dislike_count } 負皮 - { moment(c.last_reply_time * 1000).fromNow() } - { c.no_of_reply - 1 } 回覆
             </small>
-            <Link to={ `/thread/${ c.thread_id }` }>{ c.title }</Link>
-            <div style={{ float: 'right' }}>
-              <Dropdown inline scrolling text={ `${ pages } 頁` } options={ pagesOptions } onChange={ handlePageChange }/>
+            <div className="titlePageWrapper">
+              <div className="title">
+                <Link to={ `/thread/${ c.thread_id }` }>{ c.title }</Link>
+              </div>
+              <div className="page">
+                <Dropdown inline scrolling text={ `${ pages } 頁` } options={ pagesOptions } onChange={ handlePageChange } selectOnBlur={ false }/>
+              </div>
             </div>
           </div>
         )

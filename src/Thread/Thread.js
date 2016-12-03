@@ -16,39 +16,29 @@ class Thread extends React.PureComponent {
 
   /*  https://gist.github.com/soyuka/6183947  */
   htmlToBBCode(html) {
-    let match
     // extra lines
-    html = html.replace(/<br(.*?)>/gi, '');
-    html = html.replace(/\n/g, '[br]');
+    html = html.replace(/<br(.*?)>/gi, '')
+    html = html.replace(/\n/g, '[br]')
 
     // quote & format
-    html = html.replace(/<blockquote>/gi, '[quote]');
-    html = html.replace(/<\/blockquote>/gi, '[/quote]');
-    html = html.replace(/<strong>/gi, '[b]');
-    html = html.replace(/<\/strong>/gi, '[/b]');
-    html = html.replace(/<em>/gi, '[i]');
-    html = html.replace(/<\/em>/gi, '[/i]');
-    html = html.replace(/<del>/gi, '[s]');
-    html = html.replace(/<\/del>/gi, '[/s]');
-    html = html.replace(/<ins>/gi, '[u]');
-    html = html.replace(/<\/ins>/gi, '[/u]');
+    html = html.replace(/<blockquote>/gi, '[quote]')
+    html = html.replace(/<\/blockquote>/gi, '[/quote]')
+    html = html.replace(/<strong>/gi, '[b]')
+    html = html.replace(/<\/strong>/gi, '[/b]')
+    html = html.replace(/<em>/gi, '[i]')
+    html = html.replace(/<\/em>/gi, '[/i]')
+    html = html.replace(/<del>/gi, '[s]')
+    html = html.replace(/<\/del>/gi, '[/s]')
+    html = html.replace(/<ins>/gi, '[u]')
+    html = html.replace(/<\/ins>/gi, '[/u]')
 
     // list
-    html = html.replace(/<ul(.*?)>/gi, '[list]');
-    html = html.replace(/<li>(.*?)\n/gi, '[*]$1\n');
-    html = html.replace(/<\/ul>/gi, '[/list]');
+    html = html.replace(/<ul(.*?)>/gi, '[list]')
+    html = html.replace(/<li>(.*?)\n/gi, '[*]$1\n')
+    html = html.replace(/<\/ul>/gi, '[/list]')
 
-    // img & url
-    html = html.replace(/<img(.*?)src="(.*?)"(.*?)>/gi, '[img]$2[/img]');
-    html = html.replace(/<a(.*?)>(.*?)<\/a>/gi, '[url]$2[/url]');
-
-    // icons
-    const iconsRegex = /\[img\].*?assets\/faces(.*?)\[\/img\]/
-    /* eslint no-cond-assign: 0 */
-    while (match = iconsRegex.exec(html)) {
-      const url = match[1]
-      html = html.replace(iconsRegex, map[url])
-    }
+    // url
+    html = html.replace(/<a(.*?)>(.*?)<\/a>/gi, '[url]$2[/url]')
 
     // color, font size
     const sizes = {
@@ -59,6 +49,7 @@ class Thread extends React.PureComponent {
       'x-large': 5,
       'xx-large': 6,
     }
+    /* eslint no-cond-assign: 0 */
     const msg = document.createElement('div')
     msg.innerHTML = html
     let elem
@@ -78,6 +69,19 @@ class Thread extends React.PureComponent {
       const align = elem.style.textAlign
       if (align) {
         elem.outerHTML = `[${ align }]` + elem.innerHTML + `[/${ align }]`
+      }
+    }
+
+    // image & icon
+    while(elem = msg.querySelector('img')) {
+      let src = elem.src
+      if (src) {
+        const iconIndex = src.indexOf('/assets/faces')
+        if (iconIndex > 0) {
+          elem.outerHTML = map[src.slice(iconIndex + '/assets/faces'.length)]
+        } else {
+          elem.outerHTML = `[img]` + src + `[/img]`
+        }
       }
     }
 
@@ -140,19 +144,26 @@ class Thread extends React.PureComponent {
       })
       const handlePageChange = (e, item) => browserHistory.push(`/thread/${ this.props.params.id }/page/${ item.value }`)
       const category = this.props.app.categories.find(c => c.cat_id === list.response.cat_id)
-      const buttons = (
-        <div className="Thread-buttons">
-          <div className="Thread-leftAbs">
+      const links = (
+        <div className="Thread-links">
+          <div className="Thread-links-left">
             <Link to={`/category/${ list.response.cat_id }`}>‹ { category.name }</Link>
+            { list.response.cat_id === '1' ? null : <Link to="/category/1" style={{ marginLeft: 8 }}>(吹水台)</Link> }
           </div>
-          <b className="Thread-spaceFill"/>
-          { prevPage }
-          <div className="Thread-buttons-btn" onClick={ reload }>F5</div>
-          { nextPage }
-          <b className="Thread-spaceFill"/>
-          <div className="Thread-rightAbs">
-            <Dropdown inline scrolling text="㨂頁數" options={ pagesOptions } onChange={ handlePageChange } className="Thread-page-select"/>
+          <Dropdown className="Thread-links-right Thread-page-select" inline scrolling text="㨂頁數" options={ pagesOptions } onChange={ handlePageChange } value={ page } selectOnBlur={ false }/>
+        </div>
+      )
+      const buttons = (top, bottom) => (
+        <div>
+          { top }
+          <div className="Thread-buttons">
+            <b className="Thread-spaceFill"/>
+            { prevPage }
+            <div className="Thread-buttons-btn" onClick={ reload }>F5</div>
+            { nextPage }
+            <b className="Thread-spaceFill"/>
           </div>
+          { bottom }
         </div>
       )
       const likeThis = this.rateThread.bind(this, 'like')
@@ -172,7 +183,7 @@ class Thread extends React.PureComponent {
               { list.response.dislike_count }
             </div>
           </h2>
-          { buttons }
+          { buttons(null, links) }
           { list.response.item_data.map((c, i) => {
             let msg = c.msg.replace(/src="\/assets/g, 'src="https://lihkg.com/assets').replace(/><br\s?\/>/g, '>')
             const quote = () => this.editor.updateContent(`[quote]${ this.htmlToBBCode(c.msg) }[/quote]\n`)
@@ -182,11 +193,12 @@ class Thread extends React.PureComponent {
             if (result) {
               result.parentNode.removeChild(result)
             }
+            const color = c.user.level === '999' ? '#FF9800' : (c.user.gender === 'M' ? '#7986CB' : '#F06292')
             return (
               <div key={ c.post_id } className="Thread-replyBlock">
                 <div className="Thread-blockHeader">
                   <span className="Thread-blockHeader-floor">#{ i + (page - 1) * 25 }</span>
-                  <span style={{ color: c.user.gender === 'M' ? '#7986CB' : '#F06292' }}>{ c.user.nickname }</span>
+                  <span style={{ color }}>{ c.user.nickname }</span>
                   <span className="Thread-blockHeader-info">{ moment(c.reply_time * 1000).format('DD/MM/YY hh:mm:ss') }</span>
                   <div className="Thread-blockHeader-quoteButton">
                     <Icon name="reply" onClick={ quote } />
@@ -196,7 +208,7 @@ class Thread extends React.PureComponent {
               </div>
             )
           }) }
-          { buttons }
+          { buttons(links, null) }
         </div>
       )
       this.setState({ posts, pages })

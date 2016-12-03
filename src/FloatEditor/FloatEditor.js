@@ -22,7 +22,7 @@ class FloatEditor extends React.PureComponent {
     this.setState({
       replying: true,
       content,
-    })
+    }, () => this.textarea.focus())
   }
 
   async handleSubmit(e) {
@@ -94,6 +94,8 @@ class FloatEditor extends React.PureComponent {
       }</div>
     )
     const formatOptions = [
+      { text: '圖片', value: 'img' },
+      { text: '網址', value: 'url' },
       { text: '置左', value: 'left' },
       { text: '置中', value: 'center' },
       { text: '置右', value: 'right' },
@@ -104,17 +106,15 @@ class FloatEditor extends React.PureComponent {
       { text: 'Size 5', value: 'size=5' },
       { text: 'Size 6', value: 'size=6' },
     ]
-    let textarea
     const setFormat = (e, item) => {
       preventDefault(e)
-      const node = ReactDOM.findDOMNode(textarea)
-      const { selectionStart, selectionEnd } = node
+      const { selectionStart, selectionEnd } = this.textarea
       const selected = this.state.content.slice(selectionStart, selectionEnd)
       const insert = `[${ item.value }]${ selected }[/${ item.value }]`
       const content = this.state.content.slice(0, selectionStart) + insert + this.state.content.slice(selectionEnd)
       this.setState({ content }, () => {
-        node.selectionStart = node.selectionEnd = selectionStart + `[${ item.value }]`.length + selected.length
-        node.focus()
+        this.textarea.selectionStart = this.textarea.selectionEnd = selectionStart + `[${ item.value }]`.length + selected.length
+        this.textarea.focus()
       })
     }
     const buttons = (
@@ -126,7 +126,7 @@ class FloatEditor extends React.PureComponent {
         <Button compact>回覆</Button>
       </Form.Field>
     )
-    const linkRef = e => textarea = e
+    const linkRef = e => this.textarea = ReactDOM.findDOMNode(e)
     if (this.props.app.user.user) {
       const editorStyle = { marginBottom: this.state.replying ? 0 : -400, pointerEvents: this.state.replying ? 'auto' : 'none' }
       if (this.props.threadId) {
