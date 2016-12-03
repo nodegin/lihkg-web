@@ -19,19 +19,6 @@
   font-size: 1rem;
   margin-bottom: 8px;
 }
-.Category-row .titlePageWrapper {
-  display: flex;
-}
-.Category-row .title {
-  flex: 1;
-  padding-right: 1em;
-  display: inline-block;
-  line-height: 16px;
-}
-.Category-row .page {
-  float: right;
-  margin: auto;
-}
 .App.light .Category-row:not(:last-child) {
   color: #7d7d7d;
 }
