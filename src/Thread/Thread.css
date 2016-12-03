@@ -72,21 +72,22 @@
   font-size: 1.2rem;
   height: 48px;
   line-height: 48px;
-  margin: 2em 0;
+  margin: 1em 0;
   position: relative;
   text-align: center;
 }
-.Thread-leftAbs, .Thread-rightAbs {
-  top: 0;
-}
-.Thread-leftAbs {
-  left: 0;
-}
-.Thread-rightAbs {
-  right: 0;
-}
 .Thread-spaceFill {
   flex: 1;
+}
+.Thread-links {
+  height: 48px;
+  line-height: 48px;
+}
+.Thread-links-left {
+  float: left;
+}
+.Thread-links-right {
+  float: right;
 }
 .Thread-buttons-btnSpace, .Thread-buttons-btn {
   display: inline-block;
@@ -110,13 +111,4 @@
 .Thread-buttons-btn:active {
   border-bottom: 0;
   top: 4px;
-}
-
-.Thread-fixed-bw-link {
-  line-height: 0;
-  font-size: 14px;
-}
-
-.App.light .Thread-fixed-bw-link a {
-  color: #aaa;
 }
