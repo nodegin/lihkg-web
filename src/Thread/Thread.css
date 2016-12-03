@@ -116,3 +116,7 @@
 .Thread-page-select.ui.dropdown .menu{
   z-index: 30;
 }
+
+.App.light .Thread-blockHeader-floor.Thread-owner, .App.dark .Thread-blockHeader-floor.Thread-owner {
+  color: #e0c354;
+}
