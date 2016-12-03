@@ -32,6 +32,10 @@ class App extends Component {
     if (mode && JSON.parse(mode) && this.props.app.darkMode) {
       this.props.actions.onToggleDarkMode()
     }
+    const pub = localStorage.getItem('pub')
+    if (pub && JSON.parse(pub) && this.props.app.publicMode) {
+      this.props.actions.onTogglePublicMode()
+    }
 
     let list
     try {
@@ -73,6 +77,10 @@ class App extends Component {
       e.preventDefault()
       this.props.actions.onToggleDarkMode()
     }
+    const togglePublicMode = e => {
+      e.preventDefault()
+      this.props.actions.onTogglePublicMode()
+    }
     const drawer = (
       <div className="App-drawer">
         { this.props.app.categories.map(c => {
@@ -86,7 +94,7 @@ class App extends Component {
     )
     return (
       <div className={ `App ${ this.props.app.darkMode ? 'dark' : 'light' }` }>
-        <Helmet title={ this.props.app.pageTitle }/>
+        <Helmet title={ this.props.app.publicMode ? "LIHKG Web" : this.props.app.pageTitle }/>
         <header>
           <div>
             <div className="App-headerLeft">
@@ -95,6 +103,9 @@ class App extends Component {
               </a>
               <a href="#" onClick={ toggleDarkMode } style={{ textDecoration: 'none' }}>
                 <Icon name={ this.props.app.darkMode ? 'moon' : 'sun' } size="large"/>
+              </a>
+              <a href="#" onClick={ togglePublicMode } style={{ textDecoration: 'none' }}>
+                <Icon name={ this.props.app.publicMode ? 'spy' : 'user' } size="large"/>
               </a>
             </div>
             <i className="App-logo" onClick={ this.scrollToTop }></i>

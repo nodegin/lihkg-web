@@ -15,6 +15,11 @@ export const onToggleDarkMode = () => ({
   type: TOGGLE_DARK_MODE,
 })
 
+export const TOGGLE_PUBLIC_MODE = 'TOGGLE_PUBLIC_MODE'
+export const onTogglePublicMode = () => ({
+  type: TOGGLE_PUBLIC_MODE,
+})
+
 export const SET_CATEGORIES = 'SET_CATEGORIES'
 export const onSetCategories = categories => ({
   type: SET_CATEGORIES,

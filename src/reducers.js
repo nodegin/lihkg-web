@@ -4,6 +4,7 @@ const initialStates = {
   user: {},
   pageTitle: window.document.title,
   darkMode: true,
+  publicMode: false,
   categories: [],
 }
 
@@ -24,6 +25,12 @@ const app = (state = initialStates, action = {}) => {
       return {
         ...state,
         darkMode: !state.darkMode,
+      }
+    case types.TOGGLE_PUBLIC_MODE:
+      localStorage.setItem('pub', state.publicMode)
+      return {
+        ...state,
+        publicMode: !state.publicMode,
       }
     case types.SET_CATEGORIES:
       return {
