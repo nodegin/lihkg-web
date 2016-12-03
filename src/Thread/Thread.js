@@ -197,7 +197,7 @@ class Thread extends React.PureComponent {
             return (
               <div key={ c.post_id } className="Thread-replyBlock">
                 <div className="Thread-blockHeader">
-                  <span className="Thread-blockHeader-floor">#{ i + (page - 1) * 25 }</span>
+                  <span className={ ("Thread-blockHeader-floor")+((c.user.user_id===list.response.user.user_id)?" Thread-owner":"") }>#{ i + (page - 1) * 25 }</span>
                   <span style={{ color }}>{ c.user.nickname }</span>
                   <span className="Thread-blockHeader-info">{ moment(c.reply_time * 1000).format('DD/MM/YY hh:mm:ss') }</span>
                   <div className="Thread-blockHeader-quoteButton">
