@@ -91,15 +91,20 @@ class Category extends React.PureComponent {
           return { text: `第 ${ i + 1 } 頁`, value: i + 1 }
         })
         const handlePageChange = (e, item) => browserHistory.push(`/thread/${ c.thread_id }/page/${ item.value }`)
+        const color = c.user.level === '999' ? '#FF9800' : (c.user.gender === 'M' ? '#7986CB' : '#F06292')
         return (
           <div key={ `${ c.thread_id }|${ c.last_reply_time }` } className="Category-row">
             <small>
               <span style={{ color: c.user.gender === 'M' ? '#7986CB' : '#F06292' }}>{ c.user.nickname }</span>
               &emsp;<span className={ cf('Category-many-like', (c.like_count>highlightThreshold && c.like_count>c.dislike_count)) }>{ c.like_count } 正皮</span> <span className={ cf('Category-many-dislike', (c.dislike_count>highlightThreshold && c.dislike_count>c.like_count)) }>{ c.dislike_count } 負皮</span> - { moment(c.last_reply_time * 1000).fromNow() } - <span className={ cf('Category-hot-thread', (c.no_of_reply>highlightThreshold)) }>{ c.no_of_reply - 1 } 回覆</span>
             </small>
-            <Link to={ `/thread/${ c.thread_id }` }>{ c.title }</Link>
-            <div style={{ float: 'right' }}>
-              <Dropdown inline scrolling text={ `${ pages } 頁` } options={ pagesOptions } onChange={ handlePageChange } selectOnBlur={false} />
+            <div className="titlePageWrapper">
+              <div className="title">
+                <Link to={ `/thread/${ c.thread_id }` }>{ c.title }</Link>
+              </div>
+              <div className="page">
+                <Dropdown inline scrolling text={ `${ pages } 頁` } options={ pagesOptions } onChange={ handlePageChange } selectOnBlur={ false }/>
+              </div>
             </div>
           </div>
         )

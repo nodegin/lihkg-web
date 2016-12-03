@@ -65,7 +65,9 @@ class App extends Component {
     const children = React.Children.map(this.props.children, child => React.cloneElement(child, { ...this.props }))
     const toggleDrawer = e => {
       e.preventDefault()
-      this.setState({ drawerOpen: !this.state.drawerOpen })
+      this.setState({ drawerOpen: !this.state.drawerOpen }, () => {
+        document.body.style.overflow = this.state.drawerOpen ? 'hidden' : 'visible'
+      })
     }
     const toggleDarkMode = e => {
       e.preventDefault()
