@@ -66,6 +66,15 @@ class App extends Component {
     const toggleDrawer = e => {
       e.preventDefault()
       this.setState({ drawerOpen: !this.state.drawerOpen })
+      toggleOverflow()
+    }
+    const toggleOverflow = () => {
+      // Prevent scrolling in the main page while drawer is opened
+      if (this.state.drawerOpen) {
+        document.body.style.overflow = 'visible'
+      } else {
+        document.body.style.overflow = 'hidden'
+      }
     }
     const toggleDarkMode = e => {
       e.preventDefault()
