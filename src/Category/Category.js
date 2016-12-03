@@ -87,7 +87,10 @@ class Category extends React.PureComponent {
         const pagesOptions = new Array(pages).fill().map((_, i) => {
           return { text: `第 ${ i + 1 } 頁`, value: i + 1 }
         })
-        const handlePageChange = (e, item) => browserHistory.push(`/thread/${ c.thread_id }/page/${ item.value }`)
+        const handlePageChange = (e, item) => {
+          if (!Array.isArray(e._dispatchInstances)) return;
+          browserHistory.push(`/thread/${ c.thread_id }/page/${ item.value }`)
+        }
         const color = c.user.level === '999' ? '#FF9800' : (c.user.gender === 'M' ? '#7986CB' : '#F06292')
         return (
           <div key={ `${ c.thread_id }|${ c.last_reply_time }` } className="Category-row">
