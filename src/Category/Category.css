@@ -39,3 +39,15 @@
 .Category-more > span {
   cursor: pointer;
 }
+
+.Category-many-like {
+  color: #7cb342;
+}
+
+.Category-many-dislike {
+  color: #ef5350;
+}
+
+.Category-hot-thread {
+  color: #e0c354;
+}
