@@ -111,3 +111,12 @@
   border-bottom: 0;
   top: 4px;
 }
+
+.Thread-fixed-bw-link {
+  line-height: 0;
+  font-size: 14px;
+}
+
+.App.light .Thread-fixed-bw-link a {
+  color: #aaa;
+}

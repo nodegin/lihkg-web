@@ -147,7 +147,8 @@ class Thread extends React.PureComponent {
       const buttons = (
         <div className="Thread-buttons">
           <div className="Thread-leftAbs">
-            <Link to={`/category/${ list.response.cat_id }`}>‹ { category.name }</Link>
+            <div><Link to={`/category/${ list.response.cat_id }`}>‹ { category.name }</Link></div>
+            <div className="Thread-fixed-bw-link" hidden={ list.response.cat_id==="1" }><Link to="/category/1">(吹水台)</Link></div>
           </div>
           <b className="Thread-spaceFill"/>
           { prevPage }
