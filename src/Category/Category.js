@@ -90,15 +90,17 @@ class Category extends React.PureComponent {
         const handlePageChange = (e, item) => browserHistory.push(`/thread/${ c.thread_id }/page/${ item.value }`)
         const color = c.user.level === '999' ? '#FF9800' : (c.user.gender === 'M' ? '#7986CB' : '#F06292')
         const cf = (className, cond) => cond ? className : ''
+        const highlightLikeDislikeDifference = 5
+        const highlightProportion = 2.5
         const highlightThreshold = 100
         return (
           <div key={ `${ c.thread_id }|${ c.last_reply_time }` } className="Category-row">
             <small>
               <span style={{ color }}>{ c.user.nickname }</span>
               &emsp;
-              <span className={ cf('Category-row-manyLike', c.like_count > highlightThreshold && c.like_count > c.dislike_count) }>{ c.like_count } 正皮</span>
+              <span className={ cf('Category-row-manyLike', c.like_count - c.dislike_count > highlightLikeDislikeDifference && c.like_count / Math.max(c.dislike_count, 1) > highlightProportion) }>{ c.like_count } 正皮</span>
               &nbsp;
-              <span className={ cf('Category-row-manyDislike', c.dislike_count > highlightThreshold && c.dislike_count > c.like_count) }>{ c.dislike_count } 負皮</span>
+              <span className={ cf('Category-row-manyDislike', c.dislike_count - c.like_count > highlightLikeDislikeDifference && c.dislike_count / Math.max(c.like_count, 1) > highlightProportion) }>{ c.dislike_count } 負皮</span>
               { ' - ' }
               { moment(c.last_reply_time * 1000).fromNow() }
               { ' - ' }
