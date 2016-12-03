@@ -7,6 +7,7 @@ import Helmet from 'react-helmet'
 
 import { Icon } from 'semantic-ui-react'
 import { VelocityComponent } from 'velocity-react'
+import Settings from '../Settings/Settings'
 import './App.css'
 
 class App extends Component {
@@ -28,9 +29,13 @@ class App extends Component {
     if (item) {
       this.props.actions.onSetUser(JSON.parse(item))
     }
-    const mode = localStorage.getItem('lui')
-    if (mode && JSON.parse(mode) && this.props.app.darkMode) {
+    const isLight = JSON.parse(localStorage.getItem('lui'))
+    if (isLight && this.props.app.darkMode) {
       this.props.actions.onToggleDarkMode()
+    }
+    const isOffice = JSON.parse(localStorage.getItem('mtr'))
+    if (isOffice && !this.props.app.officeMode) {
+      this.props.actions.onToggleOfficeMode()
     }
 
     let list
@@ -62,6 +67,7 @@ class App extends Component {
 
   render() {
     let { user } = this.props.app.user
+    const linkRef = e => this.settings = e
     const children = React.Children.map(this.props.children, child => React.cloneElement(child, { ...this.props }))
     const toggleDrawer = e => {
       e.preventDefault()
@@ -69,9 +75,9 @@ class App extends Component {
         document.body.style.overflow = this.state.drawerOpen ? 'hidden' : 'visible'
       })
     }
-    const toggleDarkMode = e => {
+    const toggleSettings = e => {
       e.preventDefault()
-      this.props.actions.onToggleDarkMode()
+      this.settings.toggle()
     }
     const drawer = (
       <div className="App-drawer">
@@ -93,8 +99,8 @@ class App extends Component {
               <a href="#" onClick={ toggleDrawer } style={{ textDecoration: 'none' }}>
                 <Icon name="content" size="large"/>
               </a>
-              <a href="#" onClick={ toggleDarkMode } style={{ textDecoration: 'none' }}>
-                <Icon name={ this.props.app.darkMode ? 'moon' : 'sun' } size="large"/>
+              <a href="#" onClick={ toggleSettings } style={{ textDecoration: 'none' }}>
+                <Icon name="setting" size="large"/>
               </a>
             </div>
             <i className="App-logo" onClick={ this.scrollToTop }></i>
@@ -104,7 +110,7 @@ class App extends Component {
                 <span style={{ color: '#888' }}> | </span>
                 <a target="_blank" href="https://lihkg.com/register">註冊</a>
               </div> : <div>
-                { user.nickname } <Link to="/auth/logout">(登出)</Link>
+                { this.props.app.officeMode ? null : user.nickname } <Link to="/auth/logout">(登出)</Link>
               </div>
             }</div>
           </div>
@@ -119,6 +125,7 @@ class App extends Component {
         </div>
         <main className="App-content">
           { children }
+          <Settings ref={ linkRef } { ...this.props }/>
         </main>
         <footer>
           此 LIHKG 閱讀器由 <a target="_blank" href="https://na.cx">nasece cloud</a> 提供並非 LIHKG 官方發佈

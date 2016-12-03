@@ -15,6 +15,11 @@ export const onToggleDarkMode = () => ({
   type: TOGGLE_DARK_MODE,
 })
 
+export const TOGGLE_OFFICE_MODE = 'TOGGLE_OFFICE_MODE'
+export const onToggleOfficeMode = () => ({
+  type: TOGGLE_OFFICE_MODE,
+})
+
 export const SET_CATEGORIES = 'SET_CATEGORIES'
 export const onSetCategories = categories => ({
   type: SET_CATEGORIES,
