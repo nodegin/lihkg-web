@@ -151,7 +151,7 @@ class Thread extends React.PureComponent {
           { nextPage }
           <b className="Thread-spaceFill"/>
           <div className="Thread-rightAbs">
-            <Dropdown inline scrolling text="㨂頁數" options={ pagesOptions } onChange={ handlePageChange }/>
+            <Dropdown inline scrolling text="㨂頁數" options={ pagesOptions } onChange={ handlePageChange } className="Thread-page-select"/>
           </div>
         </div>
       )

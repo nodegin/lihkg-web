@@ -110,3 +110,7 @@
   border-bottom: 0;
   top: 4px;
 }
+
+.Thread-page-select.ui.dropdown .menu{
+  z-index: 30;
+}
