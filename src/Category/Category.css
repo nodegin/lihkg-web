@@ -13,6 +13,9 @@
 .App.light .Category-row:not(:last-child) {
   border-bottom: 1px solid #aaa;
 }
+.Category-row .active {
+  font-weight: normal !important;
+}
 .Category-row > small {
   color: #bdbdbd;
   display: block;
