@@ -150,7 +150,7 @@ class Thread extends React.PureComponent {
             <Link to={`/category/${ list.response.cat_id }`}>‹ { category.name }</Link>
             { list.response.cat_id === '1' ? null : <Link to="/category/1" style={{ marginLeft: 8 }}>(吹水台)</Link> }
           </div>
-          <Dropdown className="Thread-links-right" inline scrolling text="㨂頁數" options={ pagesOptions } onChange={ handlePageChange } value={ page } selectOnBlur={ false }/>
+          <Dropdown className="Thread-links-right Thread-page-select" inline scrolling text="㨂頁數" options={ pagesOptions } onChange={ handlePageChange } value={ page } selectOnBlur={ false }/>
         </div>
       )
       const buttons = (top, bottom) => (
