@@ -19,6 +19,16 @@
   font-size: 1rem;
   margin-bottom: 8px;
 }
+.Category-row .titlePageWrapper {
+  display: flex;
+}
+.Category-row .title {
+  flex: 1;
+  padding-right: 1em;
+}
+.Category-row .page {
+  margin: auto;
+}
 .App.light .Category-row:not(:last-child) {
   color: #7d7d7d;
 }
@@ -28,4 +38,16 @@
 }
 .Category-more > span {
   cursor: pointer;
+}
+
+.Category-many-like {
+  color: #7cb342;
+}
+
+.Category-many-dislike {
+  color: #ef5350;
+}
+
+.Category-hot-thread {
+  color: #e0c354;
 }
