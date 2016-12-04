@@ -6,6 +6,7 @@ const initialStates = {
   darkMode: true,
   officeMode: false,
   categories: [],
+  visitedThreads: JSON.parse(localStorage.getItem('visitedThreads')) || [],
 }
 
 const app = (state = initialStates, action = {}) => {
@@ -36,6 +37,22 @@ const app = (state = initialStates, action = {}) => {
       return {
         ...state,
         categories: action.categories,
+      }
+    case types.SET_VISITED_THREAD:
+      // Check if the threadId already exisits in visitedThreads
+      if (state.visitedThreads.indexOf(action.threadId) < 0) {
+        state.visitedThreads.push(action.threadId)
+      }
+      localStorage.setItem('visitedThreads', JSON.stringify(state.visitedThreads))
+      return {
+        ...state,
+        visitedThreads: state.visitedThreads,
+      }
+    case types.DELETE_VISITED_THREAD:
+      localStorage.removeItem('visitedThreads')
+      return {
+        ...state,
+        visitedThreads: [],
       }
     default:
       return state

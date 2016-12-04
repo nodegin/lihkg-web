@@ -91,8 +91,12 @@ class Category extends React.PureComponent {
         const color = c.user.level === '999' ? '#FF9800' : (c.user.gender === 'M' ? '#7986CB' : '#F06292')
         const cf = (className, cond) => cond ? className : ''
         const highlightThreshold = 100
+        let cateogryRowClassName = 'Category-row'
+        if (this.isThreadVisited(c.thread_id)) {
+          cateogryRowClassName += ' visited'
+        }
         return (
-          <div key={ `${ c.thread_id }|${ c.last_reply_time }` } className="Category-row">
+          <div key={ `${ c.thread_id }|${ c.last_reply_time }` } className={ cateogryRowClassName }>
             <small>
               <span style={{ color }}>{ c.user.nickname }</span>
               &emsp;
@@ -105,8 +109,8 @@ class Category extends React.PureComponent {
               <span className={ cf('Category-row-hotThread', c.no_of_reply > highlightThreshold) }>{ c.no_of_reply - 1 } 回覆</span>
             </small>
             <div className="Category-row-titleWrapper">
-              <div className="Category-row-title">
-                <Link to={ `/thread/${ c.thread_id }` }>{ c.title }</Link>
+              <div className="Category-row-title" onClick={ () => this.props.actions.onSetVisitedThread(c.thread_id) }>
+                <Link to={ `/thread/${ c.thread_id }`}>{ c.title }</Link>
               </div>
               <div className="Category-row-page">
                 <Dropdown inline scrolling text={ `${ pages } 頁` } options={ pagesOptions } onChange={ handlePageChange } selectOnBlur={ false }/>
@@ -141,6 +145,10 @@ class Category extends React.PureComponent {
     } else {
       this.setState({ error: list.error_message })
     }
+  }
+
+  isThreadVisited(threadId) {
+    return this.props.app.visitedThreads.indexOf(threadId.toString()) >= 0
   }
 
   componentDidMount() {
