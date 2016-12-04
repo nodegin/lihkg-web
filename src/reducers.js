@@ -6,6 +6,7 @@ const initialStates = {
   darkMode: true,
   officeMode: false,
   categories: [],
+  visitedThreads: JSON.parse(localStorage.getItem('visitedThreads')) || [],
 }
 
 const app = (state = initialStates, action = {}) => {
@@ -28,6 +29,7 @@ const app = (state = initialStates, action = {}) => {
       }
     case types.TOGGLE_DARK_MODE:
       localStorage.setItem('lui', state.darkMode)
+      document.body.style.background = state.darkMode ? '#f9f9f9' : '#1d1d1d'
       return {
         ...state,
         darkMode: !state.darkMode,
@@ -36,6 +38,22 @@ const app = (state = initialStates, action = {}) => {
       return {
         ...state,
         categories: action.categories,
+      }
+    case types.SET_VISITED_THREAD:
+      const visitedThreads = [...state.visitedThreads]
+      if (visitedThreads.indexOf(action.threadId) < 0) {
+        visitedThreads.push(action.threadId)
+      }
+      localStorage.setItem('visitedThreads', JSON.stringify(visitedThreads))
+      return {
+        ...state,
+        visitedThreads,
+      }
+    case types.DELETE_VISITED_THREAD:
+      localStorage.removeItem('visitedThreads')
+      return {
+        ...state,
+        visitedThreads: [],
       }
     default:
       return state

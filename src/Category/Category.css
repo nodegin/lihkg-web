@@ -1,11 +1,10 @@
 .Category-main h2 {
   font-family: inherit;
-  margin: 1em 0 2em !important;
+  margin: 1em 0 1em !important;
   text-align: center;
 }
 .Category-row {
-  margin-bottom: 16px;
-  padding-bottom: 16px;
+  padding: 1em;
 }
 .Category-row:not(:last-child) {
   border-bottom: 1px solid #333;
@@ -20,6 +19,9 @@
   display: block;
   font-size: 1rem;
   margin-bottom: 8px;
+}
+.Category-row.visited {
+  box-shadow: inset 3px 0 0 #42A5F5;
 }
 .Category-row-manyLike {
   color: #7cb342;

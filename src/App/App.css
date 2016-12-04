@@ -1,13 +1,9 @@
 .App {
+  color: #eee;
   min-height: 100vh;
   padding-top: 48px;
 }
-.App.dark {
-  background: #1d1d1d;
-  color: #eee;
-}
 .App.light {
-  background: #f9f9f9;
   color: #333;
 }
 .App.light a {
@@ -59,7 +55,7 @@ header > a {
   left: 0;
 }
 .App-headerLeft > *:not(:first-child) {
-  margin-left: 1.5em;
+  margin-left: 1.25rem;
 }
 .App-headerRight {
   right: 0;
@@ -74,6 +70,13 @@ header > a {
     min-width: 360px;
     width: calc(100% - 2em);
   }
+}
+.App-content {
+  margin-bottom: 6rem;
+}
+.App.dark .ui.form textarea, .App.dark .ui.form input {
+  background-color: #333 !important;
+  color: #eee !important;
 }
 
 /*  Drawer  */
@@ -114,16 +117,14 @@ header > a {
   background: rgba(0, 0, 0, .1);
 }
 
-/*  Footer  */
-.App footer {
-  color: #555;
-  font-size: 12px;
-  margin-top: 4em;
-  padding: 1em 0 2em;
-  opacity: .6;
+/*  Modal  */
+.modal .description {
+  line-height: 30px;
   text-align: center;
-  transition: opacity .1s;
+  margin: auto;
 }
-.App footer:hover {
-  opacity: 1;
+.modal .description a {
+  color: black;
+  text-decoration: none;
+  transition: all .2s ease;
 }

@@ -187,20 +187,20 @@ class Thread extends React.PureComponent {
       )
       const likeThis = this.rateThread.bind(this, 'like')
       const dislikeThis = this.rateThread.bind(this, 'dislike')
+      const icon = (() => {
+        const elem = document.createElement('div')
+        ReactDOM.render(
+          <div style={{ display: 'inline-block' }}>
+            <Icon name="image" size="big" style={{ cursor: 'pointer' }}/>
+          </div>,
+          elem
+        )
+        return elem.firstChild
+      })()
       const linkContentRef = e => {
-        if (!e) {
+        if (!e || !this.props.app.officeMode) {
           return
         }
-        const icon = (() => {
-          const elem = document.createElement('div')
-          ReactDOM.render(
-            <div style={{ display: 'inline-block' }}>
-              <Icon name="image" size="big" style={{ cursor: 'pointer' }}/>
-            </div>,
-            elem
-          )
-          return elem.firstChild
-        })()
         const images = e.querySelectorAll('img')
         images.forEach(i => {
           icon.onclick = () => icon.innerHTML = `<img alt src="${ i.src }">`
