@@ -113,6 +113,7 @@ header > a {
 .App.light .App-drawer-item:hover {
   background: rgba(0, 0, 0, .1);
 }
+
 .App.dark .ui.form textarea, .dark .ui.form input {
   background-color: #333;
   color: #ccc;

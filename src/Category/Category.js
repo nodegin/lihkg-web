@@ -1,6 +1,5 @@
 import React from 'react'
 import { Link, browserHistory } from 'react-router'
-import WayPoint from 'react-waypoint'
 import moment from 'moment'
 
 import { Dropdown } from 'semantic-ui-react'
@@ -30,23 +29,14 @@ class Category extends React.PureComponent {
   state = {
     category: '',
     threads: [],
-    page: 1,
+    page: 0,
     error: null,
     bwAll: true,
-    isWayPointSetup: false,
-    loadingMessage: 'LOAD緊，等陣吓 ',
+    loadingMessage: '蘇咪摩牙 ',
   }
 
   async loadThreads(catId, page) {
-    // WayPoint will call loadMore in render() when it is initially setting up
-    // so this.state.isWayPointSetup is to prevent double loadThreads call
-    if (!this.state.isWayPointSetup) {
-      this.setState({
-        isWayPointSetup: true, 
-        page: this.state.page - 1,
-      })
-      return
-    }
+    this.setState({ loadingMessage: 'LOAD緊，等陣吓 ' })
     let url
     if (catId === '1' && this.state.bwAll) {
       url = 'latest?' // 吹水台 (全部)
@@ -156,6 +146,7 @@ class Category extends React.PureComponent {
         window.scrollTo(0, scrollY)
       })
       this.props.actions.onSetPageTitle(list.response.category.name)
+      this.setState({ loadingMessage: '蘇咪摩牙' })
     } else {
       this.setState({
         error: list.error_message,
@@ -196,14 +187,10 @@ class Category extends React.PureComponent {
           <div>
             <h2>{ this.state.category }{ titleExtra }</h2>
             { this.state.threads }
-            <WayPoint
-              onEnter={ loadMore }
-            />
-            { this.state.threads.length < 1 || this.props.params.id === '2' ? null : 
-              <div className="Category-more">
-                <span>{ this.state.loadingMessage } <img alt="more" src="https://lihkg.com/assets/faces/normal/tongue.gif"/></span>
-              </div>
-            }
+            <br/>
+            { this.state.threads.length < 1 || this.props.params.id === '2' ? null : <div className="Category-more" onClick={ loadMore }>
+              <span>{this.state.loadingMessage} <img alt="more" src="https://lihkg.com/assets/faces/normal/tongue.gif"/></span>
+            </div> }
             <FloatEditor { ...this.props } catId={ this.props.params.id } />
           </div>
         ) }
