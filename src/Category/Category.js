@@ -29,12 +29,14 @@ class Category extends React.PureComponent {
   state = {
     category: '',
     threads: [],
-    page: 1,
+    page: 0,
     error: null,
     bwAll: true,
+    loadingMessage: '蘇咪摩牙 ',
   }
 
   async loadThreads(catId, page) {
+    this.setState({ loadingMessage: 'LOAD緊，等陣吓 ' })
     let url
     if (catId === '1' && this.state.bwAll) {
       url = 'latest?' // 吹水台 (全部)
@@ -144,8 +146,12 @@ class Category extends React.PureComponent {
         window.scrollTo(0, scrollY)
       })
       this.props.actions.onSetPageTitle(list.response.category.name)
+      this.setState({ loadingMessage: '蘇咪摩牙' })
     } else {
-      this.setState({ error: list.error_message })
+      this.setState({
+        error: list.error_message,
+        loadingMessage: '冇曬野LOAD（好似係）',
+      })
     }
   }
 
@@ -177,12 +183,13 @@ class Category extends React.PureComponent {
     }
     return (
       <div className="Category-main">
-        { this.state.error || (
+        { (
           <div>
             <h2>{ this.state.category }{ titleExtra }</h2>
             { this.state.threads }
+            <br/>
             { this.state.threads.length < 1 || this.props.params.id === '2' ? null : <div className="Category-more" onClick={ loadMore }>
-              <span>蘇咪摩牙 <img alt="more" src="https://lihkg.com/assets/faces/normal/tongue.gif"/></span>
+              <span>{this.state.loadingMessage} <img alt="more" src="https://lihkg.com/assets/faces/normal/tongue.gif"/></span>
             </div> }
             <FloatEditor { ...this.props } catId={ this.props.params.id } />
           </div>
