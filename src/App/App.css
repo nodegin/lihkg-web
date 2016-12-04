@@ -114,6 +114,13 @@ header > a {
   background: rgba(0, 0, 0, .1);
 }
 
+.App.dark .ui.form textarea, .dark .ui.form input {
+  background-color: #333;
+  color: #ccc;
+  box-shadow: inset 0 0 10px rgba(0,0,0,0.75);
+  font-size: 1.15rem;
+}
+
 /*  Footer  */
 .App footer {
   color: #555;
