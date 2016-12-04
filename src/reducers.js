@@ -4,6 +4,7 @@ const initialStates = {
   user: {},
   pageTitle: window.document.title,
   darkMode: true,
+  officeMode: false,
   categories: [],
 }
 
@@ -18,6 +19,12 @@ const app = (state = initialStates, action = {}) => {
       return {
         ...state,
         pageTitle: action.title,
+      }
+    case types.TOGGLE_OFFICE_MODE:
+      localStorage.setItem('mtr', !state.officeMode)
+      return {
+        ...state,
+        officeMode: !state.officeMode,
       }
     case types.TOGGLE_DARK_MODE:
       localStorage.setItem('lui', state.darkMode)
