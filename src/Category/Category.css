@@ -36,10 +36,6 @@
   padding: 1em 0 2em;
   text-align: center;
 }
-.Category-more > span {
-  cursor: pointer;
-}
-
 .Category-many-like {
   color: #7cb342;
 }

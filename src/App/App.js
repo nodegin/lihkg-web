@@ -5,13 +5,14 @@ import { bindActionCreators } from 'redux'
 import * as types from '../actions'
 import Helmet from 'react-helmet'
 
-import { Icon } from 'semantic-ui-react'
+import { Icon, Modal, Image } from 'semantic-ui-react'
 import { VelocityComponent } from 'velocity-react'
 import './App.css'
 
 class App extends Component {
   state = {
     drawerOpen: false,
+    modalOpen: false,
   }
 
   async componentDidMount() {
@@ -73,6 +74,10 @@ class App extends Component {
       e.preventDefault()
       this.props.actions.onToggleDarkMode()
     }
+    const toggleModal = e => {
+      e.preventDefault()
+      this.setState({ modalOpen: !this.state.modalOpen })
+    }
     const drawer = (
       <div className="App-drawer">
         { this.props.app.categories.map(c => {
@@ -96,6 +101,9 @@ class App extends Component {
               <a href="#" onClick={ toggleDarkMode } style={{ textDecoration: 'none' }}>
                 <Icon name={ this.props.app.darkMode ? 'moon' : 'sun' } size="large"/>
               </a>
+              <a href="#" onClick={ toggleModal } style={{ textDecoration: 'none' }}>
+                <Icon name={ 'help' } size="large"/>
+              </a>
             </div>
             <i className="App-logo" onClick={ this.scrollToTop }></i>
             <div className="App-headerRight">{
@@ -109,6 +117,25 @@ class App extends Component {
             }</div>
           </div>
         </header>
+        <Modal size='small' open={ this.state.modalOpen } onClose={ toggleModal }>
+          <Modal.Header>About LIHKG Web</Modal.Header>
+          <Modal.Content image>
+            <Image wrapped size='small' src='https://camo.githubusercontent.com//72d1ef1620c2cfbec36c476248b9e65cf4d3757f//68747470733a2f2f782e6c69686b672e636f6d2f6173736574732f696d672f6c6f676f322e706e67' />
+            <Modal.Description>
+              此 LIHKG 閱讀器由 <a target="_blank" href="https://na.cx">nasece cloud</a> 提供並非 LIHKG 官方發佈
+              <br/>
+              請詳閱 <a target="_blank" href="https://lihkg.com/tnc">LIHKG 使用條款</a>。如想支持本站，歡迎按此捐款
+              <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank" style={{ display: 'inline-block' }}>
+                <input type="hidden" name="cmd" value="_s-xclick"/>
+                <input type="hidden" name="hosted_button_id" value="6QZX62BVJY6EQ"/>
+                <input type="image" alt="" src="https://www.paypalobjects.com/en_GB/i/btn/btn_donate_SM.gif" name="submit" style={{ height: 12 }}/>
+                <img alt="" src="https://www.paypalobjects.com/en_GB/i/scr/pixel.gif" width="1" height="1"/>
+              </form>
+              <br/>
+              本網站的原始碼在 MIT 授權下於 <a target="_blank" href="https://git.io/lihkg">GitHub</a> 發佈
+            </Modal.Description>
+          </Modal.Content>
+        </Modal>
         <div style={{ pointerEvents: this.state.drawerOpen ? 'auto' : 'none' }}>
           <VelocityComponent animation={{ opacity: this.state.drawerOpen ? 1 : 0 }} duration={ 250 }>
             <b className="App-drawerOverlay" onClick={ toggleDrawer }/>
@@ -120,19 +147,6 @@ class App extends Component {
         <main className="App-content">
           { children }
         </main>
-        <footer>
-          此 LIHKG 閱讀器由 <a target="_blank" href="https://na.cx">nasece cloud</a> 提供並非 LIHKG 官方發佈
-          <br/>
-          請詳閱 <a target="_blank" href="https://lihkg.com/tnc">LIHKG 使用條款</a>。如想支持本站，歡迎按此捐款
-          <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank" style={{ display: 'inline-block' }}>
-            <input type="hidden" name="cmd" value="_s-xclick"/>
-            <input type="hidden" name="hosted_button_id" value="6QZX62BVJY6EQ"/>
-            <input type="image" alt="" src="https://www.paypalobjects.com/en_GB/i/btn/btn_donate_SM.gif" name="submit" style={{ height: 12 }}/>
-            <img alt="" src="https://www.paypalobjects.com/en_GB/i/scr/pixel.gif" width="1" height="1"/>
-          </form>
-          <br/>
-          本網站的原始碼在 MIT 授權下於 <a target="_blank" href="https://git.io/lihkg">GitHub</a> 發佈
-        </footer>
       </div>
     )
   }
