@@ -1,4 +1,5 @@
 import React from 'react'
+import ReactDOM from 'react-dom'
 import { Link, browserHistory } from 'react-router'
 import moment from 'moment'
 
@@ -89,6 +90,24 @@ class Thread extends React.PureComponent {
     return html
   }
 
+  parseMessage(msg) {
+    msg = msg.replace(/src="\/assets/g, 'src="https://lihkg.com/assets').replace(/><br\s?\/>/g, '>')
+    const removeDepth = document.createElement('div')
+    removeDepth.innerHTML = msg
+    const result = removeDepth.querySelector('blockquote' + ' > blockquote'.repeat(5 - 1))
+    if (result) {
+      result.parentNode.removeChild(result)
+    }
+    if (this.props.app.officeMode) {
+      const icons = removeDepth.querySelectorAll('img[src^="https://lihkg.com/assets"]')
+      icons.forEach(i => {
+        const code = i.src.split('faces')[1]
+        i.outerHTML = map[code]
+      })
+    }
+    return removeDepth.innerHTML
+  }
+
   async reloadPosts(page) {
     if (!this.props.app.categories.length) {
       return setTimeout(this.reloadPosts.bind(this, page), 100)
@@ -150,7 +169,7 @@ class Thread extends React.PureComponent {
             <Link to={`/category/${ list.response.cat_id }`}>‹ { category.name }</Link>
             { list.response.cat_id === '1' ? null : <Link to="/category/1" style={{ marginLeft: 8 }}>(吹水台)</Link> }
           </div>
-          <Dropdown className="Thread-links-right Thread-page-select" inline scrolling text="㨂頁數" options={ pagesOptions } onChange={ handlePageChange } value={ page } selectOnBlur={ false }/>
+          <Dropdown className="Thread-links-right" inline scrolling text="㨂頁數" options={ pagesOptions } onChange={ handlePageChange } value={ page } selectOnBlur={ false }/>
         </div>
       )
       const buttons = (top, bottom) => (
@@ -168,6 +187,26 @@ class Thread extends React.PureComponent {
       )
       const likeThis = this.rateThread.bind(this, 'like')
       const dislikeThis = this.rateThread.bind(this, 'dislike')
+      const linkContentRef = e => {
+        if (!e) {
+          return
+        }
+        const icon = (() => {
+          const elem = document.createElement('div')
+          ReactDOM.render(
+            <div style={{ display: 'inline-block' }}>
+              <Icon name="image" size="big" style={{ cursor: 'pointer' }}/>
+            </div>,
+            elem
+          )
+          return elem.firstChild
+        })()
+        const images = e.querySelectorAll('img')
+        images.forEach(i => {
+          icon.onclick = () => icon.innerHTML = `<img alt src="${ i.src }">`
+          i.parentNode.replaceChild(icon, i)
+        })
+      }
       const posts = (
         <div>
           <h2 className="Thread-header">
@@ -185,26 +224,21 @@ class Thread extends React.PureComponent {
           </h2>
           { buttons(null, links) }
           { list.response.item_data.map((c, i) => {
-            let msg = c.msg.replace(/src="\/assets/g, 'src="https://lihkg.com/assets').replace(/><br\s?\/>/g, '>')
             const quote = () => this.editor.updateContent(`[quote]${ this.htmlToBBCode(c.msg) }[/quote]\n`)
-            const removeDepth = document.createElement('div')
-            removeDepth.innerHTML = msg
-            const result = removeDepth.querySelector('blockquote' + ' > blockquote'.repeat(5 - 1))
-            if (result) {
-              result.parentNode.removeChild(result)
-            }
+            const msg = this.parseMessage(c.msg)
+            const author = c.user.user_id === list.response.user.user_id ? { color: '#E0C354' } : {}
             const color = c.user.level === '999' ? '#FF9800' : (c.user.gender === 'M' ? '#7986CB' : '#F06292')
             return (
               <div key={ c.post_id } className="Thread-replyBlock">
                 <div className="Thread-blockHeader">
-                  <span className="Thread-blockHeader-floor">#{ i + (page - 1) * 25 }</span>
+                  <span className="Thread-blockHeader-floor" style={ author }>#{ i + (page - 1) * 25 }</span>
                   <span style={{ color }}>{ c.user.nickname }</span>
-                  <span className="Thread-blockHeader-info">{ moment(c.reply_time * 1000).format('DD/MM/YY hh:mm:ss') }</span>
+                  <span className="Thread-blockHeader-info">{ moment(c.reply_time * 1000).format('DD/MM/YY HH:mm:ss') }</span>
                   <div className="Thread-blockHeader-quoteButton">
-                    <Icon name="reply" onClick={ quote } />
+                    <Icon name="reply" onClick={ quote }/>
                   </div>
                 </div>
-                <div className="Thread-content" dangerouslySetInnerHTML={{ __html: removeDepth.innerHTML }}/>
+                <div ref={ linkContentRef } className="Thread-content" dangerouslySetInnerHTML={{ __html: msg }}/>
               </div>
             )
           }) }

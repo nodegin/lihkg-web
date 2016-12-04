@@ -58,11 +58,11 @@
   border-left: 2px solid #90CAF9;
 }
 .Thread-content img {
-  max-width: calc(960px / 2);
+  max-width: calc(960px / 1.5);
 }
 @media only screen and (max-width: 1023px) {
   .Thread-content img {
-    max-width: calc((100vw - 1em * 2) / 2);
+    max-width: calc((100vw - 1em * 2) / 1.5);
   }
 }
 
@@ -89,6 +89,9 @@
 .Thread-links-right {
   float: right;
 }
+.Thread-links-right .menu {
+  z-index: 30 !important;
+}
 .Thread-buttons-btnSpace, .Thread-buttons-btn {
   display: inline-block;
   margin: 0 4%;
@@ -111,8 +114,4 @@
 .Thread-buttons-btn:active {
   border-bottom: 0;
   top: 4px;
-}
-
-.Thread-page-select.ui.dropdown .menu{
-  z-index: 30;
 }

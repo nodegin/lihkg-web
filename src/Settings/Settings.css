@@ -1,0 +1,32 @@
+.Settings-wrapper, .Settings-overlay {
+  bottom: 0;
+  left: 0;
+  right: 0;
+  top: 0;
+}
+.Settings-wrapper {
+  align-items: center;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  position: fixed;
+  z-index: 50;
+}
+.Settings-overlay {
+  background: rgba(0, 0, 0, .75);
+  position: absolute;
+}
+.Settings-main {
+  padding: 15%;
+  z-index: 2;
+}
+.Settings-row {
+  margin-bottom: 2em;
+}
+.Settings-row > span {
+  display: inline-block;
+  width: 128px;
+}
+.Settings-row > button {
+  width: 80px;
+}
