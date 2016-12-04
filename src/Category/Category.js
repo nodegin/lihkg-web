@@ -32,11 +32,11 @@ class Category extends React.PureComponent {
     page: 0,
     error: null,
     bwAll: true,
-    loadingMessage: '蘇咪摩牙 ',
+    loadingMessage: '蘇咪摩牙',
   }
 
   async loadThreads(catId, page) {
-    this.setState({ loadingMessage: 'LOAD緊，等陣吓 ' })
+    this.setState({ loadingMessage: '撈緊，等陣' })
     let url
     if (catId === '1' && this.state.bwAll) {
       url = 'latest?' // 吹水台 (全部)
@@ -48,13 +48,8 @@ class Category extends React.PureComponent {
       url = `category?cat_id=${ catId }&`
     }
     let list
-    try {
-      list = await fetch(`https://lihkg.com/api_v1/thread/${ url }page=${ page }&count=50`)
-      list = await list.json()
-    } catch(e) {
-      this.loadThreads(catId, page)
-      return
-    }
+    list = await fetch(`https://lihkg.com/api_v1/thread/${ url }page=${ page }&count=50`)
+    list = await list.json()
     if (list.success) {
       /*
         cat_id: "16"
@@ -150,13 +145,13 @@ class Category extends React.PureComponent {
     } else {
       this.setState({
         error: list.error_message,
-        loadingMessage: '冇曬野LOAD（好似係）',
+        loadingMessage: '冇得撈啦',
       })
     }
   }
 
   isThreadVisited(threadId) {
-    return this.props.app.visitedThreads.indexOf(threadId.toString()) >= 0
+    return this.props.app.visitedThreads.indexOf(threadId) >= 0
   }
 
   componentDidMount() {
@@ -188,8 +183,12 @@ class Category extends React.PureComponent {
             <h2>{ this.state.category }{ titleExtra }</h2>
             { this.state.threads }
             <br/>
-            { this.state.threads.length < 1 || this.props.params.id === '2' ? null : <div className="Category-more" onClick={ loadMore }>
-              <span>{this.state.loadingMessage} <img alt="more" src="https://lihkg.com/assets/faces/normal/tongue.gif"/></span>
+            { this.state.threads.length < 1 ? null : <div className="Category-more" onClick={ loadMore }>
+              <span>
+                { this.state.loadingMessage }
+                &emsp;
+                <img alt="more" src={ `https://lihkg.com/assets/faces/normal/${ this.state.loadingMessage.startsWith('冇') ? 'dead' : 'tongue' }.gif` }/>
+              </span>
             </div> }
             <FloatEditor { ...this.props } catId={ this.props.params.id } />
           </div>

@@ -15,15 +15,14 @@ class Settings extends Component {
     })
   }
 
-  deleteHistory() {
-    this.props.actions.onDeleteVisitedThread()
-    window.location.reload()
-  }
-
   render() {
     const toggle = this.toggle.bind(this)
+    const deleteHistory = () => {
+      this.props.actions.onDeleteVisitedThread()
+      window.location.reload(true)
+    }
     return (
-      <VelocityComponent animation={{ opacity: this.state.visible ? 1 : 0, top:this.state.visible ? 0 : '2em' }} duration={ 250 }>
+      <VelocityComponent animation={{ opacity: this.state.visible ? 1 : 0 }} duration={ 250 }>
         <div className="Settings-wrapper" style={{ pointerEvents: this.state.visible ? 'auto' : 'none' }}>
           <div className="Settings-overlay" onClick={ toggle }/>
           <div className="Settings-main">
@@ -42,10 +41,9 @@ class Settings extends Component {
             <div className="Settings-row">
               <span>洗底</span>
               <Popup
-                trigger={<Button color='red' onClick={ this.deleteHistory.bind(this) }>APPLY</Button>}
-                content='DEL曬你D瀏覽記錄（綠色邊果D）'
-                positioning='right center'
-              />
+                trigger={ <Button color="red" onClick={ deleteHistory }>CLEAR</Button> }
+                content="清除所有瀏覽記錄"
+                positioning="right center"/>
             </div>
           </div>
         </div>

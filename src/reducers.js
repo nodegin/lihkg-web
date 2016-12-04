@@ -29,6 +29,7 @@ const app = (state = initialStates, action = {}) => {
       }
     case types.TOGGLE_DARK_MODE:
       localStorage.setItem('lui', state.darkMode)
+      document.body.style.background = state.darkMode ? '#f9f9f9' : '#1d1d1d'
       return {
         ...state,
         darkMode: !state.darkMode,
@@ -39,14 +40,14 @@ const app = (state = initialStates, action = {}) => {
         categories: action.categories,
       }
     case types.SET_VISITED_THREAD:
-      // Check if the threadId already exisits in visitedThreads
-      if (state.visitedThreads.indexOf(action.threadId) < 0) {
-        state.visitedThreads.push(action.threadId)
+      const visitedThreads = [...state.visitedThreads]
+      if (visitedThreads.indexOf(action.threadId) < 0) {
+        visitedThreads.push(action.threadId)
       }
-      localStorage.setItem('visitedThreads', JSON.stringify(state.visitedThreads))
+      localStorage.setItem('visitedThreads', JSON.stringify(visitedThreads))
       return {
         ...state,
-        visitedThreads: state.visitedThreads,
+        visitedThreads,
       }
     case types.DELETE_VISITED_THREAD:
       localStorage.removeItem('visitedThreads')

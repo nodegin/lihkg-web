@@ -13,10 +13,11 @@
   z-index: 50;
 }
 .Settings-overlay {
-  background: rgba(0, 0, 0, .9);
+  background: rgba(0, 0, 0, .75);
   position: absolute;
 }
 .Settings-main {
+  padding: 10%;
   z-index: 2;
 }
 .Settings-row {
@@ -27,5 +28,5 @@
   width: 128px;
 }
 .Settings-row > button {
-  width: 90px;
+  width: 80px;
 }

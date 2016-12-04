@@ -4,7 +4,7 @@
   text-align: center;
 }
 .Category-row {
-  padding: 16px 0;
+  padding: 1em;
 }
 .Category-row:not(:last-child) {
   border-bottom: 1px solid #333;
@@ -21,8 +21,7 @@
   margin-bottom: 8px;
 }
 .Category-row.visited {
-  padding-left: 16px;
-  box-shadow: 3px 0 0 green inset;
+  box-shadow: inset 3px 0 0 #42A5F5;
 }
 .Category-row-manyLike {
   color: #7cb342;

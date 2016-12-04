@@ -97,7 +97,7 @@ class App extends Component {
     )
     return (
       <div className={ `App ${ this.props.app.darkMode ? 'dark' : 'light' }` }>
-        <Helmet title={ this.props.app.pageTitle }/>
+        <Helmet title={ this.props.app.officeMode ? 'LIHKG Web' : this.props.app.pageTitle }/>
         <header>
           <div>
             <div className="App-headerLeft">
@@ -108,7 +108,7 @@ class App extends Component {
                 <Icon name="setting" size="large"/>
               </a>
               <a href="#" onClick={ toggleModal } style={{ textDecoration: 'none' }}>
-                <Icon name={ 'help' } size="large"/>
+                <Icon name="help" size="large"/>
               </a>
             </div>
             <i className="App-logo" onClick={ this.scrollToTop }></i>
@@ -123,10 +123,10 @@ class App extends Component {
             }</div>
           </div>
         </header>
-        <Modal size='small' open={ this.state.modalOpen } onClose={ toggleModal }>
-          <Modal.Header>About LIHKG Web</Modal.Header>
+        <Modal size="small" open={ this.state.modalOpen } onClose={ toggleModal }>
+          <Modal.Header>LIHKG Web</Modal.Header>
           <Modal.Content image>
-            <Image wrapped size='small' src='https://camo.githubusercontent.com//72d1ef1620c2cfbec36c476248b9e65cf4d3757f//68747470733a2f2f782e6c69686b672e636f6d2f6173736574732f696d672f6c6f676f322e706e67' />
+            <Image wrapped size="small" src='https://camo.githubusercontent.com//72d1ef1620c2cfbec36c476248b9e65cf4d3757f//68747470733a2f2f782e6c69686b672e636f6d2f6173736574732f696d672f6c6f676f322e706e67' />
             <Modal.Description>
               此 LIHKG 閱讀器由 <a target="_blank" href="https://na.cx">nasece cloud</a> 提供並非 LIHKG 官方發佈
               <br/>
