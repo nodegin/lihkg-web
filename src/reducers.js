@@ -6,7 +6,7 @@ const initialStates = {
   darkMode: true,
   officeMode: false,
   categories: [],
-  visitedThreads: JSON.parse(localStorage.getItem('visitedThreads')) || [],
+  visitedThreads: JSON.parse(localStorage.getItem('vts')) || [],
 }
 
 const app = (state = initialStates, action = {}) => {
@@ -44,13 +44,13 @@ const app = (state = initialStates, action = {}) => {
       if (visitedThreads.indexOf(action.threadId) < 0) {
         visitedThreads.push(action.threadId)
       }
-      localStorage.setItem('visitedThreads', JSON.stringify(visitedThreads))
+      localStorage.setItem('vts', JSON.stringify(visitedThreads))
       return {
         ...state,
         visitedThreads,
       }
     case types.DELETE_VISITED_THREAD:
-      localStorage.removeItem('visitedThreads')
+      localStorage.removeItem('vts')
       return {
         ...state,
         visitedThreads: [],
