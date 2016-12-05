@@ -207,6 +207,13 @@ class Thread extends React.PureComponent {
           i.parentNode.replaceChild(icon, i)
         })
       }
+      const postsToMap = !this.props.app.storyMode ?
+        list.response.item_data :
+        list.response.item_data.filter((c, i) => {
+          // Make sure the comment id matches the original one
+          c.i = i
+          return c.user.user_id === list.response.user.user_id
+        })
       const posts = (
         <div>
           <h2 className="Thread-header">
@@ -223,7 +230,7 @@ class Thread extends React.PureComponent {
             </div>
           </h2>
           { buttons(null, links) }
-          { list.response.item_data.map((c, i) => {
+          { postsToMap.map((c, i) => {
             const quote = () => this.editor.updateContent(`[quote]${ this.htmlToBBCode(c.msg) }[/quote]\n`)
             const msg = this.parseMessage(c.msg)
             const author = c.user.user_id === list.response.user.user_id ? { color: '#E0C354' } : {}
@@ -231,7 +238,7 @@ class Thread extends React.PureComponent {
             return (
               <div key={ c.post_id } className="Thread-replyBlock">
                 <div className="Thread-blockHeader">
-                  <span className="Thread-blockHeader-floor" style={ author }>#{ i + (page - 1) * 25 }</span>
+                  <span className="Thread-blockHeader-floor" style={ author }>#{ (c.i ? c.i : i) + 1 + (page - 1) * 25 }</span>
                   <span style={{ color }}>{ c.user.nickname }</span>
                   <span className="Thread-blockHeader-info">{ moment(c.reply_time * 1000).format('DD/MM/YY HH:mm:ss') }</span>
                   <div className="Thread-blockHeader-quoteButton">
@@ -242,7 +249,9 @@ class Thread extends React.PureComponent {
               </div>
             )
           }) }
-          { buttons(links, null) }
+          { this.props.app.storyMode && postsToMap.length === 0 ? 
+            (<div style={{'textAlign': 'center', 'marginTop': '1em'}}><span>{ '呢頁樓主冇留言' } <img alt="" src="https://lihkg.com/assets/faces/normal/dead.gif"/></span></div>) :
+            buttons(links, null) }
         </div>
       )
       this.setState({ posts, pages })

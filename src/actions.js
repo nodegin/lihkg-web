@@ -20,6 +20,11 @@ export const onToggleOfficeMode = () => ({
   type: TOGGLE_OFFICE_MODE,
 })
 
+export const TOGGLE_STORY_MODE = 'TOGGLE_STORY_MODE'
+export const onToggleStoryMode = () => ({
+  type: TOGGLE_STORY_MODE,
+})
+
 export const SET_CATEGORIES = 'SET_CATEGORIES'
 export const onSetCategories = categories => ({
   type: SET_CATEGORIES,
