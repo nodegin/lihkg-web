@@ -438,7 +438,7 @@ class Thread extends React.PureComponent {
     const handleModalClose = () => this.setState({ shareText: null })
 
     return (
-      <div onMouseDown={ preparePageActionMenu } onMouseUp={ cancelPageActionMenu } onContextMenu={ cancelPageActionMenu }>
+      <div onMouseDown={ preparePageActionMenu } onMouseUp={ cancelPageActionMenu } onContextMenu={ cancelPageActionMenu } onMouseMove={ cancelPageActionMenu }>
         <div className="Thread-helper" hidden={ !this.state.isShowHelper } style={ getPageActionMenuPosition() } ref="actionMenuHelper">
           <div className="Thread-helper-row">
             <div className="Thread-buttons-btn" onClick={ pageActionBack }>返回</div>
