@@ -83,6 +83,9 @@
   height: 48px;
   line-height: 48px;
 }
+.Thread-links .active,  .Thread-links-right .active{
+  color: #4183C4 !important;
+}
 .Thread-links-left {
   float: left;
 }
