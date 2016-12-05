@@ -4,11 +4,31 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as types from '../actions'
 import Helmet from 'react-helmet'
+import moment from 'moment'
 
-import { Icon, Modal, Image } from 'semantic-ui-react'
+import { Icon, Modal, Image, Divider } from 'semantic-ui-react'
 import { VelocityComponent } from 'velocity-react'
 import Settings from '../Settings/Settings'
 import './App.css'
+
+moment.updateLocale('en', {
+  relativeTime: {
+    future: 'in %s',
+    past: '%s',
+    s:  '1s',
+    ss: '%ss',
+    m:  '1m',
+    mm: '%dm',
+    h:  '1h',
+    hh: '%dh',
+    d:  '1d',
+    dd: '%dd',
+    M:  '1m',
+    MM: '%dM',
+    y:  '1y',
+    yy: '%dY'
+  }
+})
 
 class App extends Component {
   state = {
@@ -26,10 +46,6 @@ class App extends Component {
       }
       localStorage.setItem('dt', text)
     }
-    const item = localStorage.getItem('uinf')
-    if (item) {
-      this.props.actions.onSetUser(JSON.parse(item))
-    }
     const isLight = JSON.parse(localStorage.getItem('lui'))
     if (isLight && this.props.app.darkMode) {
       this.props.actions.onToggleDarkMode()
@@ -37,6 +53,10 @@ class App extends Component {
     const isOffice = JSON.parse(localStorage.getItem('mtr'))
     if (isOffice && !this.props.app.officeMode) {
       this.props.actions.onToggleOfficeMode()
+    }
+    const isStory = JSON.parse(localStorage.getItem('sm'))
+    if (isStory && !this.props.app.storyMode) {
+      this.props.actions.onToggleStoryMode()
     }
 
     let list
@@ -76,23 +96,32 @@ class App extends Component {
         document.body.style.overflow = this.state.drawerOpen ? 'hidden' : 'visible'
       })
     }
-    const toggleSettings = e => {
-      e.preventDefault()
-      this.settings.toggle()
+    const linkTo = (path, e) => {
+      browserHistory.push(path)
+      toggleDrawer(e)
     }
-    const toggleModal = e => {
-      e.preventDefault()
-      this.setState({ modalOpen: !this.state.modalOpen })
-    }
+    const goBookmark = linkTo.bind(null, '/bookmark')
+    const goSearch = linkTo.bind(null, '/search')
+    const toggleSettings = () => this.settings.toggle()
+    const toggleModal = () => this.setState({ modalOpen: !this.state.modalOpen })
     const drawer = (
       <div className="App-drawer">
-        { this.props.app.categories.map(c => {
-          const click = e => {
-            setTimeout(browserHistory.push.bind(null, `/category/${ c.cat_id }`), 250)
-            toggleDrawer(e)
-          }
-          return <div key={ c.cat_id } className="App-drawer-item" onClick={ click }>{ c.name }</div>
-        }) }
+        <div className="App-drawer-upper">
+          <div className="App-drawer-item" onClick={ goBookmark }>留名</div>
+          <div className="App-drawer-item" onClick={ goSearch }>搜尋</div>
+          <div className="App-drawer-item" onClick={ toggleSettings }>設定</div>
+          <div className="App-drawer-item" onClick={ toggleModal }>關於</div>
+        </div>
+        <Divider/>
+        <div className="App-drawer-lower">
+          { this.props.app.categories.map(c => {
+            const click = e => {
+              setTimeout(browserHistory.push.bind(null, `/category/${ c.cat_id }`), 250)
+              toggleDrawer(e)
+            }
+            return <div key={ c.cat_id } className="App-drawer-item" onClick={ click }>{ c.name }</div>
+          }) }
+        </div>
       </div>
     )
     return (
@@ -103,12 +132,6 @@ class App extends Component {
             <div className="App-headerLeft">
               <a href="#" onClick={ toggleDrawer } style={{ textDecoration: 'none' }}>
                 <Icon name="content" size="large"/>
-              </a>
-              <a href="#" onClick={ toggleSettings } style={{ textDecoration: 'none' }}>
-                <Icon name="setting" size="large"/>
-              </a>
-              <a href="#" onClick={ toggleModal } style={{ textDecoration: 'none' }}>
-                <Icon name="help" size="large"/>
               </a>
             </div>
             <i className="App-logo" onClick={ this.scrollToTop }></i>

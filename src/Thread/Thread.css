@@ -1,3 +1,6 @@
+.Thread-header, .Thread-extras {
+  padding: 0 1em;
+}
 .Thread-header {
   display: flex;
   font-family: inherit;
@@ -20,13 +23,17 @@
 /*  Reply block  */
 .Thread-replyBlock {
   background: rgba(61, 61, 61, .75);
+  box-shadow: 0 0 2px rgba(0, 0, 0, .25);
   border-radius: 4px;
-  line-height: 24px;
-  margin-bottom: 1em;
+  line-height: 2rem;
+  margin-bottom: 2rem;
   padding: 1em;
 }
+.Thread-replyBlock:first-child {
+  margin-top: 2rem;
+}
 .App.light .Thread-replyBlock {
-  background: rgba(170, 170, 170, .25);
+  background: rgba(224, 224, 224, .4);
 }
 .Thread-blockHeader {
   margin-bottom: 1em;
@@ -37,7 +44,7 @@
   width: 58px;
 }
 .App.light .Thread-blockHeader-floor {
-  color: #7d7d7d;
+  color: #777;
 }
 .Thread-blockHeader-info {
   margin-left: 1em;
@@ -80,17 +87,24 @@
   flex: 1;
 }
 .Thread-links {
+  display: flex;
   height: 48px;
   line-height: 48px;
 }
-.Thread-links-left {
-  float: left;
-}
-.Thread-links-right {
-  float: right;
-}
-.Thread-links-right .menu {
+.Thread-links .menu {
+  margin-left: -28px !important;
   z-index: 30 !important;
+}
+.Thread-actions {
+  line-height: 44px;
+  margin-right: 1em;
+}
+.Thread-actions > * {
+  cursor: pointer;
+  margin-right: 1rem !important;
+}
+.Thread-actions > *:hover {
+  color: #64B5F6;
 }
 .Thread-buttons-btnSpace, .Thread-buttons-btn {
   display: inline-block;

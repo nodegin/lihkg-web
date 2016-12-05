@@ -10,6 +10,12 @@ export const onSetPageTitle = title => ({
   title,
 })
 
+export const UPDATE_BOOKMARK_LIST = 'UPDATE_BOOKMARK_LIST'
+export const onUpdateBookmarkList = list => ({
+  type: UPDATE_BOOKMARK_LIST,
+  list,
+})
+
 export const TOGGLE_DARK_MODE = 'TOGGLE_DARK_MODE'
 export const onToggleDarkMode = () => ({
   type: TOGGLE_DARK_MODE,
@@ -18,6 +24,11 @@ export const onToggleDarkMode = () => ({
 export const TOGGLE_OFFICE_MODE = 'TOGGLE_OFFICE_MODE'
 export const onToggleOfficeMode = () => ({
   type: TOGGLE_OFFICE_MODE,
+})
+
+export const TOGGLE_STORY_MODE = 'TOGGLE_STORY_MODE'
+export const onToggleStoryMode = () => ({
+  type: TOGGLE_STORY_MODE,
 })
 
 export const SET_CATEGORIES = 'SET_CATEGORIES'

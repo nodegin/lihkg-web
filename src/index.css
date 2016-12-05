@@ -2,7 +2,9 @@
 
 body {
   background: #1d1d1d;
-  font: 1.15rem 'HelveticaNeue-Light', 'Helvetica Neue', 'Lantinghei TC', 'Segoe UI Light', 'Segoe UI', '\5FAE\8EDF\6B63\9ED1\9AD4', 'Microsoft JhengHei UI', 'WenQuanYi Zen Hei', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font: 1.15rem 'HelveticaNeue-Light', 'Helvetica Neue', 'Hiragino Kaku Gothic Pro', 'ヒラギノ角ゴ Pro W3', 'メイリオ', 'Meiryo', 'Lantinghei TC', 'Segoe UI Light', 'Segoe UI', '微軟正黑體', 'Microsoft JhengHei UI', 'WenQuanYi Zen Hei', Helvetica, Arial, sans-serif;
   line-height: 1.15rem;
   margin: 0;
   overflow-y: scroll;
@@ -16,4 +18,11 @@ a {
 a:hover {
   color: #fff;
   text-decoration: underline;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(128, 128, 128, .5);
 }
