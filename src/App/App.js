@@ -125,7 +125,7 @@ class App extends Component {
         <header>
           <div>
             <div className="App-headerLeft">
-              <a href="#" onClick={ toggleDrawer } style={{ textDecoration: 'none' }}>
+              <a id="openDrawerButton" href="#" onClick={ toggleDrawer } style={{ textDecoration: 'none' }}>
                 <Icon name="content" size="large"/>
               </a>
               <a href="#" onClick={ toggleSettings } style={{ textDecoration: 'none' }}>

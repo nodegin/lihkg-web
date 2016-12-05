@@ -118,3 +118,22 @@
   border-bottom: 0;
   top: 4px;
 }
+
+.Thread-helper{
+  position: fixed;
+  z-index: 100;
+  width: 200px;
+}
+
+.Thread-helper .Thread-buttons-btn{
+  background: #eee;
+  line-height: 48px;
+}
+
+.Thread-helper .Thread-helper-close-btn{
+  border-radius: 50%;
+}
+
+.Thread-helper-row{
+  margin-bottom: 1em;
+}

@@ -8,11 +8,16 @@ import FloatEditor from '../FloatEditor/FloatEditor'
 import map from '../FloatEditor/emotions'
 import './Thread.css'
 
+var timer = null;
+
 class Thread extends React.PureComponent {
   state = {
     posts: [],
     pages: 1,
     error: null,
+    isShowHelper: false,
+    helperShowAtX: 0,
+    helperShowAtY: 0,
   }
 
   /*  https://gist.github.com/soyuka/6183947  */
@@ -155,8 +160,8 @@ class Thread extends React.PureComponent {
     if (list.success) {
       const pages = Math.ceil(list.response.no_of_reply / 25)
       const emptyBtn = <b className="Thread-buttons-btnSpace"/>
-      const prevPage = page <= pages && page > 1 ? <Link to={`/thread/${ this.props.params.id }/page/${ page - 1 }`} className="Thread-buttons-btn">上頁</Link> : emptyBtn
-      const nextPage = pages > 1 && page < pages ? <Link to={`/thread/${ this.props.params.id }/page/${ page + 1 }`} className="Thread-buttons-btn">下頁</Link> : emptyBtn
+      const prevPage = page <= pages && page > 1 ? <Link to={`/thread/${ this.props.params.id }/page/${ page - 1 }`} className="Thread-buttons-btn" id="previousPageButton">上頁</Link> : emptyBtn
+      const nextPage = pages > 1 && page < pages ? <Link to={`/thread/${ this.props.params.id }/page/${ page + 1 }`} className="Thread-buttons-btn" id="nextPageButton">下頁</Link> : emptyBtn
       const reload = () => location.reload(true)
       const pagesOptions = new Array(pages).fill().map((_, i) => {
         return { text: `第 ${ i + 1 } 頁`, value: i + 1 }
@@ -169,7 +174,7 @@ class Thread extends React.PureComponent {
             <Link to={`/category/${ list.response.cat_id }`}>‹ { category.name }</Link>
             { list.response.cat_id === '1' ? null : <Link to="/category/1" style={{ marginLeft: 8 }}>(吹水台)</Link> }
           </div>
-          <Dropdown className="Thread-links-right" inline scrolling text="㨂頁數" options={ pagesOptions } onChange={ handlePageChange } value={ page } selectOnBlur={ false }/>
+          <Dropdown className="Thread-links-right" id="pageSelect" inline scrolling text="㨂頁數" options={ pagesOptions } onChange={ handlePageChange } value={ page } selectOnBlur={ false }/>
         </div>
       )
       const buttons = (top, bottom) => (
@@ -178,7 +183,7 @@ class Thread extends React.PureComponent {
           <div className="Thread-buttons">
             <b className="Thread-spaceFill"/>
             { prevPage }
-            <div className="Thread-buttons-btn" onClick={ reload }>F5</div>
+            <div className="Thread-buttons-btn" onClick={ reload } id="refreshButton">F5</div>
             { nextPage }
             <b className="Thread-spaceFill"/>
           </div>
@@ -217,14 +222,14 @@ class Thread extends React.PureComponent {
       const posts = (
         <div>
           <h2 className="Thread-header">
-            <div className="Thread-header-rate" style={{ color: '#7CB342' }} onClick={ likeThis }>
+            <div className="Thread-header-rate" id="likeButton" style={{ color: '#7CB342' }} onClick={ likeThis }>
               <Icon name="thumbs up"/>
               { list.response.like_count }
             </div>
             <div className="Thread-header-center">
             { list.response.title }
             </div>
-            <div className="Thread-header-rate" style={{ color: '#EF5350' }} onClick={ dislikeThis }>
+            <div className="Thread-header-rate" id="dislikeButton" style={{ color: '#EF5350' }} onClick={ dislikeThis }>
               <Icon name="thumbs down"/>
               { list.response.dislike_count }
             </div>
@@ -324,8 +329,89 @@ class Thread extends React.PureComponent {
   render() {
     const linkRef = e => this.editor = e
     const reloadPosts = this.reloadPosts.bind(this)
+    const clickButtonById = (id) => {
+      var button = document.getElementById(id);
+      if(button){
+        button.click();
+      }
+    }
+    const showPageActionMenuAt = (x, y) => {
+      this.setState({isShowHelper: true, helperShowAtX: x, helperShowAtY: y});
+    }
+    const hidePageActionMenu = (e) => {
+      this.setState({isShowHelper: false});
+    }
+    const preparePageActionMenu = (e) => {
+      if (!this.state.isShowHelper){
+        var x = e.clientX;
+        var y = e.clientY;
+        // Check for a long click
+        timer = setTimeout(() => {
+          showPageActionMenuAt(x, y);
+        }, 300);
+      }else if(!~e.target.className.indexOf('Thread-buttons-btn')){
+        hidePageActionMenu(e);
+      }
+    }
+    const cancelPageActionMenu = (e) => {
+      if (!this.state.isShowHelper){
+        clearTimeout(timer);
+      }
+    }
+    const getPageActionMenuPosition = () => {
+      return {left: (this.state.helperShowAtX-100)+"px", top: (this.state.helperShowAtY-100)+"px"};
+    }
+    const pageActionLike = (e) => {
+      clickButtonById('likeButton');
+      hidePageActionMenu();
+    }
+    const pageActionDislike = (e) => {
+      clickButtonById('dislikeButton');
+      hidePageActionMenu();
+    }
+    const pageActionGoTop = (e) => {
+      window.scrollTo(0, 0);
+      hidePageActionMenu();
+    }
+    const pageActionGoBottom = (e) => {
+      window.scrollTo(0, document.body.scrollHeight)
+      hidePageActionMenu();
+    }
+    const pageActionPageSelect = (e) => {
+      pageActionGoTop();
+      clickButtonById('pageSelect');
+    }
+    const pageActionCategorySelect = (e) => {
+      clickButtonById('openDrawerButton');
+      hidePageActionMenu();
+    }
+    const pageActionPreviousPage = (e) => {
+      clickButtonById('previousPageButton');
+      hidePageActionMenu();
+    }
+    const pageActionNextPage = (e) => {
+      clickButtonById('nextPageButton');
+      hidePageActionMenu();
+    }
     return (
-      <div>
+      <div onMouseDown={ preparePageActionMenu } onMouseUp={ cancelPageActionMenu } onContextMenu={ cancelPageActionMenu }>
+        <div className="Thread-helper" hidden={ !this.state.isShowHelper } style={ getPageActionMenuPosition() } ref="actionMenuHelper">
+          <div className="Thread-helper-row">
+            <div className="Thread-buttons-btn" onClick={ pageActionLike }>正皮</div>
+            <div className="Thread-buttons-btn" onClick={ pageActionGoTop }>最頂</div>
+            <div className="Thread-buttons-btn" onClick={ pageActionDislike }>負皮</div>
+          </div>
+          <div className="Thread-helper-row">
+            <div className="Thread-buttons-btn" onClick={ pageActionPreviousPage }>上頁</div>
+            <div className="Thread-buttons-btn Thread-helper-close-btn" onClick={ hidePageActionMenu } >&times;</div>
+            <div className="Thread-buttons-btn" onClick={ pageActionNextPage }>下頁</div>
+          </div>
+          <div className="Thread-helper-row">
+            <div className="Thread-buttons-btn" onClick={ pageActionCategorySelect }>選台</div>
+            <div className="Thread-buttons-btn" onClick={ pageActionGoBottom }>最底</div>
+            <div className="Thread-buttons-btn" onClick={ pageActionPageSelect }>選頁</div>
+          </div>
+        </div>
         { this.state.error ? this.state.error : (
           <div>
             { this.state.posts }
