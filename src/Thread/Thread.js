@@ -40,10 +40,10 @@ class Thread extends React.PureComponent {
       return alert('請先登入')
     }
     try {
-      let list, url
+      let list, url, isBookmark = true
       if (this.props.app.bookmarks[this.props.params.id]) {
-        //url = `https://lihkg.na.cx/mirror/thread/${ this.props.params.id }/bookmark-last-read?page=${ page }&post_id=-1`
         url = `https://lihkg.na.cx/mirror/thread/${ this.props.params.id }/unbookmark`
+        isBookmark = false
       } else {
         url = `https://lihkg.na.cx/mirror/thread/${ this.props.params.id }/bookmark`
       }
@@ -59,6 +59,9 @@ class Thread extends React.PureComponent {
         throw new Error(list.error_message)
       }
       this.props.actions.onUpdateBookmarkList(list.response.bookmark_thread_list)
+      if (isBookmark) {
+        this.updateBookmarkLastRead(page)
+      }
       this.reloadPosts(page)
     } catch(e) {
       alert(e.message)

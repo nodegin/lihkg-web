@@ -23,7 +23,6 @@ class ThreadRow extends React.PureComponent {
     const pagesOptions = new Array(pages).fill().map((_, i) => {
       return { text: `第 ${ i + 1 } 頁`, value: i + 1 }
     })
-
     return (
       <div className={ cateogryRowClassName }>
         <small>
@@ -41,7 +40,7 @@ class ThreadRow extends React.PureComponent {
           <div className="ThreadRow-row-title" onClick={ () => this.props.actions.onSetVisitedThread(data.thread_id) }>
             <Link to={ `/thread/${ data.thread_id }`}>{ data.title }</Link>
             {
-              this.props.lastRead ? (
+              this.props.lastRead && this.props.lastRead >= 1 ? (
                 <span>
                   <br/>
                   上次睇到 <Link to={ `/thread/${ data.thread_id }/page/${ this.props.lastRead }`}>第 { this.props.lastRead } 頁</Link>
