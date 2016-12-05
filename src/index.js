@@ -10,6 +10,7 @@ import { createStore, combineReducers } from 'redux'
 import { Provider } from 'react-redux'
 
 import App from './App/App'
+import Bookmark from './Bookmark/Bookmark'
 import Category from './Category/Category'
 import Thread from './Thread/Thread'
 import Search from './Search/Search'
@@ -36,6 +37,7 @@ ReactDOM.render(
         <Route path="/thread/:id" component={ Thread }/>
         <Route path="/thread/:id/page/:page" component={ Thread }/>
         <Route path="/search" component={ Search }/>
+        <Route path="/bookmark" component={ Bookmark }/>
         <Route path="/auth">
           <Route path="login" component={ Login }/>
           <Route path="logout" component={ Logout }/>
