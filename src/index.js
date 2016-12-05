@@ -1,6 +1,7 @@
 import 'isomorphic-fetch'
 import 'array.prototype.fill'
 import 'array.prototype.find'
+import 'array.prototype.filter'
 import 'string.prototype.repeat'
 import React from 'react'
 import ReactDOM from 'react-dom'
