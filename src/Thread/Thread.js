@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 import { Link, browserHistory } from 'react-router'
 import moment from 'moment'
 
-import { Dropdown, Icon } from 'semantic-ui-react'
+import { Dropdown, Icon, Modal, Button } from 'semantic-ui-react'
 import FloatEditor from '../FloatEditor/FloatEditor'
 import map from '../FloatEditor/emotions'
 import './Thread.css'
@@ -13,6 +13,7 @@ class Thread extends React.PureComponent {
     posts: [],
     pages: 1,
     error: null,
+    openLoginModal: false,
   }
 
   /*  https://gist.github.com/soyuka/6183947  */
@@ -265,7 +266,8 @@ class Thread extends React.PureComponent {
   async rateThread(action) {
     const { user } = this.props.app.user
     if (!user) {
-      return alert('請先登入')
+      this.setState({ openLoginModal: true })
+      return
     }
     try {
       let list
@@ -321,9 +323,14 @@ class Thread extends React.PureComponent {
     }
   }
 
+  toggleLoginModal() {
+    this.setState({ openLoginModal: !this.state.openLoginModal})
+  }
+
   render() {
     const linkRef = e => this.editor = e
     const reloadPosts = this.reloadPosts.bind(this)
+    const toggleLoginModal = this.toggleLoginModal.bind(this)
     return (
       <div>
         { this.state.error ? this.state.error : (
@@ -332,6 +339,21 @@ class Thread extends React.PureComponent {
             <FloatEditor ref={ linkRef } { ...this.props } threadId={ this.props.params.id } reloadPosts={ reloadPosts } />
           </div>
         ) }
+        <Modal size='small' open={ this.state.openLoginModal } onClose={ toggleLoginModal }>
+          <Modal.Content>
+            請先登入
+          </Modal.Content>
+          <Modal.Actions>
+            <Button negative onClick={ toggleLoginModal }>
+              取消
+            </Button>
+            <Link to="/auth/login">
+              <Button positive>
+                登入
+              </Button>
+            </Link>
+          </Modal.Actions>
+        </Modal>
       </div>
     )
   }
