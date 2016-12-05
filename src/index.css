@@ -2,7 +2,7 @@
 
 body {
   background: #1d1d1d;
-  font: 1.15rem 'HelveticaNeue-Light', 'Helvetica Neue', 'Lantinghei TC', 'Segoe UI Light', 'Segoe UI', '微軟正黑體', 'Microsoft JhengHei UI', 'WenQuanYi Zen Hei', Helvetica, Arial, sans-serif;
+  font: 1.15rem 'HelveticaNeue-Light', 'Helvetica Neue', 'Lantinghei TC', 'Segoe UI Light', 'Segoe UI', '\5FAE\8EDF\6B63\9ED1\9AD4', 'Microsoft JhengHei UI', 'WenQuanYi Zen Hei', Helvetica, Arial, sans-serif;
   line-height: 1.15rem;
   margin: 0;
   overflow-y: scroll;
