@@ -1,4 +1,5 @@
 import React from 'react'
+import { browserHistory } from 'react-router'
 
 import { Form, Input } from 'semantic-ui-react'
 import ThreadRow from '../ThreadRow/ThreadRow'
@@ -7,9 +8,16 @@ import './Search.css'
 class Search extends React.PureComponent {
   state = {
     keyword: '',
-    results: [],
+    threads: [],
     page: 1,
     error: null,
+  }
+
+  componentDidMount() {
+    const { q } = this.props.location.query
+    if (q) {
+      this.setState({ keyword: q }, this.search)
+    }
   }
 
   timeout = 0
@@ -21,9 +29,23 @@ class Search extends React.PureComponent {
     if (!list.success) {
       return this.setState({ error: list.error_message })
     }
-    let results = [ ...this.state.results, ...list.response.items ]
+    browserHistory.replace('/search?q=' + this.state.keyword)
+
+    let threads = [ ...this.state.threads, ...list.response.items ]
+    threads = threads.map(c => <ThreadRow key={ `${ c.thread_id }|${ c.last_reply_time }` } data={ c } { ...this.props }/>)
+    threads = threads.reduce((all, current) => ({
+      ...all,
+      [current.key]: current,
+    }), {})
+    threads = Object.keys(threads).map(k => threads[k])
+    threads = threads.sort((a, b) => {
+      const aTime = +a.key.split('|')[1]
+      const bTime = +b.key.split('|')[1]
+      return bTime - aTime
+    })
+
     this.setState({
-      results,
+      threads,
       loadingMessage: '蘇咪摩牙',
     })
   }
@@ -34,7 +56,7 @@ class Search extends React.PureComponent {
       clearTimeout(this.timeout)
       this.setState({
         keyword: e.target.value,
-        results: [],
+        threads: [],
         page: 1,
         error: null,
       }, () => {
@@ -53,9 +75,9 @@ class Search extends React.PureComponent {
           </Form.Field>
         </Form>
         <div className="Search-results">
-          { this.state.results.map(c => <ThreadRow key={ c.thread_id } data={ c } { ...this.props }/>) }
+          { this.state.threads }
         </div>
-        { this.state.results.length < 1 ? null : <div className="Search-more">
+        { this.state.threads.length < 1 ? null : <div className="Search-more">
           { this.state.error ? (
             <span>
               { this.state.error }
