@@ -120,7 +120,7 @@ class FloatEditor extends React.PureComponent {
     const buttons = (
       <Form.Field className="FloatEditor-quickReply-editor-buttons">
         <Button compact onClick={ preventDefault }>
-          <Dropdown fluid scrolling options={ formatOptions } text="格式" onClick={ preventDefault } onChange={ setFormat }/>
+          <Dropdown fluid scrolling options={ formatOptions } text="格式" onClick={ preventDefault } onChange={ setFormat } selectOnBlur={ false }/>
         </Button>
         <Button compact onClick={ toggleIcons }><img alt="" src="https://lihkg.com/assets/faces/normal/smile.gif"/></Button>
         <Button compact>回覆</Button>

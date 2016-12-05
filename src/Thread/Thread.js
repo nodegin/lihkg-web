@@ -173,7 +173,7 @@ class Thread extends React.PureComponent {
         </div>
       )
       const buttons = (top, bottom) => (
-        <div>
+        <div className="Thread-extras">
           { top }
           <div className="Thread-buttons">
             <b className="Thread-spaceFill"/>
@@ -249,7 +249,7 @@ class Thread extends React.PureComponent {
               </div>
             )
           }) }
-          { this.props.app.storyMode && postsToMap.length === 0 ? 
+          { this.props.app.storyMode && postsToMap.length === 0 ?
             (<div style={{'textAlign': 'center', 'marginTop': '1em'}}><span>{ '呢頁樓主冇留言' } <img alt="" src="https://lihkg.com/assets/faces/normal/dead.gif"/></span></div>) :
             buttons(links, null) }
         </div>

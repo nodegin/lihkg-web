@@ -12,6 +12,7 @@ import { Provider } from 'react-redux'
 import App from './App/App'
 import Category from './Category/Category'
 import Thread from './Thread/Thread'
+import Search from './Search/Search'
 import Login from './Login/Login'
 import Logout from './Logout/Logout'
 import NotFound from './NotFound/NotFound'
@@ -34,6 +35,7 @@ ReactDOM.render(
         <Route path="/category/:id" component={ Category }/>
         <Route path="/thread/:id" component={ Thread }/>
         <Route path="/thread/:id/page/:page" component={ Thread }/>
+        <Route path="/search" component={ Search }/>
         <Route path="/auth">
           <Route path="login" component={ Login }/>
           <Route path="logout" component={ Logout }/>

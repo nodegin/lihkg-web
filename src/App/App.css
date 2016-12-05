@@ -21,7 +21,7 @@ header {
   height: 48px;
   line-height: 48px;
   left: 0;
-  padding-bottom: 12px;
+  padding: 0 1em 12px;
   position: fixed;
   right: 0;
   text-align: center;
@@ -68,7 +68,7 @@ header > a {
 @media only screen and (max-width: 1023px) {
   .App header > div, .App-content, .App footer {
     min-width: 360px;
-    width: calc(100% - 2em);
+    width: 100%;
   }
 }
 .App-content {

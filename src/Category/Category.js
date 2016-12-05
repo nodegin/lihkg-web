@@ -1,29 +1,8 @@
 import React from 'react'
-import { Link, browserHistory } from 'react-router'
-import moment from 'moment'
 
-import { Dropdown } from 'semantic-ui-react'
 import FloatEditor from '../FloatEditor/FloatEditor'
+import ThreadRow from '../ThreadRow/ThreadRow'
 import './Category.css'
-
-moment.updateLocale('en', {
-  relativeTime: {
-    future: 'in %s',
-    past: '%s',
-    s:  '1s',
-    ss: '%ss',
-    m:  '1m',
-    mm: '%dm',
-    h:  '1h',
-    hh: '%dh',
-    d:  '1d',
-    dd: '%dd',
-    M:  '1m',
-    MM: '%dM',
-    y:  '1y',
-    yy: '%dY'
-  }
-})
 
 class Category extends React.PureComponent {
   state = {
@@ -79,45 +58,7 @@ class Category extends React.PureComponent {
         user_gender: "M"
         user_nickname: "10000米"
       */
-      let threads = list.response.items.map(c => {
-        const pages = Math.ceil(c.no_of_reply / 25)
-        const pagesOptions = new Array(pages).fill().map((_, i) => {
-          return { text: `第 ${ i + 1 } 頁`, value: i + 1 }
-        })
-        const handlePageChange = (e, item) => browserHistory.push(`/thread/${ c.thread_id }/page/${ item.value }`)
-        const color = c.user.level === '999' ? '#FF9800' : (c.user.gender === 'M' ? '#7986CB' : '#F06292')
-        const cf = (className, cond) => cond ? className : ''
-        const highlightLikeDislikeDifference = 5
-        const highlightProportion = 2.5
-        const highlightThreshold = 100
-        let cateogryRowClassName = 'Category-row'
-        if (this.isThreadVisited(c.thread_id)) {
-          cateogryRowClassName += ' visited'
-        }
-        return (
-          <div key={ `${ c.thread_id }|${ c.last_reply_time }` } className={ cateogryRowClassName }>
-            <small>
-              <span style={{ color }}>{ c.user.nickname }</span>
-              &emsp;
-              <span className={ cf('Category-row-manyLike', c.like_count - c.dislike_count > highlightLikeDislikeDifference && c.like_count / Math.max(c.dislike_count, 1) > highlightProportion) }>{ c.like_count } 正皮</span>
-              &nbsp;
-              <span className={ cf('Category-row-manyDislike', c.dislike_count - c.like_count > highlightLikeDislikeDifference && c.dislike_count / Math.max(c.like_count, 1) > highlightProportion) }>{ c.dislike_count } 負皮</span>
-              { ' - ' }
-              { moment(c.last_reply_time * 1000).fromNow() }
-              { ' - ' }
-              <span className={ cf('Category-row-hotThread', c.no_of_reply > highlightThreshold) }>{ c.no_of_reply - 1 } 回覆</span>
-            </small>
-            <div className="Category-row-titleWrapper">
-              <div className="Category-row-title" onClick={ () => this.props.actions.onSetVisitedThread(c.thread_id) }>
-                <Link to={ `/thread/${ c.thread_id }`}>{ c.title }</Link>
-              </div>
-              <div className="Category-row-page">
-                <Dropdown inline scrolling text={ `${ pages } 頁` } options={ pagesOptions } onChange={ handlePageChange } selectOnBlur={ false }/>
-              </div>
-            </div>
-          </div>
-        )
-      })
+      let threads = list.response.items.map(c => <ThreadRow key={ `${ c.thread_id }|${ c.last_reply_time }` } data={ c } { ...this.props }/>)
       if (page !== 1) {
         threads = [ ...this.state.threads, ...threads ]
       }
@@ -148,10 +89,6 @@ class Category extends React.PureComponent {
         loadingMessage: '冇得撈啦',
       })
     }
-  }
-
-  isThreadVisited(threadId) {
-    return this.props.app.visitedThreads.indexOf(threadId) >= 0
   }
 
   componentDidMount() {

@@ -1,7 +1,7 @@
 .Login-flexCenter {
   align-items: center;
   display: flex;
-  height: calc(100vh - 80px - 94px);
+  height: calc(100vh - 48px - 6rem);
   justify-content: center;
   text-align: center;
 }

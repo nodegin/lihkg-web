@@ -4,11 +4,31 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as types from '../actions'
 import Helmet from 'react-helmet'
+import moment from 'moment'
 
 import { Icon, Modal, Image } from 'semantic-ui-react'
 import { VelocityComponent } from 'velocity-react'
 import Settings from '../Settings/Settings'
 import './App.css'
+
+moment.updateLocale('en', {
+  relativeTime: {
+    future: 'in %s',
+    past: '%s',
+    s:  '1s',
+    ss: '%ss',
+    m:  '1m',
+    mm: '%dm',
+    h:  '1h',
+    hh: '%dh',
+    d:  '1d',
+    dd: '%dd',
+    M:  '1m',
+    MM: '%dM',
+    y:  '1y',
+    yy: '%dY'
+  }
+})
 
 class App extends Component {
   state = {
@@ -114,6 +134,9 @@ class App extends Component {
               <a href="#" onClick={ toggleModal } style={{ textDecoration: 'none' }}>
                 <Icon name="help" size="large"/>
               </a>
+              <Link to="/search" style={{ textDecoration: 'none' }}>
+                <Icon name="search" size="large"/>
+              </Link>
             </div>
             <i className="App-logo" onClick={ this.scrollToTop }></i>
             <div className="App-headerRight">{

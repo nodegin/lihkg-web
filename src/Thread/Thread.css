@@ -1,3 +1,6 @@
+.Thread-header, .Thread-extras {
+  padding: 0 1em;
+}
 .Thread-header {
   display: flex;
   font-family: inherit;
