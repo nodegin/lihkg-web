@@ -25,8 +25,8 @@
 }
 .Settings-row > span {
   display: inline-block;
-  width: 128px;
+  width: 160px;
 }
 .Settings-row > button {
-  width: 80px;
+  width: 96px;
 }

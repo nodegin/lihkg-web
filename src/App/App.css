@@ -91,6 +91,8 @@ header > a {
 }
 .App-drawer {
   background: #333;
+  display: flex;
+  flex-direction: column;
   height: 100%;
   left: 0;
   max-width: 320px;
@@ -105,10 +107,14 @@ header > a {
 .App.light .App-drawer {
   background: #eee;
 }
+.App-drawer-lower {
+  flex: 1;
+  overflow: auto;
+}
 .App-drawer-item {
   cursor: pointer;
   font-size: 1.25rem;
-  padding: 1em;
+  padding: 1rem 1.5rem;
 }
 .App-drawer-item:hover {
   background: rgba(255, 255, 255, .1);

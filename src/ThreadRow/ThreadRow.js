@@ -9,12 +9,12 @@ class ThreadRow extends React.PureComponent {
 
   render() {
     const { data } = this.props
-    let cateogryRowClassName = 'Category-row'
+    let cateogryRowClassName = 'ThreadRow-row'
     if (this.props.app.visitedThreads.indexOf(data.thread_id) >= 0) {
       cateogryRowClassName += ' visited'
     }
     const handlePageChange = (e, item) => browserHistory.push(`/thread/${ data.thread_id }/page/${ item.value }`)
-    const authorColor = data.user.level === '999' ? '#FF9800' : (data.user.gender === 'M' ? '#7986CB' : '#F06292')
+    const color = data.user.level === '999' ? '#FF9800' : (data.user.gender === 'M' ? '#7986CB' : '#F06292')
     const cf = (className, cond) => cond ? className : ''
     const highlightLikeDislikeDifference = 5
     const highlightProportion = 2.5
@@ -27,21 +27,29 @@ class ThreadRow extends React.PureComponent {
     return (
       <div className={ cateogryRowClassName }>
         <small>
-          <span style={{ authorColor }}>{ data.user.nickname }</span>
+          <span style={{ color }}>{ data.user.nickname }</span>
           &emsp;
-          <span className={ cf('Category-row-manyLike', data.like_count - data.dislike_count > highlightLikeDislikeDifference && data.like_count / Math.max(data.dislike_count, 1) > highlightProportion) }>{ data.like_count } 正皮</span>
+          <span className={ cf('ThreadRow-row-manyLike', data.like_count - data.dislike_count > highlightLikeDislikeDifference && data.like_count / Math.max(data.dislike_count, 1) > highlightProportion) }>{ data.like_count } 正皮</span>
           &nbsp;
-          <span className={ cf('Category-row-manyDislike', data.dislike_count - data.like_count > highlightLikeDislikeDifference && data.dislike_count / Math.max(data.like_count, 1) > highlightProportion) }>{ data.dislike_count } 負皮</span>
+          <span className={ cf('ThreadRow-row-manyDislike', data.dislike_count - data.like_count > highlightLikeDislikeDifference && data.dislike_count / Math.max(data.like_count, 1) > highlightProportion) }>{ data.dislike_count } 負皮</span>
           { ' - ' }
           { moment(data.last_reply_time * 1000).fromNow() }
           { ' - ' }
-          <span className={ cf('Category-row-hotThread', data.no_of_reply > highlightThreshold) }>{ data.no_of_reply - 1 } 回覆</span>
+          <span className={ cf('ThreadRow-row-hotThread', data.no_of_reply > highlightThreshold) }>{ data.no_of_reply - 1 } 回覆</span>
         </small>
-        <div className="Category-row-titleWrapper">
-          <div className="Category-row-title" onClick={ () => this.props.actions.onSetVisitedThread(data.thread_id) }>
+        <div className="ThreadRow-row-titleWrapper">
+          <div className="ThreadRow-row-title" onClick={ () => this.props.actions.onSetVisitedThread(data.thread_id) }>
             <Link to={ `/thread/${ data.thread_id }`}>{ data.title }</Link>
+            {
+              this.props.lastRead ? (
+                <span>
+                  <br/>
+                  上次睇到 <Link to={ `/thread/${ data.thread_id }/page/${ this.props.lastRead }`}>第 { this.props.lastRead } 頁</Link>
+                </span>
+              ) : null
+            }
           </div>
-          <div className="Category-row-page">
+          <div className="ThreadRow-row-page">
             <Dropdown inline scrolling text={ `${ pages } 頁` } options={ pagesOptions } onChange={ handlePageChange } selectOnBlur={ false }/>
           </div>
         </div>

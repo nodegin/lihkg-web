@@ -11,6 +11,7 @@ class Search extends React.PureComponent {
     threads: [],
     page: 1,
     error: null,
+    loadingMessage: '',
   }
 
   componentDidMount() {
@@ -60,12 +61,12 @@ class Search extends React.PureComponent {
         page: 1,
         error: null,
       }, () => {
-        this.timeout = setTimeout(this.search.bind(this), 500)
+        this.timeout = setTimeout(this.search.bind(this), 1000)
       })
     }
     const loadMore = () => this.setState({
       page: this.state.page + 1,
-      loadingMessage: '撈緊，等陣'
+      loadingMessage: '撈緊，等陣',
     }, this.search)
     return (
       <div className="Search-main">
@@ -77,21 +78,22 @@ class Search extends React.PureComponent {
         <div className="Search-results">
           { this.state.threads }
         </div>
-        { this.state.threads.length < 1 ? null : <div className="Search-more">
-          { this.state.error ? (
-            <span>
-              { this.state.error }
-              &emsp;
-              <img alt="dead" src={ 'https://lihkg.com/assets/faces/normal/dead.gif' }/>
-            </span>
-          ) : (
+        <div className="Search-more">
+          { this.state.error || this.state.threads.length < 1 ? null : (
             <span onClick={ loadMore } style={{ cursor: 'pointer' }}>
               { this.state.loadingMessage }
               &emsp;
               <img alt="more" src={ 'https://lihkg.com/assets/faces/normal/tongue.gif' }/>
             </span>
           ) }
-        </div> }
+          { this.state.error ? (
+            <span>
+              { this.state.error }
+              &emsp;
+              <img alt="dead" src={ 'https://lihkg.com/assets/faces/normal/dead.gif' }/>
+            </span>
+          ) : null }
+        </div>
       </div>
     )
   }
