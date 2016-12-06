@@ -87,3 +87,94 @@
   margin: 4px;
   max-width: 50%;
 }
+
+.ui.dropdown .menu>.item.FloatEditor-text-size-1{
+  font-size: x-small;
+}
+
+.ui.dropdown .menu>.item.FloatEditor-text-size-2{
+  font-size: small;
+}
+
+.ui.dropdown .menu>.item.FloatEditor-text-size-3{
+  font-size: medium;
+}
+
+.ui.dropdown .menu>.item.FloatEditor-text-size-4{
+  font-size: large;
+}
+
+.ui.dropdown .menu>.item.FloatEditor-text-size-5{
+  font-size: x-large;
+}
+
+.ui.dropdown .menu>.item.FloatEditor-text-size-6{
+  font-size: xx-large;
+}
+
+.ui.dropdown .menu>.item.FloatEditor-text-red,
+.ui.dropdown .menu .selected.item.FloatEditor-text-red,
+.ui.dropdown .menu>.item:hover.FloatEditor-text-red{
+  color: red;
+}
+
+.ui.dropdown .menu>.item.FloatEditor-text-green,
+.ui.dropdown .menu .selected.item.FloatEditor-text-green,
+.ui.dropdown .menu>.item:hover.FloatEditor-text-green{
+  color: green;
+}
+.ui.dropdown .menu>.item.FloatEditor-text-blue,
+.ui.dropdown .menu .selected.item.FloatEditor-text-blue,
+.ui.dropdown .menu>.item:hover.FloatEditor-text-blue{
+  color: blue;
+}
+.ui.dropdown .menu>.item.FloatEditor-text-purple,
+.ui.dropdown .menu .selected.item.FloatEditor-text-purple,
+.ui.dropdown .menu>.item:hover.FloatEditor-text-purple{
+  color: purple;
+}
+.ui.dropdown .menu>.item.FloatEditor-text-violet,
+.ui.dropdown .menu .selected.item.FloatEditor-text-violet,
+.ui.dropdown .menu>.item:hover.FloatEditor-text-violet{
+  color: violet;
+}
+.ui.dropdown .menu>.item.FloatEditor-text-brown,
+.ui.dropdown .menu .selected.item.FloatEditor-text-brown,
+.ui.dropdown .menu>.item:hover.FloatEditor-text-brown{
+  color: brown;
+}
+.ui.dropdown .menu>.item.FloatEditor-text-pink,
+.ui.dropdown .menu .selected.item.FloatEditor-text-pink,
+.ui.dropdown .menu>.item:hover.FloatEditor-text-pink{
+  color: pink;
+}
+.ui.dropdown .menu>.item.FloatEditor-text-orange,
+.ui.dropdown .menu .selected.item.FloatEditor-text-orange,
+.ui.dropdown .menu>.item:hover.FloatEditor-text-orange{
+  color: orange;
+}
+.ui.dropdown .menu>.item.FloatEditor-text-gold,
+.ui.dropdown .menu .selected.item.FloatEditor-text-gold,
+.ui.dropdown .menu>.item:hover.FloatEditor-text-gold{
+  color: gold;
+}
+.ui.dropdown .menu>.item.FloatEditor-text-maroon,
+.ui.dropdown .menu .selected.item.FloatEditor-text-maroon,
+.ui.dropdown .menu>.item:hover.FloatEditor-text-maroon{
+  color: maroon;
+}
+.ui.dropdown .menu>.item.FloatEditor-text-teal,
+.ui.dropdown .menu .selected.item.FloatEditor-text-teal,
+.ui.dropdown .menu>.item:hover.FloatEditor-text-teal{
+  color: teal;
+}
+.ui.dropdown .menu>.item.FloatEditor-text-navy,
+.ui.dropdown .menu .selected.item.FloatEditor-text-navy,
+.ui.dropdown .menu>.item:hover.FloatEditor-text-navy{
+  color: navy;
+}
+.ui.dropdown .menu>.item.FloatEditor-text-limegreen,
+.ui.dropdown .menu .selected.item.FloatEditor-text-limegreen,
+.ui.dropdown .menu>.item:hover.FloatEditor-text-limegreen{
+  color: limegreen;
+}
