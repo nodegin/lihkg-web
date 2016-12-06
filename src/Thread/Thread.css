@@ -134,6 +134,12 @@
   position: fixed;
   z-index: 100;
   width: 200px;
+
+  user-select: none;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -o-user-select: none;
 }
 
 .Thread-helper .Thread-buttons-btn{

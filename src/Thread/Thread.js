@@ -211,7 +211,7 @@ class Thread extends React.PureComponent {
             <Icon name="star" size="large" id="bookmarkButton" onClick={ bookmark } style={ this.props.app.bookmarks[this.props.params.id] ? { color: '#FBC02D' } : {} }/>
             <Icon name="share alternate" size="large" onClick={ openShareModal }/>
           </div>
-          <Dropdown inline scrolling text={`第 ${ page } 頁`} options={ pagesOptions } onChange={ handlePageChange } value={ page } selectOnBlur={ false }/>
+          <Dropdown inline scrolling text={`第 ${ page } 頁`} id="pageSelect" options={ pagesOptions } onChange={ handlePageChange } value={ page } selectOnBlur={ false }/>
         </div>
       )
       const buttons = (top, bottom) => (
@@ -403,8 +403,8 @@ class Thread extends React.PureComponent {
     }
     const preparePageActionMenu = (e) => {
       if (!this.state.isShowHelper){
-        var x = e.clientX;
-        var y = e.clientY;
+        var x = e.clientX || e.touches[0].clientX;
+        var y = e.clientY || e.touches[0].clientY;
         // Check for a long click
         timer = setTimeout(() => {
           showPageActionMenuAt(x, y);
@@ -456,10 +456,10 @@ class Thread extends React.PureComponent {
     const handleModalClose = () => this.setState({ shareText: null })
 
     return (
-      <div onMouseDown={ preparePageActionMenu } onMouseUp={ cancelPageActionMenu } onContextMenu={ cancelPageActionMenu } onMouseMove={ cancelPageActionMenu }>
+      <div onMouseDown={ preparePageActionMenu } onMouseUp={ cancelPageActionMenu } onContextMenu={ cancelPageActionMenu } onMouseMove={ cancelPageActionMenu } onTouchCancel={ cancelPageActionMenu } onTouchEnd={ cancelPageActionMenu } onTouchMove={ cancelPageActionMenu } onTouchStart={ preparePageActionMenu }>
         <div className="Thread-helper" hidden={ !this.state.isShowHelper } style={ getPageActionMenuPosition() } ref="actionMenuHelper">
           <div className="Thread-helper-row">
-            <div className="Thread-buttons-btn" onClick={ pageActionBack }>返回</div>
+            <div className="Thread-buttons-btn" onClick={ pageActionBack }>BW</div>
             <div className="Thread-buttons-btn" onClick={ pageActionGoTop }>最頂</div>
             <div className="Thread-buttons-btn" onClick={ pageActionBookmark }>留名</div>
           </div>
