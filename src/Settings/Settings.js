@@ -39,12 +39,6 @@ class Settings extends Component {
               </Button>
             </div>
             <div className="Settings-row">
-              <span>追故模式</span>
-              <Button toggle active={ this.props.app.storyMode } onClick={ this.props.actions.onToggleStoryMode }>
-                { this.props.app.storyMode ? 'ON' : 'OFF' }
-              </Button>
-            </div>
-            <div className="Settings-row">
               <span>洗底</span>
               <Popup
                 trigger={ <Button color="red" onClick={ deleteHistory }>CLEAR</Button> }

@@ -131,7 +131,7 @@ class Thread extends React.PureComponent {
             <Icon name="star" size="large" onClick={ bookmark } style={ this.props.app.bookmarks[this.props.params.id] ? { color: '#FBC02D' } : {} }/>
             <Icon name="share alternate" size="large" onClick={ openShareModal }/>
           </div>
-          <Dropdown inline scrolling text="㨂頁數" options={ pagesOptions } onChange={ handlePageChange } value={ page } selectOnBlur={ false }/>
+          <Dropdown inline scrolling text={`第 ${ page } 頁`} options={ pagesOptions } onChange={ handlePageChange } value={ page } selectOnBlur={ false }/>
         </div>
       )
       const buttons = (top, bottom) => (
@@ -147,6 +147,10 @@ class Thread extends React.PureComponent {
           { bottom }
         </div>
       )
+      const deleteStoryModeUserId = () => {
+        this.props.actions.deleteStoryModeUserId()
+        this.reloadPosts(page)
+      }
       const likeThis = this.rateThread.bind(this, 'like')
       const dislikeThis = this.rateThread.bind(this, 'dislike')
       const icon = (() => {
@@ -169,12 +173,12 @@ class Thread extends React.PureComponent {
           i.parentNode.replaceChild(icon, i)
         })
       }
-      const postsToMap = !this.props.app.storyMode ?
+      const postsToMap = !this.props.app.storyModeUserId ?
         list.response.item_data :
         list.response.item_data.filter((c, i) => {
           // Make sure the comment id matches the original one
           c.i = i
-          return c.user.user_id === list.response.user.user_id
+          return c.user.user_id === this.props.app.storyModeUserId
         })
       const posts = (
         <div>
@@ -198,6 +202,14 @@ class Thread extends React.PureComponent {
               const msg = this.parseMessage(c.msg)
               const author = c.user.user_id === list.response.user.user_id ? { color: '#E0C354' } : {}
               const color = c.user.level === '999' ? '#FF9800' : (c.user.gender === 'M' ? '#7986CB' : '#F06292')
+              const toggleStoryMode = () => {
+                if (!this.props.app.storyModeUserId) {
+                  this.props.actions.setStoryModeUserId(c.user.user_id)
+                  this.reloadPosts(page)
+                } else {
+                  deleteStoryModeUserId()
+                }
+              }
               return (
                 <div key={ c.post_id } className="Thread-replyBlock">
                   <div className="Thread-blockHeader">
@@ -206,6 +218,7 @@ class Thread extends React.PureComponent {
                     <span className="Thread-blockHeader-info">{ moment(c.reply_time * 1000).format('DD/MM/YY HH:mm:ss') }</span>
                     <div className="Thread-blockHeader-quoteButton">
                       <Icon name="reply" onClick={ quote }/>
+                      <Icon style={{ 'marginLeft': '0.5em' }} name="eye" onClick={ toggleStoryMode }/>
                     </div>
                   </div>
                   <div ref={ linkContentRef } className="Thread-content" dangerouslySetInnerHTML={{ __html: msg }}/>
@@ -213,8 +226,12 @@ class Thread extends React.PureComponent {
               )
             }) }
           </div>
-          { this.props.app.storyMode && postsToMap.length === 0 ?
-            (<div style={{'textAlign': 'center', 'marginTop': '1em'}}><span>{ '呢頁樓主冇留言' } <img alt="" src="https://lihkg.com/assets/faces/normal/dead.gif"/></span></div>) :
+          { this.props.app.storyModeUserId && postsToMap.length === 0 ?
+            (<div style={{'textAlign': 'center', 'marginTop': '1em'}}>
+              <span>{ '你追緊故既用戶呢頁冇留言' } <img alt="" src="https://lihkg.com/assets/faces/normal/dead.gif"/>
+                &nbsp;<a style={{'cursor': 'pointer'}} onClick={ deleteStoryModeUserId }>想解除追故?</a>
+              </span>
+            </div>) :
             buttons(links, null) }
         </div>
       )
@@ -260,6 +277,7 @@ class Thread extends React.PureComponent {
 
   componentWillUnmount() {
     window.removeEventListener('keyup', this.handleKeyUp)
+    this.props.actions.deleteStoryModeUserId()
   }
 
   handleKeyUp = e => {
