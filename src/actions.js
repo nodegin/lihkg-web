@@ -10,6 +10,12 @@ export const onSetPageTitle = title => ({
   title,
 })
 
+export const UPDATE_BOOKMARK_LIST = 'UPDATE_BOOKMARK_LIST'
+export const onUpdateBookmarkList = list => ({
+  type: UPDATE_BOOKMARK_LIST,
+  list,
+})
+
 export const TOGGLE_DARK_MODE = 'TOGGLE_DARK_MODE'
 export const onToggleDarkMode = () => ({
   type: TOGGLE_DARK_MODE,

@@ -1,7 +1,8 @@
 import * as types from './actions'
 
 const initialStates = {
-  user: {},
+  user: JSON.parse(localStorage.getItem('uinf')) || {},
+  bookmarks: JSON.parse(localStorage.getItem('bms')) || {},
   pageTitle: window.document.title,
   darkMode: true,
   officeMode: false,
@@ -22,6 +23,12 @@ const app = (state = initialStates, action = {}) => {
       return {
         ...state,
         pageTitle: action.title,
+      }
+    case types.UPDATE_BOOKMARK_LIST:
+      localStorage.setItem('bms', JSON.stringify(action.list))
+      return {
+        ...state,
+        bookmarks: action.list,
       }
     case types.TOGGLE_OFFICE_MODE:
       localStorage.setItem('mtr', !state.officeMode)

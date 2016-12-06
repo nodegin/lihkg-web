@@ -3,48 +3,6 @@
   margin: 1em 0 1em !important;
   text-align: center;
 }
-.Category-row {
-  padding: 1em;
-}
-.Category-row:not(:last-child) {
-  border-bottom: 1px solid #333;
-}
-.App.light .Category-row:not(:last-child) {
-  border-bottom: 1px solid #aaa;
-}
-
-/*  Row  */
-.Category-row > small {
-  color: #bdbdbd;
-  display: block;
-  font-size: 1rem;
-  margin-bottom: 8px;
-}
-.Category-row.visited {
-  box-shadow: inset 3px 0 0 #42A5F5;
-}
-.Category-row-manyLike {
-  color: #7cb342;
-}
-.Category-row-manyDislike {
-  color: #ef5350;
-}
-.Category-row-hotThread {
-  color: #e0c354;
-}
-.Category-row-titleWrapper {
-  display: flex;
-}
-.Category-row-title {
-  flex: 1;
-  padding-right: 1em;
-}
-.Category-row-page {
-  margin: auto;
-}
-.App.light .Category-row:not(:last-child) {
-  color: #7d7d7d;
-}
 .Category-more {
   padding: 1em 0 2em;
   text-align: center;
