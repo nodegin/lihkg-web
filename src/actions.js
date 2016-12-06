@@ -25,6 +25,11 @@ export const onToggleStoryMode = () => ({
   type: TOGGLE_STORY_MODE,
 })
 
+export const TOGGLE_DOCK_MENU = 'TOGGLE_DOCK_MENU'
+export const onToggleDockMenu = () => ({
+  type: TOGGLE_DOCK_MENU,
+})
+
 export const SET_CATEGORIES = 'SET_CATEGORIES'
 export const onSetCategories = categories => ({
   type: SET_CATEGORIES,

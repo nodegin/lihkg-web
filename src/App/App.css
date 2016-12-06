@@ -93,10 +93,10 @@ header > a {
   background: #333;
   height: 100%;
   left: 0;
-  max-width: 320px;
+  max-width: 150px;
   -webkit-overflow-scrolling: touch;
   overflow-x: hidden;
-  padding: 1em 0;
+  padding: 3em 0 1em 0;
   position: fixed;
   top: 0;
   width: 40%;

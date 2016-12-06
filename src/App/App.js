@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux'
 import * as types from '../actions'
 import Helmet from 'react-helmet'
 import moment from 'moment'
+import Sidebar from 'react-sidebar'
 
 import { Icon, Modal, Image } from 'semantic-ui-react'
 import { VelocityComponent } from 'velocity-react'
@@ -34,6 +35,7 @@ class App extends Component {
   state = {
     drawerOpen: false,
     modalOpen: false,
+    sidebarDocked: false
   }
 
   async componentDidMount() {
@@ -61,6 +63,10 @@ class App extends Component {
     const isStory = JSON.parse(localStorage.getItem('sm'))
     if (isStory && !this.props.app.storyMode) {
       this.props.actions.onToggleStoryMode()
+    }
+    const isDockMenu = JSON.parse(localStorage.getItem('dm'))
+    if (isDockMenu && !this.props.app.dockMenu) {
+        this.props.actions.onToggleDockMenu()
     }
 
     let list
@@ -90,6 +96,29 @@ class App extends Component {
     window.requestAnimationFrame(step)
   }
 
+
+  async componentWillMount() {
+    let mql = window.matchMedia(`(min-width: 800px)`);
+    mql.addListener(this.mediaQueryChanged);
+    this.setState({mql: mql, drawerOpen: mql.matches});
+
+  }
+
+  async componentWillUnmount() {
+    this.state.mql.removeListener(this.mediaQueryChanged);
+  }
+
+  async mediaQueryChanged() {
+      console.log("change open");
+
+      // this.setState({drawerOpen: !this.state.drawerOpen});
+      this.setState({ drawerOpen: !this.state.drawerOpen }, () => {
+          document.body.style.overflow = this.state.drawerOpen ? 'hidden' : 'visible'
+      })
+
+      this.state.mql.removeListener(this.mediaQueryChanged);
+  }
+
   render() {
     let { user } = this.props.app.user
     const linkRef = e => this.settings = e
@@ -109,7 +138,7 @@ class App extends Component {
       this.setState({ modalOpen: !this.state.modalOpen })
     }
     const drawer = (
-      <div className="App-drawer">
+      <div>
         { this.props.app.categories.map(c => {
           const click = e => {
             setTimeout(browserHistory.push.bind(null, `/category/${ c.cat_id }`), 250)
@@ -169,18 +198,20 @@ class App extends Component {
             </Modal.Description>
           </Modal.Content>
         </Modal>
-        <div style={{ pointerEvents: this.state.drawerOpen ? 'auto' : 'none' }}>
-          <VelocityComponent animation={{ opacity: this.state.drawerOpen ? 1 : 0 }} duration={ 250 }>
-            <b className="App-drawerOverlay" onClick={ toggleDrawer }/>
-          </VelocityComponent>
-          <VelocityComponent animation={{ translateX: this.state.drawerOpen ? 0 : '-100%' }} duration={ 250 }>
-            { drawer }
-          </VelocityComponent>
-        </div>
+        {/*<div style={{ pointerEvents: this.state.drawerOpen ? 'auto' : 'none' }}>*/}
+          {/*<VelocityComponent animation={{ opacity: this.state.drawerOpen ? 1 : 0 }} duration={ 250 }>*/}
+            {/*<b className="App-drawerOverlay" onClick={ toggleDrawer }/>*/}
+          {/*</VelocityComponent>*/}
+          {/*<VelocityComponent animation={{ translateX: this.state.drawerOpen ? 0 : '-100%' }} duration={ 250 }>*/}
+            {/*{ drawer }*/}
+          {/*</VelocityComponent>*/}
+        {/*</div>*/}
+        <Sidebar sidebarClassName="App-drawer" sidebar={drawer} open={this.state.drawerOpen} docked={this.state.drawerOpen} onSetOpen={toggleDrawer}>
         <main className="App-content">
           { children }
           <Settings ref={ linkRef } { ...this.props }/>
         </main>
+        </Sidebar>
       </div>
     )
   }

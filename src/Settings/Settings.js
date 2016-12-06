@@ -45,6 +45,12 @@ class Settings extends Component {
               </Button>
             </div>
             <div className="Settings-row">
+              <span>癡住條命</span>
+              <Button toggle active={ this.props.app.dockMenu } onClick={ this.props.actions.onToggleDockMenu }>
+                  { this.props.app.dockMenu ? 'ON' : 'OFF' }
+              </Button>
+            </div>
+            <div className="Settings-row">
               <span>洗底</span>
               <Popup
                 trigger={ <Button color="red" onClick={ deleteHistory }>CLEAR</Button> }
