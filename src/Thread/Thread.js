@@ -218,11 +218,7 @@ class Thread extends React.PureComponent {
                     <span className="Thread-blockHeader-info">{ moment(c.reply_time * 1000).format('DD/MM/YY HH:mm:ss') }</span>
                     <div className="Thread-blockHeader-quoteButton">
                       <Icon name="reply" onClick={ quote }/>
-                      <Dropdown text=''>
-                        <Dropdown.Menu>
-                          <Dropdown.Item text={ this.props.app.storyModeUserId ? '解除追故' : '追故模式' } onClick={ toggleStoryMode }/>
-                        </Dropdown.Menu>
-                      </Dropdown>
+                      <Icon style={{ 'marginLeft': '0.5em' }} name="eye" onClick={ toggleStoryMode }/>
                     </div>
                   </div>
                   <div ref={ linkContentRef } className="Thread-content" dangerouslySetInnerHTML={{ __html: msg }}/>
