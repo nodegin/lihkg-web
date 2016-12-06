@@ -8,7 +8,6 @@ import moment from 'moment'
 import Sidebar from 'react-sidebar'
 
 import { Icon, Modal, Image, Divider } from 'semantic-ui-react'
-import { VelocityComponent } from 'velocity-react'
 import Settings from '../Settings/Settings'
 import './App.css'
 
