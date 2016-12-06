@@ -120,7 +120,7 @@ class Thread extends React.PureComponent {
       const openShareModal = () => {
         this.setState({ shareText: `${ list.response.title } - LIHKG Web\n\nhttps://lihkg.na.cx/thread/${ this.props.params.id }/page/${ page }` })
       }
-      const links = (
+      const links = (position) => (
         <div className="Thread-links">
           <div>
             <Link to={`/category/${ list.response.cat_id }`}>‹ { category.name }</Link>
@@ -131,7 +131,7 @@ class Thread extends React.PureComponent {
             <Icon name="star" size="large" onClick={ bookmark } style={ this.props.app.bookmarks[this.props.params.id] ? { color: '#FBC02D' } : {} }/>
             <Icon name="share alternate" size="large" onClick={ openShareModal }/>
           </div>
-          <Dropdown inline scrolling text={`第 ${ page } 頁`} options={ pagesOptions } onChange={ handlePageChange } value={ page } selectOnBlur={ false }/>
+          <Dropdown inline scrolling text={`第 ${ page } 頁`} pointing={ position==='bottom'?'bottom':'top' } options={ pagesOptions } onChange={ handlePageChange } value={ page } selectOnBlur={ false }/>
         </div>
       )
       const buttons = (top, bottom) => (
@@ -195,7 +195,7 @@ class Thread extends React.PureComponent {
               { list.response.dislike_count }
             </div>
           </h2>
-          { buttons(null, links) }
+          { buttons(null, links('top')) }
           <div>
             { postsToMap.map((c, i) => {
               const quote = () => this.editor.updateContent(`[quote]${ htmlToBBCode(c.msg) }[/quote]\n`)
@@ -232,7 +232,7 @@ class Thread extends React.PureComponent {
                 &nbsp;<a style={{'cursor': 'pointer'}} onClick={ deleteStoryModeUserId }>想解除追故?</a>
               </span>
             </div>) :
-            buttons(links, null) }
+            buttons(links('bottom'), null) }
         </div>
       )
       this.setState({ posts, pages })
