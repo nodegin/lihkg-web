@@ -19,7 +19,7 @@ class Settings extends Component {
     const toggle = this.toggle.bind(this)
     const deleteHistory = () => {
       this.props.actions.onDeleteVisitedThread()
-      window.location.reload(true)
+      toggle()
     }
     return (
       <VelocityComponent animation={{ opacity: this.state.visible ? 1 : 0 }} duration={ 250 }>
