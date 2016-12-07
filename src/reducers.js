@@ -6,7 +6,6 @@ const initialStates = {
   pageTitle: window.document.title,
   darkMode: true,
   officeMode: false,
-  storyModeUserId: localStorage.getItem('smuid') || undefined,
   categories: [],
   visitedThreads: JSON.parse(localStorage.getItem('vts')) || [],
 }
@@ -41,18 +40,6 @@ const app = (state = initialStates, action = {}) => {
       return {
         ...state,
         darkMode: !state.darkMode,
-      }
-    case types.SET_STORY_MODE_USER_ID:
-      localStorage.setItem('smuid', action.userId)
-      return {
-        ...state,
-        storyModeUserId: action.userId,
-      }
-    case types.DELETE_STORY_MODE_USER_ID:
-      localStorage.removeItem('smuid')
-      return {
-        ...state,
-        storyModeUserId: undefined,
       }
     case types.SET_CATEGORIES:
       return {

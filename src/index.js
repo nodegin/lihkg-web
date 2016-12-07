@@ -12,7 +12,6 @@ import { Provider } from 'react-redux'
 import App from './App/App'
 import Bookmark from './Bookmark/Bookmark'
 import Category from './Category/Category'
-import Thread from './Thread/Thread'
 import Search from './Search/Search'
 import Login from './Login/Login'
 import Logout from './Logout/Logout'
@@ -34,8 +33,8 @@ ReactDOM.render(
       <Route path="/" component={ App }>
         <IndexRedirect to="/category/1"/>
         <Route path="/category/:id" component={ Category }/>
-        <Route path="/thread/:id" component={ Thread }/>
-        <Route path="/thread/:id/page/:page" component={ Thread }/>
+        <Route path="/thread/:id" component={ Category }/>
+        <Route path="/thread/:id/page/:page" component={ Category }/>
         <Route path="/search" component={ Search }/>
         <Route path="/bookmark" component={ Bookmark }/>
         <Route path="/auth">

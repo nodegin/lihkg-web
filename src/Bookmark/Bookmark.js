@@ -33,8 +33,8 @@ class Bookmark extends React.PureComponent {
 
     let threads = [ ...this.state.threads, ...list.response.items ]
     threads = threads.map(c => {
-      const lastRead = this.props.app.bookmarks[c.thread_id].page
-      return <ThreadRow key={ `${ c.thread_id }|${ c.last_reply_time }` } data={ c } lastRead={ lastRead } { ...this.props }/>
+      const lr = this.props.app.bookmarks[c.thread_id]
+      return <ThreadRow key={ `${ c.thread_id }|${ c.last_reply_time }` } data={ c } lastRead={ lr ? lr.page : null } { ...this.props }/>
     })
     threads = threads.reduce((all, current) => ({
       ...all,

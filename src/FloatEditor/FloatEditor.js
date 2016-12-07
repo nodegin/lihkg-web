@@ -85,16 +85,29 @@ class FloatEditor extends React.PureComponent {
       preventDefault(e)
       this.setState({ showIcons: !this.state.showIcons })
     }
-    const openDropdown = (dropdownRefName, e) => {
-      e.preventDefault();
-      if(this.refs[dropdownRefName] !== undefined){
-        this.refs[dropdownRefName].open();
+    const openDropdown = (dropdown, e) => {
+      e.preventDefault()
+      if (this.refs[dropdown]) {
+        this.refs[dropdown].open()
       }
+    }
+    const insertAtCursor = (left, right = null) => {
+      const { selectionStart, selectionEnd } = this.textarea
+      const selected = this.state.content.slice(selectionStart, selectionEnd)
+      let insert = left
+      if (right !== null) {
+        insert = left + selected + right
+      }
+      const content = this.state.content.slice(0, selectionStart) + insert + this.state.content.slice(selectionEnd)
+      this.setState({ content }, () => {
+        this.textarea.selectionStart = this.textarea.selectionEnd = selectionStart + left.length + (!right ? 0 : selected.length)
+        this.textarea.focus()
+      })
     }
     const iconTray = (
       <div className="FloatEditor-quickReply-editor-iconTray">{
         Object.keys(map).map(k => {
-          const addIcon = () => this.setState({ content: this.state.content + map[k] + ' ' })
+          const addIcon = () => insertAtCursor(map[k] + ' ')
           return <img key={ k } alt="" src={ `https://lihkg.com/assets/faces${ k }` } onClick={ addIcon }/>
         })
       }</div>
@@ -133,28 +146,23 @@ class FloatEditor extends React.PureComponent {
     ]
     const setFormat = (e, item) => {
       preventDefault(e)
-      const { selectionStart, selectionEnd } = this.textarea
-      const selected = this.state.content.slice(selectionStart, selectionEnd)
-      const insert = `[${ item.value }]${ selected }[/${ item.value }]`
-      const content = this.state.content.slice(0, selectionStart) + insert + this.state.content.slice(selectionEnd)
-      this.setState({ content }, () => {
-        this.textarea.selectionStart = this.textarea.selectionEnd = selectionStart + `[${ item.value }]`.length + selected.length
-        this.textarea.focus()
-      })
+      const left = `[${ item.value }]`
+      const right = `[/${ item.value }]`
+      insertAtCursor(left, right)
     }
     const buttons = (
       <Form.Field className="FloatEditor-quickReply-editor-buttons">
-        <Button compact onClick={ openDropdown.bind(null, "colorDropdownSelect") }>
-          <Dropdown fluid scrolling options={ colorFormatOptions } text="顏色" onClick={ preventDefault } onChange={ setFormat } selectOnBlur={ false } ref="colorDropdownSelect"/>
+        <Button compact onClick={ openDropdown.bind(null, 'colorDropdownSelect') }>
+          <Dropdown ref="colorDropdownSelect" fluid scrolling options={ colorFormatOptions } text="顏色" onClick={ preventDefault } onChange={ setFormat } selectOnBlur={ false }/>
         </Button>
-        <Button compact onClick={ openDropdown.bind(null, "textDropdownSelect") }>
-          <Dropdown fluid scrolling options={ formatOptions } text="格式" onClick={ preventDefault } onChange={ setFormat } selectOnBlur={ false } ref="textDropdownSelect"/>
+        <Button compact onClick={ openDropdown.bind(null, 'textDropdownSelect') }>
+          <Dropdown ref="textDropdownSelect" fluid scrolling options={ formatOptions } text="格式" onClick={ preventDefault } onChange={ setFormat } selectOnBlur={ false }/>
         </Button>
-        <Button compact onClick={ toggleIcons }><img alt="" src="https://lihkg.com/assets/faces/normal/smile.gif"/></Button>
+        <Button compact onClick={ toggleIcons }><img alt="icon" src="https://lihkg.com/assets/faces/normal/smile.gif"/></Button>
         <Button compact>回覆</Button>
       </Form.Field>
     )
-    const linkRef = e => this.textarea = ReactDOM.findDOMNode(e)
+    const linkTextareaRef = e => this.textarea = ReactDOM.findDOMNode(e)
     if (this.props.app.user.user) {
       const editorStyle = { marginBottom: this.state.replying ? 0 : -400, pointerEvents: this.state.replying ? 'auto' : 'none' }
       if (this.props.threadId) {
@@ -168,7 +176,7 @@ class FloatEditor extends React.PureComponent {
               <Form className="FloatEditor-quickReply-editorInner" onSubmit={ handleSubmit }>
                 { buttons }
                 <Form.Field className="FloatEditor-quickReply-editor-main">
-                  <TextArea ref={ linkRef } name="content" placeholder="輸入回覆內文" value={ this.state.content } onChange={ handleContentChange }/>
+                  <TextArea ref={ linkTextareaRef } name="content" placeholder="輸入回覆內文" value={ this.state.content } onChange={ handleContentChange }/>
                   { this.state.showIcons ? iconTray : null }
                 </Form.Field>
               </Form>
@@ -189,7 +197,7 @@ class FloatEditor extends React.PureComponent {
                   <Form.Input name="title" placeholder="輸入貼文標題" value={ this.state.title } onChange={ handleTitleChange }/>
                 </Form.Field>
                 <Form.Field className="FloatEditor-quickReply-editor-main">
-                  <TextArea ref={ linkRef } name="content" placeholder="輸入貼文內文" value={ this.state.content } onChange={ handleContentChange }/>
+                  <TextArea ref={ linkTextareaRef } name="content" placeholder="輸入貼文內文" value={ this.state.content } onChange={ handleContentChange }/>
                   { this.state.showIcons ? iconTray : null }
                 </Form.Field>
               </Form>
