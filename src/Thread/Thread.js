@@ -8,10 +8,15 @@ import FloatEditor from '../FloatEditor/FloatEditor'
 import htmlToBBCode, { map } from './htmlToBBCode'
 import './Thread.css'
 
+var timer = null;
+
 class Thread extends React.PureComponent {
   state = {
     data: null,
     error: null,
+    isShowHelper: false,
+    helperShowAtX: 0,
+    helperShowAtY: 0,
     shareText: null,
     authorFilter: null,
   }
@@ -217,8 +222,8 @@ class Thread extends React.PureComponent {
     const page = +data.page
     const pages = Math.ceil(data.no_of_reply / 25)
     const emptyBtn = <b className="Thread-buttons-btnSpace"/>
-    const prevPage = page <= pages && page > 1 ? <Link to={`/thread/${ this.props.params.id }/page/${ page - 1 }`} className="Thread-buttons-btn">上頁</Link> : emptyBtn
-    const nextPage = pages > 1 && page < pages ? <Link to={`/thread/${ this.props.params.id }/page/${ page + 1 }`} className="Thread-buttons-btn">下頁</Link> : emptyBtn
+    const prevPage = page <= pages && page > 1 ? <Link to={`/thread/${ this.props.params.id }/page/${ page - 1 }`} className="Thread-buttons-btn" id="previousPageButton">上頁</Link> : emptyBtn
+    const nextPage = pages > 1 && page < pages ? <Link to={`/thread/${ this.props.params.id }/page/${ page + 1 }`} className="Thread-buttons-btn" id="nextPageButton">下頁</Link> : emptyBtn
     const bookmark = this.bookmark.bind(this, page)
     const category = this.props.app.categories.find(c => c.cat_id === data.cat_id)
     const handlePageChange = (e, item) => browserHistory.push(`/thread/${ this.props.params.id }/page/${ item.value }`)
@@ -233,10 +238,10 @@ class Thread extends React.PureComponent {
         </div>
         <b className="Thread-spaceFill"/>
         <div className="Thread-actions">
-          <Icon name="star" size="large" onClick={ bookmark } style={ this.props.app.bookmarks[this.props.params.id] ? { color: '#FBC02D' } : {} }/>
+          <Icon name="star" size="large" id="bookmarkButton" onClick={ bookmark } style={ this.props.app.bookmarks[this.props.params.id] ? { color: '#FBC02D' } : {} }/>
           <Icon name="share alternate" size="large" onClick={ openShareModal }/>
         </div>
-        <Dropdown inline scrolling text={ `第 ${ page } 頁` } pointing={ position } options={
+        <Dropdown inline scrolling text={ `第 ${ page } 頁` } id="pageSelect" pointing={ position } options={
           new Array(pages).fill().map((_, i) => {
             return { text: `第 ${ i + 1 } 頁`, value: i + 1 }
           })
@@ -275,7 +280,7 @@ class Thread extends React.PureComponent {
         <div className="Thread-buttons">
           <b className="Thread-spaceFill"/>
           { prevPage }
-          <div className="Thread-buttons-btn" onClick={ reload }>F5</div>
+          <div className="Thread-buttons-btn" onClick={ reload } id="refreshButton">F5</div>
           { nextPage }
           <b className="Thread-spaceFill"/>
         </div>
@@ -325,9 +330,95 @@ class Thread extends React.PureComponent {
     const dislikeThis = this.rateThread.bind(this, 'dislike')
     const buttonsTop = buttons(null, links('top'))
     const buttonsBottom = buttons(links('bottom'), null)
+    const clickButtonById = (id) => {
+      var button = document.getElementById(id);
+      if(button){
+        button.click();
+      }
+    }
+    const showPageActionMenuAt = (x, y) => {
+      this.setState({isShowHelper: true, helperShowAtX: x, helperShowAtY: y});
+    }
+    const hidePageActionMenu = (e) => {
+      this.setState({isShowHelper: false});
+    }
+    const preparePageActionMenu = (e) => {
+      if (!this.state.isShowHelper){
+        var x = e.clientX || e.touches[0].clientX;
+        var y = e.clientY || e.touches[0].clientY;
+        // Check for a long click
+        timer = setTimeout(() => {
+          showPageActionMenuAt(x, y);
+        }, 300);
+      }else if(!~e.target.className.indexOf('Thread-buttons-btn')){
+        hidePageActionMenu(e);
+      }
+    }
+    const cancelPageActionMenu = (e) => {
+      if (!this.state.isShowHelper){
+        clearTimeout(timer);
+      }
+    }
+    const getPageActionMenuPosition = () => {
+      return {left: (this.state.helperShowAtX-100)+"px", top: (this.state.helperShowAtY-100)+"px"};
+    }
+    // const pageActionBack = (e) => {
+    //   browserHistory.push("/category/1");
+    //   hidePageActionMenu();
+    // }
+    const pageActionRefresh = (e) => {
+      clickButtonById('refreshButton');
+      hidePageActionMenu();
+    }
+    const pageActionBookmark = (e) => {
+      clickButtonById('bookmarkButton');
+      hidePageActionMenu();
+    }
+    const pageActionGoTop = (e) => {
+      window.scrollTo(0, 0);
+      hidePageActionMenu();
+    }
+    const pageActionGoBottom = (e) => {
+      window.scrollTo(0, document.body.scrollHeight)
+      hidePageActionMenu();
+    }
+    const pageActionPageSelect = (e) => {
+      pageActionGoTop();
+      clickButtonById('pageSelect');
+    }
+    const pageActionCategorySelect = (e) => {
+      clickButtonById('openDrawerButton');
+      hidePageActionMenu();
+    }
+    const pageActionPreviousPage = (e) => {
+      clickButtonById('previousPageButton');
+      hidePageActionMenu();
+    }
+    const pageActionNextPage = (e) => {
+      clickButtonById('nextPageButton');
+      hidePageActionMenu();
+    }
+    // const handleModalClose = () => this.setState({ shareText: null })
 
     return (
-      <div>
+      <div onMouseDown={ preparePageActionMenu } onMouseUp={ cancelPageActionMenu } onContextMenu={ cancelPageActionMenu } onMouseMove={ cancelPageActionMenu } onTouchCancel={ cancelPageActionMenu } onTouchEnd={ cancelPageActionMenu } onTouchMove={ cancelPageActionMenu } onTouchStart={ preparePageActionMenu }>
+        <div className="Thread-helper" hidden={ !this.state.isShowHelper } style={ getPageActionMenuPosition() } ref="actionMenuHelper">
+          <div className="Thread-helper-row">
+            <div className="Thread-buttons-btn" onClick={ pageActionRefresh }>F5</div>
+            <div className="Thread-buttons-btn" onClick={ pageActionGoTop }>最頂</div>
+            <div className="Thread-buttons-btn" onClick={ pageActionBookmark }>留名</div>
+          </div>
+          <div className="Thread-helper-row">
+            <div className="Thread-buttons-btn" onClick={ pageActionPreviousPage }>上頁</div>
+            <div className="Thread-buttons-btn Thread-helper-close-btn" onClick={ hidePageActionMenu } >&times;</div>
+            <div className="Thread-buttons-btn" onClick={ pageActionNextPage }>下頁</div>
+          </div>
+          <div className="Thread-helper-row">
+            <div className="Thread-buttons-btn" onClick={ pageActionCategorySelect }>選台</div>
+            <div className="Thread-buttons-btn" onClick={ pageActionGoBottom }>最底</div>
+            <div className="Thread-buttons-btn" onClick={ pageActionPageSelect }>選頁</div>
+          </div>
+        </div>
         { error ? error : (
           <div>
             <div>
