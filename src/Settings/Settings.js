@@ -39,6 +39,12 @@ class Settings extends Component {
               </Button>
             </div>
             <div className="Settings-row">
+              <span>分頁模式</span>
+              <Button toggle active={ this.props.app.splitMode } onClick={ this.props.actions.onToggleSplitMode }>
+                { this.props.app.splitMode ? 'ON' : 'OFF' }
+              </Button>
+            </div>
+            <div className="Settings-row">
               <span>洗底</span>
               <Popup
                 trigger={ <Button color="red" onClick={ deleteHistory }>CLEAR</Button> }

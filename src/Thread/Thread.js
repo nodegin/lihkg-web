@@ -24,28 +24,41 @@ class Thread extends React.PureComponent {
     while (messages.indexOf('src="/assets') > 0) {
       messages = messages.replace('src="/assets', 'src="https://lihkg.com/assets')
     }
+    messages = messages.replace(/><br\s?\/>/g, '>')
     const dom = document.createElement('div')
+    const qsa = selector => {
+      const nodeList = dom.querySelectorAll(selector)
+      const array = []
+      for (let i = 0; i < nodeList.length; i++) {
+        array[i] = nodeList[i]
+      }
+      return array
+    }
     dom.innerHTML = messages
+
     //  Remove quotes
-    const quotes = dom.querySelectorAll('blockquote' + ' > blockquote'.repeat(5 - 1))
+    const quotes = qsa('blockquote' + ' > blockquote'.repeat(5 - 1))
     quotes.forEach(r => r.parentNode.removeChild(r))
     //  Remove icons
     if (this.props.app.officeMode) {
-      const icons = dom.querySelectorAll('img[src^="https://lihkg.com/assets"]')
+      const icons = qsa('img[src^="https://lihkg.com/assets"]')
       icons.forEach(i => {
         const code = i.src.split('faces')[1]
         i.outerHTML = map[code]
       })
     }
     //  Add link to image
-    const images = dom.querySelectorAll('img:not(.hkgmoji)')
-    images.forEach(i => {
-      const anchor = document.createElement('a')
-      anchor.target = '_blank'
-      anchor.href = i.src
-      i.parentNode.replaceChild(anchor, i)
-      anchor.appendChild(i)
-    })
+    if (!this.props.app.officeMode) {
+      const images = qsa('img:not(.hkgmoji)')
+      images.forEach(i => {
+        const anchor = document.createElement('a')
+        anchor.target = '_blank'
+        anchor.href = i.src
+        i.parentNode.replaceChild(anchor, i)
+        anchor.appendChild(i)
+      })
+    }
+
     return dom.innerHTML.split('<hr>')
   }
 
@@ -177,7 +190,7 @@ class Thread extends React.PureComponent {
   }
 
   handleKeyUp = e => {
-    if (e.target.nodeName !== 'BODY') {
+    if (e.target.nodeName !== 'BODY' || !this.state.data) {
       return
     }
     const pages = Math.ceil(this.state.data.no_of_reply / 25)

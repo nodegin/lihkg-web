@@ -50,7 +50,6 @@ class Category extends React.PureComponent {
         if (shouldScrollTop) {
           this.categoryList.scrollTop = 0
         }
-        window.scrollTo(0, 0)
       })
     } else {
       this.setState({
@@ -102,9 +101,10 @@ class Category extends React.PureComponent {
         this.loadThreads(this.state.category.cat_id, 1)
       })
     }
-    let titleExtra = null
+    const reloadThreads = () => loadThreads(this.state.category.cat_id, this.state.page)
+    let titleExtra = [<div key="0" className="Category-main-reload" onClick={ reloadThreads }>F5</div>]
     if (this.state.category.cat_id === '1') {
-      titleExtra = <a href="#" onClick={ toggleBwMode }>{ ` (${ this.state.bwAll ? '只顯示吹水台文章' : '顯示所有台的文章' })` }</a>
+      titleExtra.push(<small key="1"><a href="#" onClick={ toggleBwMode }>{ ` (${ this.state.bwAll ? '只顯示吹水台文章' : '顯示所有台的文章' })` }</a></small>)
     }
     let threads = this.state.threads
     threads = threads.map(c => {
@@ -122,7 +122,7 @@ class Category extends React.PureComponent {
     })
 
     return (
-      <div className={ 'Category-splited ' + this.state.pane }>
+      <div className={ 'Category-splited ' + this.state.pane + (this.props.app.splitMode ? ' split' : '') }>
         <div ref={ linkCategoryRef } className="Category-main">
           { (
             <div>

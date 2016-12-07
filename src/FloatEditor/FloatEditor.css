@@ -5,7 +5,7 @@
   pointer-events: none;
   z-index: 20;
 }
-@media only screen and (max-width: 1079px) {
+@media only screen and (max-width: 1200px) {
   .FloatEditor-quickReply {
     right: 0;
   }
@@ -43,7 +43,7 @@
 }
 @media only screen and (max-width: 800px) {
   .FloatEditor-quickReply-editorInner {
-    width: calc(100vw - 8px * 2);
+    width: calc(100vw - 8px);
   }
 }
 .App.light .FloatEditor-quickReply-editorInner {
