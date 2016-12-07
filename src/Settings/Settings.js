@@ -19,7 +19,7 @@ class Settings extends Component {
     const toggle = this.toggle.bind(this)
     const deleteHistory = () => {
       this.props.actions.onDeleteVisitedThread()
-      window.location.reload(true)
+      toggle()
     }
     return (
       <VelocityComponent animation={{ opacity: this.state.visible ? 1 : 0 }} duration={ 250 }>
@@ -39,9 +39,9 @@ class Settings extends Component {
               </Button>
             </div>
             <div className="Settings-row">
-              <span>追故模式</span>
-              <Button toggle active={ this.props.app.storyMode } onClick={ this.props.actions.onToggleStoryMode }>
-                { this.props.app.storyMode ? 'ON' : 'OFF' }
+              <span>分頁模式</span>
+              <Button toggle active={ this.props.app.splitMode } onClick={ this.props.actions.onToggleSplitMode }>
+                { this.props.app.splitMode ? 'ON' : 'OFF' }
               </Button>
             </div>
             <div className="Settings-row">

@@ -24,7 +24,7 @@ class ThreadRow extends React.PureComponent {
       return { text: `第 ${ i + 1 } 頁`, value: i + 1 }
     })
     return (
-      <div className={ cateogryRowClassName }>
+      <div className={ cateogryRowClassName } style={{ background: this.props.highlighted ? 'rgba(128, 128, 128, .1)' : 'transparent' }}>
         <small>
           <span style={{ color }}>{ data.user.nickname }</span>
           &emsp;

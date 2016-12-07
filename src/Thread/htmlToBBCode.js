@@ -70,7 +70,7 @@ export default function(html) {
     }
   }
 
-  html = msg.innerHTML.replace(/\[br\]/g, '\n')
+  html = msg.innerText.replace(/\[br\]/g, '\n')
   return html
 }
 
