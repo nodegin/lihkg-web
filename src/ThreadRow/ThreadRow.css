@@ -12,6 +12,7 @@
   display: block;
   font-size: 1rem;
   margin-bottom: 8px;
+  background: transparent;
 }
 .ThreadRow-row.visited {
   box-shadow: inset 3px 0 0 #42A5F5;
@@ -41,4 +42,12 @@
 }
 .App.light .ThreadRow-row:not(:last-child) {
   color: #7d7d7d;
+}
+
+.App.dark .ThreadRow-row.highlighted{
+  background: #2a2a2a;
+}
+
+.App.light .ThreadRow-row.highlighted{
+  background: #efefef;
 }
