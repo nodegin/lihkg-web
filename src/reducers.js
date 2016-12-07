@@ -1,14 +1,16 @@
+import storage from './storage'
 import * as types from './actions'
 
 const initialStates = {
-  user: JSON.parse(localStorage.getItem('uinf')) || {},
-  bookmarks: JSON.parse(localStorage.getItem('bms')) || {},
+  user: JSON.parse(storage.getItem('uinf')) || {},
+  bookmarks: JSON.parse(storage.getItem('bms')) || {},
   pageTitle: window.document.title,
   darkMode: true,
   officeMode: false,
   splitMode: false,
   categories: [],
-  visitedThreads: JSON.parse(localStorage.getItem('vts')) || [],
+  visitedThreads: JSON.parse(storage.getItem('vts')) || [],
+  pageActions: [],
 }
 
 const app = (state = initialStates, action = {}) => {
@@ -24,26 +26,26 @@ const app = (state = initialStates, action = {}) => {
         pageTitle: action.title,
       }
     case types.UPDATE_BOOKMARK_LIST:
-      localStorage.setItem('bms', JSON.stringify(action.list))
+      storage.setItem('bms', JSON.stringify(action.list))
       return {
         ...state,
         bookmarks: action.list,
       }
     case types.TOGGLE_OFFICE_MODE:
-      localStorage.setItem('mtr', !state.officeMode)
+      storage.setItem('mtr', !state.officeMode)
       return {
         ...state,
         officeMode: !state.officeMode,
       }
     case types.TOGGLE_DARK_MODE:
-      localStorage.setItem('lui', state.darkMode)
-      document.body.style.background = state.darkMode ? '#f9f9f9' : '#1d1d1d'
+      storage.setItem('lui', state.darkMode)
+      document.body.style.background = state.darkMode ? '#f0f0f0' : '#1d1d1d'
       return {
         ...state,
         darkMode: !state.darkMode,
       }
     case types.TOGGLE_SPLIT_MODE:
-      localStorage.setItem('spl', !state.splitMode)
+      storage.setItem('spl', !state.splitMode)
       return {
         ...state,
         splitMode: !state.splitMode,
@@ -58,16 +60,21 @@ const app = (state = initialStates, action = {}) => {
       if (visitedThreads.indexOf(action.threadId) < 0) {
         visitedThreads.push(action.threadId)
       }
-      localStorage.setItem('vts', JSON.stringify(visitedThreads))
+      storage.setItem('vts', JSON.stringify(visitedThreads))
       return {
         ...state,
         visitedThreads,
       }
     case types.DELETE_VISITED_THREAD:
-      localStorage.removeItem('vts')
+      storage.removeItem('vts')
       return {
         ...state,
         visitedThreads: [],
+      }
+    case types.UPDATE_ACTION_HELPER:
+      return {
+        ...state,
+        pageActions: action.helper,
       }
     default:
       return state

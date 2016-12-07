@@ -1,6 +1,6 @@
 .FloatEditor-quickReply {
   bottom: 0;
-  right: calc((100vw - 1080px) / 2 - 54px + 2em);
+  right: calc((100vw - 1080px) / 2 - 4em);
   position: fixed;
   pointer-events: none;
   z-index: 20;

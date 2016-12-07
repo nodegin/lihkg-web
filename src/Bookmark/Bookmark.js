@@ -21,7 +21,7 @@ class Bookmark extends React.PureComponent {
     let list
     list = await fetch(`https://lihkg.na.cx/mirror/thread/bookmark?page=${ this.state.page }&count=30`, {
       headers: {
-        'X-DEVICE': localStorage.getItem('dt'),
+        'X-DEVICE': window.storage.getItem('dt'),
         'X-DIGEST': 'ffffffffffffffffffffffffffffffffffffffff',
         'X-USER': this.props.app.user.user.user_id,
       }

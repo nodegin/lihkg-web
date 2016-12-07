@@ -10,7 +10,7 @@ class ThreadRow extends React.PureComponent {
   render() {
     const { data } = this.props
     let cateogryRowClassName = 'ThreadRow-row'
-    if (this.props.app.visitedThreads.indexOf(data.thread_id) >= 0) {
+    if (this.props.app.visitedThreads.indexOf(+data.thread_id) >= 0) {
       cateogryRowClassName += ' visited'
     }
     const handlePageChange = (e, item) => browserHistory.push(`/thread/${ data.thread_id }/page/${ item.value }`)
@@ -37,7 +37,7 @@ class ThreadRow extends React.PureComponent {
           <span className={ cf('ThreadRow-row-hotThread', data.no_of_reply > highlightThreshold) }>{ data.no_of_reply - 1 } 回覆</span>
         </small>
         <div className="ThreadRow-row-titleWrapper">
-          <div className="ThreadRow-row-title" onClick={ () => this.props.actions.onSetVisitedThread(data.thread_id) }>
+          <div className="ThreadRow-row-title">
             <Link to={ `/thread/${ data.thread_id }`}>{ data.title }</Link>
             {
               this.props.lastRead && this.props.lastRead >= 1 ? (

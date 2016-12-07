@@ -3,6 +3,9 @@
   min-height: 100vh;
   padding-top: 48px;
 }
+.App.noselect {
+  user-select: none;
+}
 .App.light {
   color: #333;
 }
@@ -15,37 +18,42 @@
 
 /*  Header  */
 header {
-  background: #1d1d1d;
-  background: linear-gradient(to bottom, #1d1d1d 50%, rgba(29, 29, 29, 0) 100%);
+  background: #000;
+  box-shadow: 0 1px 4px rgba(144, 202, 249, .4);
   box-sizing: content-box;
   height: 48px;
   line-height: 48px;
   left: 0;
-  padding: 0 1em 12px;
+  padding: 0 1em;
   position: fixed;
   right: 0;
   text-align: center;
   top: 0;
   z-index: 40;
 }
+header a {
+  color: #90CAF9;
+}
 .App.light header {
-  background: #f9f9f9;
-  background: linear-gradient(to bottom, #f9f9f9 50%, rgba(249, 249, 249, 0) 100%);
+  background: #fff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, .5);
 }
-header > a {
-  color: #eee;
-}
-.App.light header > a {
-  color: #333;
+.App.light header a {
+  color: #000;
 }
 .App-logo {
-  background: url(https://x.lihkg.com/assets/img/logo2.png) left center no-repeat;
-  background-size: contain;
+  color: #90CAF9;
   cursor: pointer;
   display: inline-block;
+  font-size: 1.6em;
   height: 44px;
+  text-shadow: 0 0 8px #90CAF9, 0 0 2px #90CAF9;
   vertical-align: middle;
   width: 44px;
+}
+.App.light .App-logo {
+  color: #000;
+  text-shadow: 0 0 8px rgba(0, 0, 0, .5);
 }
 .App-headerLeft, .App-headerRight {
   position: absolute;
@@ -56,6 +64,31 @@ header > a {
 }
 .App-headerLeft > *:not(:first-child) {
   margin-left: 1.25rem;
+}
+.App-headerLeft > .App-whatsNew {
+  cursor: pointer;
+  display: inline-block;
+  height: 32px;
+  position: relative;
+  vertical-align: middle;
+  width: 32px;
+}
+.App-headerLeft > .App-whatsNew:before {
+  background: #90CAF9;
+  border-radius: 50%;
+  box-shadow: 0 0 0 4px rgba(144, 202, 249, .4);
+  content: '';
+  display: inline-block;
+  height: 12px;
+  left: 50%;
+  margin: -6px;
+  position: absolute;
+  top: 50%;
+  width: 12px;
+}
+.App.light .App-headerLeft > .App-whatsNew:before {
+  background: rgba(30, 136, 229, .6);
+  box-shadow: 0 0 0 4px rgba(30, 136, 229, .2);
 }
 .App-headerRight {
   right: 0;
@@ -129,6 +162,31 @@ header > a {
 }
 .App.light .App-drawer-item:hover {
   background: rgba(0, 0, 0, .1);
+}
+
+/*  Action Helper  */
+.App-helper {
+  background: #111;
+  border: 1px solid #333;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .2);
+  cursor: pointer;
+  list-style: none;
+  margin: 8px calc(-128px - 8px);
+  padding: 0;
+  position: fixed;
+  width: 128px;
+  z-index: 99;
+}
+.App.light .App-helper {
+  background: #fff;
+  border: 1px solid #e0e0e0;
+}
+.App-helper > li {
+  height: 40px;
+  line-height: 40px;
+  padding: 0 1em;
+  z-index: 999;
 }
 
 /*  Modal  */

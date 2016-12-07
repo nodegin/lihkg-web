@@ -1,10 +1,11 @@
+import storage from '../storage'
 import React from 'react'
 import { browserHistory } from 'react-router'
 
 class Logout extends React.PureComponent {
 
   componentDidMount() {
-    localStorage.removeItem('uinf')
+    storage.removeItem('uinf')
     this.props.actions.onSetUser({})
     browserHistory.replace('/')
   }

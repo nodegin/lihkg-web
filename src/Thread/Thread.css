@@ -22,8 +22,8 @@
 
 /*  Reply block  */
 .Thread-replyBlock {
-  background: rgba(61, 61, 61, .75);
-  box-shadow: 0 0 2px rgba(0, 0, 0, .25);
+  background: #222;
+  border: 1px solid #000;
   border-radius: 4px;
   line-height: 2rem;
   margin-bottom: 1em;
@@ -33,15 +33,17 @@
   margin-top: 1em;
 }
 .App.light .Thread-replyBlock {
-  background: rgba(224, 224, 224, .4);
+  background: #f9f9f9;
+  border: 1px solid #ddd;
 }
 .Thread-blockHeader {
+  font-size: 1rem;
   margin-bottom: 1em;
 }
 .Thread-blockHeader-floor {
   color: #ccc;
   display: inline-block;
-  width: 58px;
+  margin-right: 1em;
 }
 .App.light .Thread-blockHeader-floor {
   color: #777;
@@ -59,22 +61,28 @@
 .Thread-content blockquote {
   border-left: 2px solid #BBDEFB;
   margin-left: 8px;
+  opacity: .9;
   padding-left: 8px;
 }
 .App.light .Thread-content blockquote {
   border-left: 2px solid #90CAF9;
 }
 .Thread-content img {
-  max-width: 360px;
+  max-width: 640px;
+}
+@media only screen and (max-width: 799px) {
+  .Thread-content img {
+    max-width: 320px;
+  }
 }
 
 /*  Buttons  */
 .Thread-buttons {
   display: flex;
   font-size: 1.2rem;
-  height: 48px;
-  line-height: 48px;
-  margin: 2em 0 0;
+  height: 24px;
+  line-height: 24px;
+  margin: 2em 0 1em;
   position: relative;
   text-align: center;
 }
@@ -112,20 +120,16 @@
   width: 48px;
 }
 .Thread-buttons-btn {
-  background: #dedede;
-  border-bottom: 4px solid #777;
-  border-radius: 2px;
-  color: #000;
+  color: #90CAF9;
   cursor: pointer;
   font-weight: bold;
   text-align: center;
-  transition: none;
+  transition: color .2s;
+}
+.App.light .Thread-buttons-btn {
+  color: #000;
 }
 .Thread-buttons-btn:hover {
-  color: #000;
+  color: #fff;
   text-decoration: none;
-}
-.Thread-buttons-btn:active {
-  border-bottom: 0;
-  margin-top: 4px;
 }

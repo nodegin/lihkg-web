@@ -1,3 +1,4 @@
+import storage from '../storage'
 import React from 'react'
 import { browserHistory } from 'react-router'
 
@@ -24,7 +25,7 @@ class Login extends React.PureComponent {
     result = await fetch('https://lihkg.na.cx/mirror/auth/login', {
       method: 'POST',
       headers: {
-        'X-DEVICE': localStorage.getItem('dt'),
+        'X-DEVICE': storage.getItem('dt'),
       },
       body: JSON.stringify({
         email: this.state.email,
@@ -33,7 +34,7 @@ class Login extends React.PureComponent {
     })
     result = await result.json()
     if (result.success) {
-      localStorage.setItem('uinf', JSON.stringify(result.response))
+      storage.setItem('uinf', JSON.stringify(result.response))
       this.props.actions.onSetUser(result.response)
       browserHistory.replace('/')
     } else {

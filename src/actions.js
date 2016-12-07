@@ -59,3 +59,9 @@ export const DELETE_VISITED_THREAD = 'DELETE_VISITED_THREAD'
 export const onDeleteVisitedThread = () => ({
   type: DELETE_VISITED_THREAD
 })
+
+export const UPDATE_ACTION_HELPER = 'UPDATE_ACTION_HELPER'
+export const onUpdateActionHelper = helper => ({
+  type: UPDATE_ACTION_HELPER,
+  helper,
+})
