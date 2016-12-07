@@ -42,6 +42,12 @@ const app = (state = initialStates, action = {}) => {
         ...state,
         darkMode: !state.darkMode,
       }
+    case types.TOGGLE_DOCK_MENU:
+        localStorage.setItem('dm', !state.dockMenu)
+        return {
+            ...state,
+            dockMenu: !state.dockMenu,
+        }
     case types.SET_CATEGORIES:
       return {
         ...state,
