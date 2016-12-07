@@ -39,6 +39,12 @@ class Settings extends Component {
               </Button>
             </div>
             <div className="Settings-row">
+              <span>分頁模式</span>
+              <Button toggle active={ this.props.app.splitMode } onClick={ this.props.actions.onToggleSplitMode }>
+                { this.props.app.splitMode ? 'ON' : 'OFF' }
+              </Button>
+            </div>
+            <div className="Settings-row">
               <span>癡實選單</span>
               <Button toggle active={ this.props.app.dockMenu } onClick={ this.props.actions.onToggleDockMenu }>
                   { this.props.app.dockMenu ? 'ON' : 'OFF' }

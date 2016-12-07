@@ -7,7 +7,7 @@
   margin: 1em 0 !important;
   text-align: center;
 }
-@media only screen and (max-width: 1023px) {
+@media only screen and (max-width: 1200px) {
   .Thread-header {
     font-size: 1.2rem;
   }
@@ -87,7 +87,7 @@
   line-height: 48px;
 }
 @media only screen and (min-width: 1080px) {
-  .Thread-links .Thread-links-channel {
+  .Category-splited.split .Thread-links .Thread-links-channel {
     display: none;
   }
 }

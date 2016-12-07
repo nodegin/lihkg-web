@@ -55,9 +55,9 @@ class App extends Component {
     if (isOffice && !this.props.app.officeMode) {
       this.props.actions.onToggleOfficeMode()
     }
-    const isStory = JSON.parse(localStorage.getItem('sm'))
-    if (isStory && !this.props.app.storyMode) {
-      this.props.actions.onToggleStoryMode()
+    const isSplit = JSON.parse(localStorage.getItem('spl'))
+    if (isSplit && !this.props.app.splitMode) {
+      this.props.actions.onToggleSplitMode()
     }
     const isDockMenu = JSON.parse(localStorage.getItem('dm'))
     if (isDockMenu && !this.props.app.dockMenu) {

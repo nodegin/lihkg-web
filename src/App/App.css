@@ -63,11 +63,20 @@ header > a {
 .App header > div, .App-content, .App footer {
   margin: 0 auto;
   position: relative;
-  width: 1080px;
 }
-@media only screen and (max-width: 1079px) {
+@media only screen and (max-width: 1199px) {
+  .App header > div, .App-content, .App footer {
+    width: 800px;
+  }
+}
+@media only screen and (max-width: 799px) {
   .App header > div, .App-content, .App footer {
     width: 100%;
+  }
+}
+@media only screen and (min-width: 1200px) {
+  .App header > div, .App-content, .App footer {
+    width: 1200px;
   }
 }
 .App-content {

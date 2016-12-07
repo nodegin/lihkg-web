@@ -6,6 +6,7 @@ const initialStates = {
   pageTitle: window.document.title,
   darkMode: true,
   officeMode: false,
+  splitMode: false,
   dockMenu: false,
   categories: [],
   visitedThreads: JSON.parse(localStorage.getItem('vts')) || [],
@@ -42,12 +43,18 @@ const app = (state = initialStates, action = {}) => {
         ...state,
         darkMode: !state.darkMode,
       }
-    case types.TOGGLE_DOCK_MENU:
-        localStorage.setItem('dm', !state.dockMenu)
-        return {
-            ...state,
-            dockMenu: !state.dockMenu,
-        }
+      case types.TOGGLE_DOCK_MENU:
+          localStorage.setItem('dm', !state.dockMenu)
+          return {
+              ...state,
+              dockMenu: !state.dockMenu,
+          }
+    case types.TOGGLE_SPLIT_MODE:
+      localStorage.setItem('spl', !state.splitMode)
+      return {
+        ...state,
+        splitMode: !state.splitMode,
+      }
     case types.SET_CATEGORIES:
       return {
         ...state,

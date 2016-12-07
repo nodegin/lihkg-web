@@ -26,6 +26,11 @@ export const onToggleOfficeMode = () => ({
   type: TOGGLE_OFFICE_MODE,
 })
 
+export const TOGGLE_SPLIT_MODE = 'TOGGLE_SPLIT_MODE'
+export const onToggleSplitMode = () => ({
+  type: TOGGLE_SPLIT_MODE,
+})
+
 export const SET_STORY_MODE_USER_ID = 'SET_STORY_MODE_USER_ID'
 export const setStoryModeUserId = userId => ({
   type: SET_STORY_MODE_USER_ID,

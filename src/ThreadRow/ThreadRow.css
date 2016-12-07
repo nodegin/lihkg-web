@@ -38,6 +38,7 @@
 }
 .ThreadRow-row-page .menu {
   margin-left: -36px !important;
+  z-index: 30 !important;
 }
 .App.light .ThreadRow-row:not(:last-child) {
   color: #7d7d7d;
