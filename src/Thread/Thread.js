@@ -28,7 +28,7 @@ class Thread extends React.PureComponent {
     dom.innerHTML = messages
     //  Remove quotes
     const quotes = dom.querySelectorAll('blockquote' + ' > blockquote'.repeat(5 - 1))
-    quotes.forEach(r => r.parentNode.removeChild(r))
+    Array.prototype.forEach.call(quotes,r => r.parentNode.removeChild(r))
     //  Remove icons
     if (this.props.app.officeMode) {
       const icons = dom.querySelectorAll('img[src^="https://lihkg.com/assets"]')
@@ -39,13 +39,13 @@ class Thread extends React.PureComponent {
     }
     //  Add link to image
     const images = dom.querySelectorAll('img:not(.hkgmoji)')
-    images.forEach(i => {
-      const anchor = document.createElement('a')
-      anchor.target = '_blank'
-      anchor.href = i.src
-      i.parentNode.replaceChild(anchor, i)
-      anchor.appendChild(i)
-    })
+    Array.prototype.forEach.call(images, i => {
+        const anchor = document.createElement('a')
+        anchor.target = '_blank'
+        anchor.href = i.src
+        i.parentNode.replaceChild(anchor, i)
+        anchor.appendChild(i)
+    });
     return dom.innerHTML.split('<hr>')
   }
 
