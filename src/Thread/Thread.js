@@ -169,7 +169,7 @@ class Thread extends React.PureComponent {
     }
     if (list.success) {
       this.props.actions.onSetPageTitle(list.response.title)
-      this.props.actions.onSetVisitedThread(thread)
+      this.props.actions.onSetVisitedThread(thread, list.response.no_of_reply - 1)
       this.setState({ data: list.response }, () => {
         if (scrollTop) {
           window.scrollTo(0, 0)

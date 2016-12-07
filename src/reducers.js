@@ -57,8 +57,15 @@ const app = (state = initialStates, action = {}) => {
       }
     case types.SET_VISITED_THREAD:
       const visitedThreads = [...state.visitedThreads]
-      if (visitedThreads.indexOf(action.threadId) < 0) {
-        visitedThreads.push(action.threadId)
+      const index = visitedThreads.findIndex(c => c.threadId === action.threadId)
+
+      if (index < 0) {
+        visitedThreads.push({
+          threadId: action.threadId,
+          replyNum: action.replyNum,
+        })
+      } else {
+        visitedThreads[index].replyNum = action.replyNum
       }
       storage.setItem('vts', JSON.stringify(visitedThreads))
       return {
