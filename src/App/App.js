@@ -5,9 +5,9 @@ import { bindActionCreators } from 'redux'
 import * as types from '../actions'
 import Helmet from 'react-helmet'
 import moment from 'moment'
+import Sidebar from 'react-sidebar'
 
 import { Icon, Modal, Image, Divider } from 'semantic-ui-react'
-import { VelocityComponent } from 'velocity-react'
 import Settings from '../Settings/Settings'
 import './App.css'
 
@@ -34,6 +34,7 @@ class App extends Component {
   state = {
     drawerOpen: false,
     modalOpen: false,
+    drawerDocked: false
   }
 
   async componentDidMount() {
@@ -58,6 +59,10 @@ class App extends Component {
     if (isSplit && !this.props.app.splitMode) {
       this.props.actions.onToggleSplitMode()
     }
+    const isDockMenu = JSON.parse(localStorage.getItem('dm'))
+    if (isDockMenu && !this.props.app.dockMenu) {
+        this.props.actions.onToggleDockMenu()
+    }
 
     let list
     try {
@@ -68,6 +73,12 @@ class App extends Component {
       location.reload(true)
     }
     this.props.actions.onSetCategories(list)
+
+    let mql = window.matchMedia(`(min-width: 800px)`);
+    let opened = mql.matches && this.props.app.dockMenu;
+    this.mediaQueryChanged = this.mediaQueryChanged.bind(this);
+    mql.addListener(this.mediaQueryChanged);
+    this.setState({mql: mql, drawerOpen: opened, drawerDocked: opened});
   }
 
   scrollToTop() {
@@ -86,6 +97,15 @@ class App extends Component {
     window.requestAnimationFrame(step)
   }
 
+  async componentWillUnmount() {
+    this.state.mql.removeListener(this.mediaQueryChanged);
+  }
+
+  async mediaQueryChanged() {
+      let opened = this.state.mql.matches && this.props.app.dockMenu;
+      this.setState({drawerOpen: opened, drawerDocked: opened});
+  }
+
   render() {
     let { user } = this.props.app.user
     const linkRef = e => this.settings = e
@@ -95,6 +115,10 @@ class App extends Component {
       this.setState({ drawerOpen: !this.state.drawerOpen }, () => {
         document.body.style.overflow = this.state.drawerOpen ? 'hidden' : 'visible'
       })
+    }
+    const closeDrawer = e => {
+      this.setState({ drawerOpen: false });
+      document.body.style.overflow = 'hidden';
     }
     const linkTo = (path, e) => {
       browserHistory.push(path)
@@ -126,6 +150,7 @@ class App extends Component {
     )
     return (
       <div className={ `App ${ this.props.app.darkMode ? 'dark' : 'light' }` }>
+        <Sidebar sidebarClassName="App-drawer" sidebar={drawer} open={this.state.drawerOpen} docked={this.props.app.dockMenu&&this.state.drawerDocked} onSetOpen={closeDrawer}>
         <Helmet title={ this.props.app.officeMode ? 'LIHKG Web' : this.props.app.pageTitle }/>
         <header>
           <div>
@@ -165,18 +190,11 @@ class App extends Component {
             </Modal.Description>
           </Modal.Content>
         </Modal>
-        <div style={{ pointerEvents: this.state.drawerOpen ? 'auto' : 'none' }}>
-          <VelocityComponent animation={{ opacity: this.state.drawerOpen ? 1 : 0 }} duration={ 250 }>
-            <b className="App-drawerOverlay" onClick={ toggleDrawer }/>
-          </VelocityComponent>
-          <VelocityComponent animation={{ translateX: this.state.drawerOpen ? 0 : '-100%' }} duration={ 250 }>
-            { drawer }
-          </VelocityComponent>
-        </div>
         <main className="App-content">
           { children }
           <Settings ref={ linkRef } { ...this.props }/>
         </main>
+        </Sidebar>
       </div>
     )
   }
