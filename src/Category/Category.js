@@ -19,6 +19,20 @@ class Category extends React.PureComponent {
     loadingMessage: '蘇咪摩牙',
   }
 
+  constructor(props) {
+    super(props)
+    this.linkCategoryRef = e => this.categoryList = ReactDOM.findDOMNode(e)
+    this.loadThreads = this.loadThreads.bind(this)
+    this.reloadThreads = () => this.loadThreads(this.state.category.cat_id, this.state.page)
+    this.loadMore = () => this.loadThreads(this.state.category.cat_id, this.state.page + 1)
+    this.toggleBwMode = e => {
+      e.preventDefault()
+      this.setState({ bwAll: !this.state.bwAll }, () => {
+        this.loadThreads(this.state.category.cat_id, 1)
+      })
+    }
+  }
+
   async loadThreads(catId, page) {
     this.setState({ loadingMessage: '撈緊，等陣' })
     let url
@@ -69,6 +83,13 @@ class Category extends React.PureComponent {
       this.loadThreads(this.props.params.id, 1)
     }
     this.setState({ pane })
+    this.props.actions.onUpdateActionHelper([
+      { id: 'new-topic', text: '新主題', callback: () => this.refs.editor.toggle() },
+    ])
+  }
+
+  componentWillUnmount() {
+    this.props.actions.onUpdateActionHelper([])
   }
 
   componentWillReceiveProps({ location, params }) {
@@ -86,25 +107,16 @@ class Category extends React.PureComponent {
       }
       if (this.state.category.cat_id !== params.id) {
         this.loadThreads(params.id, 1)
+        window.scrollTo(0, 0)
       }
     }
     this.setState({ pane })
   }
 
   render() {
-    const linkCategoryRef = e => this.categoryList = ReactDOM.findDOMNode(e)
-    const loadThreads = this.loadThreads.bind(this)
-    const loadMore = () => loadThreads(this.state.category.cat_id, this.state.page + 1)
-    const toggleBwMode = e => {
-      e.preventDefault()
-      this.setState({ bwAll: !this.state.bwAll }, () => {
-        this.loadThreads(this.state.category.cat_id, 1)
-      })
-    }
-    const reloadThreads = () => loadThreads(this.state.category.cat_id, this.state.page)
-    let titleExtra = [<div key="0" className="Category-main-reload" onClick={ reloadThreads }>F5</div>]
+    let titleExtra = [ <div key="0" className="Category-main-reload" onClick={ this.reloadThreads }>F5</div> ]
     if (this.state.category.cat_id === '1') {
-      titleExtra.push(<small key="1"><a href="#" onClick={ toggleBwMode }>{ ` (${ this.state.bwAll ? '只顯示吹水台文章' : '顯示所有台的文章' })` }</a></small>)
+      titleExtra.push(<small key="1"><a href="#" onClick={ this.toggleBwMode }>{ ` (${ this.state.bwAll ? '只顯示吹水台文章' : '顯示所有台的文章' })` }</a></small>)
     }
     let threads = this.state.threads
     threads = threads.map(c => {
@@ -123,22 +135,18 @@ class Category extends React.PureComponent {
 
     return (
       <div className={ 'Category-splited ' + this.state.pane + (this.props.app.splitMode ? ' split' : '') }>
-        <div ref={ linkCategoryRef } className="Category-main">
-          { (
-            <div>
-              <h2>{ this.state.category.name }{ titleExtra }</h2>
-              { threads }
-              <br/>
-              { threads.length < 1 ? null : <div className="Category-more" onClick={ loadMore }>
-                <span>
-                  { this.state.loadingMessage }
-                  &emsp;
-                  <img alt="more" src={ `https://lihkg.com/assets/faces/normal/${ this.state.loadingMessage.startsWith('冇') ? 'dead' : 'tongue' }.gif` }/>
-                </span>
-              </div> }
-              <FloatEditor { ...this.props } catId={ this.props.params.id } />
-            </div>
-          ) }
+        <FloatEditor ref="editor" { ...this.props } catId={ this.props.params.id } />
+        <div ref={ this.linkCategoryRef } className="Category-main">
+          <h2>{ this.state.category.name }{ titleExtra }</h2>
+          { threads }
+          <br/>
+          { threads.length < 1 ? null : <div className="Category-more" onClick={ this.loadMore }>
+            <span>
+              { this.state.loadingMessage }
+              &emsp;
+              <img alt="more" src={ `https://lihkg.com/assets/faces/normal/${ this.state.loadingMessage.startsWith('冇') ? 'dead' : 'tongue' }.gif` }/>
+            </span>
+          </div> }
         </div>
         <div className="Category-thread">
           {
@@ -149,7 +157,8 @@ class Category extends React.PureComponent {
                 params={{ id: this.state.threadId, page: this.state.threadPage }}
                 pane={ this.state.pane }
                 shouldLoadThreads={ !this.state.threads.length }
-                loadThreads={ loadThreads }/>
+                loadThreads={ this.loadThreads }
+                newTopicEditor={ this.refs.editor }/>
             ) : (
               <div className="Category-thread-nothing">冇嘢喺度 :)</div>
             )

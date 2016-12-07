@@ -1,4 +1,5 @@
-import React, { Component } from 'react'
+import storage from '../storage'
+import React from 'react'
 import { Link, browserHistory } from 'react-router'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -30,31 +31,57 @@ moment.updateLocale('en', {
   }
 })
 
-class App extends Component {
+class HoverListItem extends React.PureComponent {
+  state = {
+    hovering: false,
+  }
+  componentDidMount() {
+    this.rect = this.refs.element.getBoundingClientRect()
+  }
+  componentWillReceiveProps({ x, y }) {
+    let hovering = false
+    if(this.rect.left <= x && x <= this.rect.right && this.rect.top <= y && y <= this.rect.bottom) {
+      hovering = true
+    }
+    this.setState({ hovering })
+  }
+  render() {
+    return (
+      <li id={ this.props.id } ref="element" style={{ background: this.state.hovering ? 'rgba(128, 128, 128, .15)' : 'none' }}>
+        { this.props.children }
+      </li>
+    )
+  }
+}
+
+class App extends React.PureComponent {
   state = {
     drawerOpen: false,
     modalOpen: false,
+    hidingSelection: false,
+    actionHelper: null,
+    pointerXY: {},
   }
 
   async componentDidMount() {
-    const deviceToken = localStorage.getItem('dt')
+    const deviceToken = storage.getItem('dt')
     if (!deviceToken) {
       const possible = '0123456789abcdef'
       let text = ''
       for (let i = 0; i < 40; i++) {
         text += possible.charAt(Math.floor(Math.random() * possible.length))
       }
-      localStorage.setItem('dt', text)
+      storage.setItem('dt', text)
     }
-    const isLight = JSON.parse(localStorage.getItem('lui'))
+    const isLight = JSON.parse(storage.getItem('lui'))
     if (isLight && this.props.app.darkMode) {
       this.props.actions.onToggleDarkMode()
     }
-    const isOffice = JSON.parse(localStorage.getItem('mtr'))
+    const isOffice = JSON.parse(storage.getItem('mtr'))
     if (isOffice && !this.props.app.officeMode) {
       this.props.actions.onToggleOfficeMode()
     }
-    const isSplit = JSON.parse(localStorage.getItem('spl'))
+    const isSplit = JSON.parse(storage.getItem('spl'))
     if (isSplit && !this.props.app.splitMode) {
       this.props.actions.onToggleSplitMode()
     }
@@ -124,8 +151,55 @@ class App extends Component {
         </div>
       </div>
     )
+    /*  Action Helper  */
+    let trigger = false
+    let resetTimeout, showTimeout
+    const onUp = e => {
+      clearTimeout(showTimeout)
+      if (this.state.actionHelper !== null) {
+        const elem = document.elementFromPoint(this.state.pointerXY.x, this.state.pointerXY.y)
+        const selected = this.props.app.pageActions.find(x => x.id === elem.id)
+        if (selected) {
+          selected.callback()
+        }
+        this.setState({ actionHelper: null })
+        setTimeout(() => this.setState({ hidingSelection: false }), 100)
+      }
+    }
+    const onDown = e => {
+      if (this.props.app.pageActions.length < 1 || (e.button && e.button !== 0)) {
+        return
+      }
+      const x = e.touches ? e.touches[0].clientX : e.clientX || 0
+      const y = e.touches ? e.touches[0].clientY : e.clientY || 0
+      if (trigger) {
+        clearTimeout(resetTimeout)
+        showTimeout = setTimeout(() => {
+          this.setState({ actionHelper: { x, y }, hidingSelection: true })
+        }, 450)
+      }
+      resetTimeout = setTimeout(() => trigger = false, 350)
+      trigger = true
+    }
+    const onMove = e => {
+      if (this.state.actionHelper) {
+        e.preventDefault()
+      }
+      const x = e.touches ? e.touches[0].clientX : e.clientX || 0
+      const y = e.touches ? e.touches[0].clientY : e.clientY || 0
+      this.setState({ pointerXY: { x, y } })
+    }
+    const showUpdate = () => alert('新功能：在任意地方雙按後不放手，即可打開動作選單')
+
     return (
-      <div className={ `App ${ this.props.app.darkMode ? 'dark' : 'light' }` }>
+      <div
+        className={ `App ${ this.props.app.darkMode ? 'dark' : 'light' } ${ this.state.hidingSelection ? 'noselect' : '' }` }
+        onMouseDown={ onDown }
+        onMouseMove={ onMove }
+        onMouseUp={ onUp }
+        onTouchStart={ onDown }
+        onTouchMove={ onMove }
+        onTouchEnd={ onUp }>
         <Helmet title={ this.props.app.officeMode ? 'LIHKG Web' : this.props.app.pageTitle }/>
         <header>
           <div>
@@ -133,8 +207,9 @@ class App extends Component {
               <a href="#" onClick={ toggleDrawer } style={{ textDecoration: 'none' }}>
                 <Icon name="content" size="large"/>
               </a>
+              <div className="App-whatsNew" onClick={ showUpdate }></div>
             </div>
-            <i className="App-logo" onClick={ this.scrollToTop }></i>
+            <b className="App-logo" onClick={ this.scrollToTop }>△</b>
             <div className="App-headerRight">{
               !user ? <div>
                 <Link to="/auth/login">登入</Link>
@@ -177,6 +252,15 @@ class App extends Component {
           { children }
           <Settings ref={ linkRef } { ...this.props }/>
         </main>
+        { !this.state.actionHelper ? null : (
+          <ul className="App-helper" style={{ left: this.state.actionHelper.x, top: this.state.actionHelper.y }}>
+            {
+              this.props.app.pageActions.map(action => {
+                return <HoverListItem key={ action.id } id={ action.id } x={ this.state.pointerXY.x } y={ this.state.pointerXY.y }>{ action.text }</HoverListItem>
+              })
+            }
+          </ul>
+        ) }
       </div>
     )
   }

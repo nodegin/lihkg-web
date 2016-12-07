@@ -28,6 +28,7 @@
 }
 @media only screen and (min-width: 1200px) {
   .Category-splited.split .Category-main {
+    background: #222;
     border: 1px solid rgba(128, 128, 128, .25);
     border-radius: 4px;
     overflow-y: auto;
@@ -36,6 +37,9 @@
     height: calc(100vh - 60px - 4rem);
     width: 440px;
     z-index: 10;
+  }
+  .App.light .Category-splited.split .Category-main {
+    background: #f9f9f9;
   }
   .Category-splited.split .Category-main h2 {
     margin-left: 16px;
@@ -48,9 +52,6 @@
     position: absolute;
     right: 16px;
     top: 0;
-  }
-  .Category-splited.split .Category-main .FloatEditor-quickReply {
-    margin-right: calc(54px + 2em);
   }
 }
 .Category-more {

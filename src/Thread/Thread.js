@@ -1,3 +1,4 @@
+import storage from '../storage'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Link, browserHistory } from 'react-router'
@@ -14,6 +15,17 @@ class Thread extends React.PureComponent {
     error: null,
     shareText: null,
     authorFilter: null,
+  }
+
+  constructor(props) {
+    super(props)
+    this.loadPage = this.loadPosts.bind(this, this.props.params.id)
+    this.reloadPosts = () => this.loadPosts(this.props.params.id, this.props.params.page, false)
+    this.likeThread = this.rateThread.bind(this, 'like')
+    this.dislikeThread = this.rateThread.bind(this, 'dislike')
+    this.bookmark = this.bookmark.bind(this)
+    this.setAuthorFilter = authorFilter => this.setState({ authorFilter })
+    this.handlePageChange = (e, item) => browserHistory.push(`/thread/${ this.props.params.id }/page/${ item.value }`)
   }
 
   reset() {
@@ -62,7 +74,7 @@ class Thread extends React.PureComponent {
     return dom.innerHTML.split('<hr>')
   }
 
-  async bookmark(page) {
+  async bookmark() {
     const { user } = this.props.app.user
     if (!user) {
       return alert('請先登入')
@@ -77,7 +89,7 @@ class Thread extends React.PureComponent {
       }
       list = await fetch(url, {
         headers: {
-          'X-DEVICE': localStorage.getItem('dt'),
+          'X-DEVICE': storage.getItem('dt'),
           'X-DIGEST': 'ffffffffffffffffffffffffffffffffffffffff',
           'X-USER': user.user_id,
         },
@@ -88,9 +100,9 @@ class Thread extends React.PureComponent {
       }
       this.props.actions.onUpdateBookmarkList(list.response.bookmark_thread_list)
       if (isBookmark) {
-        this.updateBookmarkLastRead(page)
+        this.updateBookmarkLastRead(this.props.params.page)
       }
-      this.reloadPosts(this.props.params.id, page, false)
+      this.loadPosts(this.props.params.id, this.props.params.page, false)
     } catch(e) {
       alert(e.message)
     }
@@ -105,7 +117,7 @@ class Thread extends React.PureComponent {
       let list
       list = await fetch(`https://lihkg.na.cx/mirror/thread/${ this.props.params.id }/bookmark-last-read?page=${ page }&post_id=-1`, {
         headers: {
-          'X-DEVICE': localStorage.getItem('dt'),
+          'X-DEVICE': storage.getItem('dt'),
           'X-DIGEST': 'ffffffffffffffffffffffffffffffffffffffff',
           'X-USER': user.user_id,
         },
@@ -129,7 +141,7 @@ class Thread extends React.PureComponent {
       let list
       list = await fetch(`https://lihkg.na.cx/mirror/thread/${ this.props.params.id }/${ action }`, {
         headers: {
-          'X-DEVICE': localStorage.getItem('dt'),
+          'X-DEVICE': storage.getItem('dt'),
           'X-DIGEST': 'ffffffffffffffffffffffffffffffffffffffff',
           'X-USER': user.user_id,
         },
@@ -138,15 +150,15 @@ class Thread extends React.PureComponent {
       if (!list.success) {
         throw new Error(list.error_message)
       }
-      this.reloadPosts(this.props.params.id, this.props.params.page)
+      this.loadPosts(this.props.params.id, this.props.params.page)
     } catch(e) {
       alert(e.message)
     }
   }
 
-  async reloadPosts(thread, page, scrollTop = true) {
+  async loadPosts(thread, page, scrollTop = true) {
     if (!this.props.app.categories.length) {
-      return setTimeout(this.reloadPosts.bind(this, thread, page), 250)
+      return setTimeout(this.loadPosts.bind(this, thread, page), 250)
     }
     let list
     try {
@@ -157,6 +169,7 @@ class Thread extends React.PureComponent {
     }
     if (list.success) {
       this.props.actions.onSetPageTitle(list.response.title)
+      this.props.actions.onSetVisitedThread(thread)
       this.setState({ data: list.response }, () => {
         if (scrollTop) {
           window.scrollTo(0, 0)
@@ -171,18 +184,31 @@ class Thread extends React.PureComponent {
   }
 
   componentDidMount() {
-    this.reloadPosts(this.props.params.id, this.props.params.page)
+    this.loadPosts(this.props.params.id, this.props.params.page)
+    this.props.actions.onUpdateActionHelper([
+      { id: 'new-thread', text: '新主題', callback: () => {
+        this.refs.editor.close()
+        this.props.newTopicEditor.toggle()
+      } },
+      { id: 'reply-thread', text: '回覆主題', callback: () => {
+        this.props.newTopicEditor.close()
+        this.refs.editor.toggle()
+      } },
+    ])
+
     window.addEventListener('keyup', this.handleKeyUp)
   }
 
   componentWillUnmount() {
+    this.props.actions.onUpdateActionHelper([])
+
     window.removeEventListener('keyup', this.handleKeyUp)
   }
 
   componentWillReceiveProps({ params, pane }) {
     const paneReload = this.props.pane !== pane && pane === 'thread'
     if (this.props.params.id !== params.id || this.props.params.page !== params.page || paneReload) {
-      this.reloadPosts(params.id, params.page)
+      this.loadPosts(params.id, params.page)
       if (this.props.app.bookmarks[params.id]) {
         this.updateBookmarkLastRead(params.page)
       }
@@ -210,8 +236,6 @@ class Thread extends React.PureComponent {
     if (!data) {
       return null
     }
-    const linkEditorRef = e => this.editor = e
-    const reloadPosts = this.reloadPosts.bind(this, this.props.params.id)
     const handleModalClose = () => this.setState({ shareText: null })
     //  Threads
     const page = +data.page
@@ -219,9 +243,7 @@ class Thread extends React.PureComponent {
     const emptyBtn = <b className="Thread-buttons-btnSpace"/>
     const prevPage = page <= pages && page > 1 ? <Link to={`/thread/${ this.props.params.id }/page/${ page - 1 }`} className="Thread-buttons-btn">上頁</Link> : emptyBtn
     const nextPage = pages > 1 && page < pages ? <Link to={`/thread/${ this.props.params.id }/page/${ page + 1 }`} className="Thread-buttons-btn">下頁</Link> : emptyBtn
-    const bookmark = this.bookmark.bind(this, page)
     const category = this.props.app.categories.find(c => c.cat_id === data.cat_id)
-    const handlePageChange = (e, item) => browserHistory.push(`/thread/${ this.props.params.id }/page/${ item.value }`)
     const openShareModal = () => {
       this.setState({ shareText: `${ data.title } - LIHKG Web\n\nhttps://lihkg.na.cx/thread/${ this.props.params.id }/page/${ page }` })
     }
@@ -233,14 +255,14 @@ class Thread extends React.PureComponent {
         </div>
         <b className="Thread-spaceFill"/>
         <div className="Thread-actions">
-          <Icon name="star" size="large" onClick={ bookmark } style={ this.props.app.bookmarks[this.props.params.id] ? { color: '#FBC02D' } : {} }/>
+          <Icon name="star" size="large" onClick={ this.bookmark } style={ this.props.app.bookmarks[this.props.params.id] ? { color: '#FBC02D' } : {} }/>
           <Icon name="share alternate" size="large" onClick={ openShareModal }/>
         </div>
         <Dropdown inline scrolling text={ `第 ${ page } 頁` } pointing={ position } options={
           new Array(pages).fill().map((_, i) => {
             return { text: `第 ${ i + 1 } 頁`, value: i + 1 }
           })
-        } onChange={ handlePageChange } value={ page } selectOnBlur={ false }/>
+        } onChange={ this.handlePageChange } value={ page } selectOnBlur={ false }/>
       </div>
     )
     const linkContentRef = e => {
@@ -263,19 +285,17 @@ class Thread extends React.PureComponent {
         i.parentNode.replaceChild(icon, i)
       })
     }
-    const setAuthorFilter = authorFilter => this.setState({ authorFilter })
     const exitStoryMode = e => {
       e.preventDefault()
-      setAuthorFilter(null)
+      this.setAuthorFilter(null)
     }
-    const reload = () => this.reloadPosts(this.props.params.id, this.props.params.page, false)
     const buttons = (top, bottom) => (
       <div className="Thread-extras">
         { top }
         <div className="Thread-buttons">
           <b className="Thread-spaceFill"/>
           { prevPage }
-          <div className="Thread-buttons-btn" onClick={ reload }>F5</div>
+          <div className="Thread-buttons-btn" onClick={ this.reloadPosts }>F5</div>
           { nextPage }
           <b className="Thread-spaceFill"/>
         </div>
@@ -297,9 +317,9 @@ class Thread extends React.PureComponent {
       const color = c.user.level === '999' ? '#FF9800' : (c.user.gender === 'M' ? '#7986CB' : '#F06292')
       const toggleStoryMode = () => {
         if (authorFilter && authorFilter.id === c.user.user_id) {
-          setAuthorFilter(null)
+          this.setAuthorFilter(null)
         } else {
-          setAuthorFilter({
+          this.setAuthorFilter({
             id: c.user.user_id,
             name: c.user.nickname,
           })
@@ -321,8 +341,6 @@ class Thread extends React.PureComponent {
         </div>
       )
     })
-    const likeThis = this.rateThread.bind(this, 'like')
-    const dislikeThis = this.rateThread.bind(this, 'dislike')
     const buttonsTop = buttons(null, links('top'))
     const buttonsBottom = buttons(links('bottom'), null)
 
@@ -332,14 +350,14 @@ class Thread extends React.PureComponent {
           <div>
             <div>
               <h2 className="Thread-header">
-                <div className="Thread-header-rate" style={{ color: '#7CB342' }} onClick={ likeThis }>
+                <div className="Thread-header-rate" style={{ color: '#7CB342' }} onClick={ this.likeThread }>
                   <Icon name="thumbs up"/>
                   { data.like_count }
                 </div>
                 <div className="Thread-header-center">
                 { data.title }
                 </div>
-                <div className="Thread-header-rate" style={{ color: '#EF5350' }} onClick={ dislikeThis }>
+                <div className="Thread-header-rate" style={{ color: '#EF5350' }} onClick={ this.dislikeThread }>
                   <Icon name="thumbs down"/>
                   { data.dislike_count }
                 </div>
@@ -366,7 +384,7 @@ class Thread extends React.PureComponent {
                 </Form>
               </Modal.Content>
             </Modal>
-            <FloatEditor ref={ linkEditorRef } { ...this.props } threadId={ this.props.params.id } reloadPosts={ reloadPosts } />
+            <FloatEditor ref="editor" { ...this.props } threadId={ this.props.params.id } loadPage={ this.loadPage } />
           </div>
         ) }
       </div>

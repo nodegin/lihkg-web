@@ -1,8 +1,9 @@
+import storage from '../storage'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { browserHistory } from 'react-router'
 
-import { Icon, Form, Button, Dropdown, TextArea } from 'semantic-ui-react'
+import { Form, Button, Dropdown, TextArea } from 'semantic-ui-react'
 import map from './emotions'
 import './FloatEditor.css'
 
@@ -12,6 +13,14 @@ class FloatEditor extends React.PureComponent {
     showIcons: false,
     title: '',
     content: '',
+  }
+
+  toggle() {
+    this.setState({ replying: !this.state.replying })
+  }
+
+  close() {
+    this.setState({ replying: false })
   }
 
   handleChange(field, e) {
@@ -33,7 +42,7 @@ class FloatEditor extends React.PureComponent {
       result = await fetch('https://lihkg.na.cx/mirror/thread/reply', {
         method: 'POST',
         headers: {
-          'X-DEVICE': localStorage.getItem('dt'),
+          'X-DEVICE': storage.getItem('dt'),
           'X-DIGEST': 'ffffffffffffffffffffffffffffffffffffffff',
           'X-USER': this.props.app.user.user.user_id,
         },
@@ -45,7 +54,7 @@ class FloatEditor extends React.PureComponent {
       result = await result.json()
       if (result.success) {
         this.setState({ replying: false, title: '', content: '' })
-        this.props.reloadPosts(result.response.total_page)
+        this.props.loadPage(result.response.total_page)
         browserHistory.replace(`/thread/${ this.props.threadId }/page/${ result.response.total_page }`)
       } else {
         alert(result.error_message)
@@ -55,7 +64,7 @@ class FloatEditor extends React.PureComponent {
       result = await fetch('https://lihkg.na.cx/mirror/thread/create', {
         method: 'POST',
         headers: {
-          'X-DEVICE': localStorage.getItem('dt'),
+          'X-DEVICE': storage.getItem('dt'),
           'X-DIGEST': 'ffffffffffffffffffffffffffffffffffffffff',
           'X-USER': this.props.app.user.user.user_id,
         },
@@ -76,7 +85,6 @@ class FloatEditor extends React.PureComponent {
   }
 
   render() {
-    const toggleReplying = () => this.setState({ replying: !this.state.replying })
     const handleTitleChange = this.handleChange.bind(this, 'title')
     const handleContentChange = this.handleChange.bind(this, 'content')
     const handleSubmit = this.handleSubmit.bind(this)
@@ -150,8 +158,13 @@ class FloatEditor extends React.PureComponent {
       const right = `[/${ item.value }]`
       insertAtCursor(left, right)
     }
+    const dismiss = e => {
+      e.preventDefault()
+      this.close()
+    }
     const buttons = (
       <Form.Field className="FloatEditor-quickReply-editor-buttons">
+        <Button compact onClick={ dismiss } style={{ float: 'left' }}>關閉</Button>
         <Button compact onClick={ openDropdown.bind(null, 'colorDropdownSelect') }>
           <Dropdown ref="colorDropdownSelect" fluid scrolling options={ colorFormatOptions } text="顏色" onClick={ preventDefault } onChange={ setFormat } selectOnBlur={ false }/>
         </Button>
@@ -159,7 +172,7 @@ class FloatEditor extends React.PureComponent {
           <Dropdown ref="textDropdownSelect" fluid scrolling options={ formatOptions } text="格式" onClick={ preventDefault } onChange={ setFormat } selectOnBlur={ false }/>
         </Button>
         <Button compact onClick={ toggleIcons }><img alt="icon" src="https://lihkg.com/assets/faces/normal/smile.gif"/></Button>
-        <Button compact>回覆</Button>
+        <Button compact>發表</Button>
       </Form.Field>
     )
     const linkTextareaRef = e => this.textarea = ReactDOM.findDOMNode(e)
@@ -169,9 +182,6 @@ class FloatEditor extends React.PureComponent {
         // Reply
         return (
           <div className="FloatEditor-quickReply">
-            <div className="FloatEditor-quickReply-toggle" onClick={ toggleReplying }>
-              <Icon name={ this.state.replying ? 'minus' : 'reply' } size="large"/>
-            </div>
             <div className="FloatEditor-quickReply-editor" style={ editorStyle }>
               <Form className="FloatEditor-quickReply-editorInner" onSubmit={ handleSubmit }>
                 { buttons }
@@ -187,9 +197,6 @@ class FloatEditor extends React.PureComponent {
         // New topic
         return (
           <div className="FloatEditor-quickReply">
-            <div className="FloatEditor-quickReply-toggle" onClick={ toggleReplying }>
-              <Icon name={ this.state.replying ? 'minus' : 'plus' } size="large"/>
-            </div>
             <div className="FloatEditor-quickReply-editor" style={ editorStyle }>
               <Form className="FloatEditor-quickReply-editorInner" onSubmit={ handleSubmit }>
                 { buttons }
