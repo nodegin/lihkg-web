@@ -1,11 +1,11 @@
 .FloatEditor-quickReply {
   bottom: 0;
-  right: calc((100vw - 960px) / 2 - 8px);
+  right: calc((100vw - 1080px) / 2 - 54px + 2em);
   position: fixed;
   pointer-events: none;
   z-index: 20;
 }
-@media only screen and (max-width: 1023px) {
+@media only screen and (max-width: 1079px) {
   .FloatEditor-quickReply {
     right: 0;
   }
@@ -87,3 +87,24 @@
   margin: 4px;
   max-width: 50%;
 }
+
+/*  Formats  */
+.FloatEditor-text-size-1 { font-size: x-small !important }
+.FloatEditor-text-size-2 { font-size: small !important }
+.FloatEditor-text-size-3 { font-size: medium !important }
+.FloatEditor-text-size-4 { font-size: large !important }
+.FloatEditor-text-size-5 { font-size: x-large !important }
+.FloatEditor-text-size-6 { font-size: xx-large !important }
+.FloatEditor-text-red { color: red !important }
+.FloatEditor-text-green { color: green !important }
+.FloatEditor-text-blue { color: blue !important }
+.FloatEditor-text-purple { color: purple !important }
+.FloatEditor-text-violet { color: violet !important }
+.FloatEditor-text-brown { color: brown !important }
+.FloatEditor-text-pink { color: pink !important }
+.FloatEditor-text-orange { color: orange !important }
+.FloatEditor-text-gold { color: gold !important }
+.FloatEditor-text-maroon { color: maroon !important }
+.FloatEditor-text-teal { color: teal !important }
+.FloatEditor-text-navy { color: navy !important }
+.FloatEditor-text-limegreen { color: limegreen !important }

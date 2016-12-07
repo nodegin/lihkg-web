@@ -131,7 +131,7 @@ class App extends Component {
     const drawer = (
       <div className="App-drawer">
         <div className="App-drawer-upper">
-          <div className="App-drawer-item" onClick={ goBookmark }>留名</div>
+          { user ? <div className="App-drawer-item" onClick={ goBookmark }>留名</div> : null }
           <div className="App-drawer-item" onClick={ goSearch }>搜尋</div>
           <div className="App-drawer-item" onClick={ toggleSettings }>設定</div>
           <div className="App-drawer-item" onClick={ toggleModal }>關於</div>
@@ -140,8 +140,8 @@ class App extends Component {
         <div className="App-drawer-lower">
           { this.props.app.categories.map(c => {
             const click = e => {
-              setTimeout(browserHistory.push.bind(null, `/category/${ c.cat_id }`), 250)
               toggleDrawer(e)
+              setTimeout(browserHistory.push.bind(null, `/category/${ c.cat_id }`), 250 + 50)
             }
             return <div key={ c.cat_id } className="App-drawer-item" onClick={ click }>{ c.name }</div>
           }) }

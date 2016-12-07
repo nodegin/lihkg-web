@@ -26,9 +26,16 @@ export const onToggleOfficeMode = () => ({
   type: TOGGLE_OFFICE_MODE,
 })
 
-export const TOGGLE_STORY_MODE = 'TOGGLE_STORY_MODE'
-export const onToggleStoryMode = () => ({
-  type: TOGGLE_STORY_MODE,
+export const SET_STORY_MODE_USER_ID = 'SET_STORY_MODE_USER_ID'
+export const setStoryModeUserId = userId => ({
+  type: SET_STORY_MODE_USER_ID,
+  userId,
+})
+
+export const DELETE_STORY_MODE_USER_ID = 'DELETE_STORY_MODE_USER_ID'
+export const deleteStoryModeUserId = () => ({
+  type: DELETE_STORY_MODE_USER_ID,
+  DELETE_STORY_MODE_USER_ID
 })
 
 export const TOGGLE_DOCK_MENU = 'TOGGLE_DOCK_MENU'

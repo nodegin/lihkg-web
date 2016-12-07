@@ -1,6 +1,33 @@
+.Category-splited {
+  display: flex;
+  margin-top: 2em;
+}
+.Category-main, .Category-thread {
+  overflow-x: hidden;
+  width: 100%;
+}
+@media only screen and (max-width: 1079px) {
+  .Category-splited.category > .Category-thread,
+  .Category-splited.thread > .Category-main {
+    display: none;
+  }
+}
+@media only screen and (min-width: 1080px) {
+  .Category-main {
+    border: 1px solid rgba(128, 128, 128, .25);
+    border-radius: 4px;
+    padding: 2em 0 0;
+    position: fixed;
+    height: calc(100vh - 60px - 4rem);
+    width: 360px;
+  }
+  .Category-main .FloatEditor-quickReply {
+    margin-right: calc(54px + 2em);
+  }
+}
 .Category-main h2 {
   font-family: inherit;
-  margin: 1em 0 1em !important;
+  margin-bottom: 1em;
   text-align: center;
 }
 .Category-more {
@@ -9,4 +36,24 @@
 }
 .Category-more > span {
   cursor: pointer;
+}
+@media only screen and (min-width: 1080px) {
+  .Category-thread {
+    flex: 1;
+    margin-left: 360px;
+    overflow: hidden;
+    padding-left: 1em;
+  }
+  .Category-thread-nothing {
+    color: #555;
+    font-size: 2rem;
+    height: 48px;
+    line-height: 48px;
+    left: calc(50% + 360px / 2 + 2em);
+    margin: -24px -80px;
+    position: fixed;
+    text-align: center;
+    top: 50vh;
+    width: 160px;
+  }
 }

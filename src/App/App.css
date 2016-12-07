@@ -63,17 +63,16 @@ header > a {
 .App header > div, .App-content, .App footer {
   margin: 0 auto;
   position: relative;
-  width: 960px;
+  width: 1080px;
 }
-@media only screen and (max-width: 1023px) {
+@media only screen and (max-width: 1079px) {
   .App header > div, .App-content, .App footer {
-    min-width: 360px;
     width: 100%;
   }
 }
 .App-content {
   margin-top: 5rem;
-  margin-bottom: 6rem;
+  padding-bottom: 6em;
 }
 .App.dark .ui.form textarea, .App.dark .ui.form input {
   background-color: #333 !important;
