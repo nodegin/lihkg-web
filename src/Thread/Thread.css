@@ -129,3 +129,28 @@
   border-bottom: 0;
   margin-top: 4px;
 }
+
+.Thread-helper{
+  position: fixed;
+  z-index: 100;
+  width: 200px;
+
+  user-select: none;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -o-user-select: none;
+}
+
+.Thread-helper .Thread-buttons-btn{
+  background: #ccc;
+  line-height: 48px;
+}
+
+.Thread-helper .Thread-helper-close-btn{
+  border-radius: 50%;
+}
+
+.Thread-helper-row{
+  margin-bottom: 1em;
+}
