@@ -10,6 +10,7 @@
     "array.prototype.fill": "^1.0.1",
     "array.prototype.filter": "^0.1.1",
     "array.prototype.find": "^2.0.0",
+    "array.prototype.findindex": "^2.0.0",
     "isomorphic-fetch": "^2.2.1",
     "moment": "^2.17.0",
     "react": "^15.4.1",
