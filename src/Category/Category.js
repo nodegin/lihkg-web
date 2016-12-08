@@ -135,7 +135,7 @@ class Category extends React.PureComponent {
 
     return (
       <div className={ 'Category-splited ' + this.state.pane + (this.props.app.splitMode ? ' split' : '') }>
-        <FloatEditor ref="editor" { ...this.props } catId={ this.props.params.id } />
+        <FloatEditor ref="editor" { ...this.props } catId={ this.state.category.cat_id } />
         <div ref={ this.linkCategoryRef } className="Category-main">
           <h2>{ this.state.category.name }{ titleExtra }</h2>
           { threads }

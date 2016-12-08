@@ -15,7 +15,7 @@ function MemoryStorage() {
   this.setItem = (key, value) => structureLocalStorage[key] = value
   this.getItem = key => {
     if (typeof structureLocalStorage[key] !== 'undefined') {
-      return structureLocalStorage[key];
+      return structureLocalStorage[key]
     }
     return null
   }
