@@ -174,8 +174,9 @@ class App extends React.PureComponent {
       const y = e.touches ? e.touches[0].clientY : e.clientY || 0
       if (trigger) {
         clearTimeout(resetTimeout)
+        this.setState({ hidingSelection: true })
         showTimeout = setTimeout(() => {
-          this.setState({ actionHelper: { x, y }, hidingSelection: true })
+          this.setState({ actionHelper: { x, y } })
         }, 450)
       }
       resetTimeout = setTimeout(() => trigger = false, 350)

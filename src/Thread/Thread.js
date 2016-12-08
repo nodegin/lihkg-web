@@ -19,7 +19,7 @@ class Thread extends React.PureComponent {
 
   constructor(props) {
     super(props)
-    this.loadPage = this.loadPosts.bind(this, this.props.params.id)
+    this.loadPage = page => this.loadPosts(this.props.params.id, page)
     this.reloadPosts = () => this.loadPosts(this.props.params.id, this.props.params.page, false)
     this.likeThread = this.rateThread.bind(this, 'like')
     this.dislikeThread = this.rateThread.bind(this, 'dislike')
@@ -185,6 +185,7 @@ class Thread extends React.PureComponent {
 
   componentDidMount() {
     this.loadPosts(this.props.params.id, this.props.params.page)
+    this.savedHelper = this.props.app.pageActions
     this.props.actions.onUpdateActionHelper([
       { id: 'new-thread', text: '新主題', callback: () => {
         this.refs.editor.close()
@@ -200,7 +201,7 @@ class Thread extends React.PureComponent {
   }
 
   componentWillUnmount() {
-    this.props.actions.onUpdateActionHelper([])
+    this.props.actions.onUpdateActionHelper(this.savedHelper)
 
     window.removeEventListener('keyup', this.handleKeyUp)
   }
@@ -311,7 +312,7 @@ class Thread extends React.PureComponent {
     }
     const messages = this.parseMessages(posts.map(c => c.msg).join('<hr>'))
     posts = posts.map((c, i) => {
-      const quote = () => this.editor.updateContent(`[quote]${ htmlToBBCode(c.msg) }[/quote]\n`)
+      const quote = () => this.refs.editor.updateContent(`[quote]${ htmlToBBCode(c.msg) }[/quote]\n`)
       const msg = messages[i]
       const author = c.user.user_id === data.user.user_id ? { color: '#E0C354' } : {}
       const color = c.user.level === '999' ? '#FF9800' : (c.user.gender === 'M' ? '#7986CB' : '#F06292')
