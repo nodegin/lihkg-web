@@ -99,7 +99,7 @@ header a {
   }
 }
 .App-content {
-  padding-bottom: 6em;
+  padding-bottom: 2em;
 }
 .App.dark .ui.form textarea, .App.dark .ui.form input {
   background-color: #333 !important;

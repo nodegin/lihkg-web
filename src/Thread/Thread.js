@@ -39,6 +39,11 @@ class Thread extends React.PureComponent {
     this.setState({ data: null })
   }
 
+  reply = () => {
+    this.props.newTopicEditor.close()
+    this.refs.editor.toggle()
+  }
+
   parseMessages(messages) {
     while (messages.indexOf('src="/assets') > 0) {
       messages = messages.replace('src="/assets', 'src="https://lihkg.com/assets')
@@ -199,10 +204,7 @@ class Thread extends React.PureComponent {
         this.refs.editor.close()
         this.props.newTopicEditor.toggle()
       } },
-      { id: 'reply-thread', text: '回覆主題', callback: () => {
-        this.props.newTopicEditor.close()
-        this.refs.editor.toggle()
-      } },
+      { id: 'reply-thread', text: '回覆主題', callback: this.reply },
       { id: 'go-bottom', text: '跳去最底', callback: () => window.scrollTo(0, document.body.scrollHeight) },
     ])
 

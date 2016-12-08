@@ -1,4 +1,4 @@
-.Category-splited {
+.Category-splited:not(.split) {
   margin-top: 2em;
 }
 .Category-splited.split {
@@ -21,6 +21,9 @@
   margin: 0 1em;
 }
 @media only screen and (max-width: 1199px) {
+  .Category-splited {
+    margin-top: 2em;
+  }
   .Category-splited.split.category > .Category-thread,
   .Category-splited.split.thread > .Category-main {
     display: none;
@@ -37,12 +40,12 @@
 @media only screen and (min-width: 1200px) {
   .Category-splited.split .Category-main {
     background: #222;
-    border: 1px solid rgba(128, 128, 128, .25);
-    border-radius: 4px;
+    border: 0 solid rgba(128, 128, 128, .25);
+    border-width: 0 1px;
     overflow-y: auto;
     padding: 2em 0 0;
     position: fixed;
-    height: calc(100vh - 60px - 4rem);
+    height: calc(100vh - 48px);
     width: 440px;
     z-index: 10;
   }

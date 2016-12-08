@@ -8,14 +8,15 @@ import './ThreadRow.css'
 class ThreadRow extends React.PureComponent {
 
   render() {
-    const { data } = this.props
+    const { app, data } = this.props
     let cateogryRowClassName = 'ThreadRow-row'
-    const index = this.props.app.visitedThreads.findIndex(c => c.threadId.toString() === data.thread_id)
+    const index = app.visitedThreads.findIndex(c => c.threadId.toString() === data.thread_id)
     const isVisited = index >= 0
-    const replyNumDelta = isVisited ?  data.no_of_reply - 1 - this.props.app.visitedThreads[index].replyNum : null
+    const replyNumDelta = isVisited ?  data.no_of_reply - 1 - app.visitedThreads[index].replyNum : null
     if (isVisited) {
       cateogryRowClassName += ' visited'
     }
+    const lastReadPage = isVisited && app.visitedThreads[index].replyNum > 0 ? Math.ceil(app.visitedThreads[index].replyNum / 25) : 1
     const handlePageChange = (e, item) => browserHistory.push(`/thread/${ data.thread_id }/page/${ item.value }`)
     const color = data.user.level === '999' ? '#FF9800' : (data.user.gender === 'M' ? '#7986CB' : '#F06292')
     const cf = (className, cond) => cond ? className : ''
@@ -42,7 +43,7 @@ class ThreadRow extends React.PureComponent {
         </small>
         <div className="ThreadRow-row-titleWrapper">
           <div className="ThreadRow-row-title">
-            <Link to={ `/thread/${ data.thread_id }`}>{ data.title }</Link>
+            <Link to={ `/thread/${ data.thread_id }/page/${ lastReadPage }`}>{ data.title }</Link>
             {
               this.props.lastRead && this.props.lastRead >= 1 ? (
                 <span>
