@@ -165,7 +165,7 @@ class App extends React.PureComponent {
           selected.callback()
         }
         this.setState({ actionHelper: null })
-        setTimeout(() => this.setState({ hidingSelection: false }), 100)
+        setTimeout(() => this.setState({ hidingSelection: false }), 50)
       }
     }
     const onDown = e => {
@@ -179,9 +179,9 @@ class App extends React.PureComponent {
         this.setState({ hidingSelection: true })
         this.showTimeout = setTimeout(() => {
           this.setState({ actionHelper: { x, y } })
-        }, 450)
+        }, 250)
       }
-      this.resetTimeout = setTimeout(() => this.trigger = false, 350)
+      this.resetTimeout = setTimeout(() => this.trigger = false, 400)
       this.trigger = true
     }
     const onMove = e => {

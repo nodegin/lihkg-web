@@ -195,6 +195,9 @@ class Thread extends React.PureComponent {
         this.props.newTopicEditor.close()
         this.refs.editor.toggle()
       } },
+      { id: 'go-bottom', text: '跳去最底', callback: () => {
+        window.scrollTo(0, document.body.scrollHeight)
+      } },
     ])
 
     window.addEventListener('keyup', this.handleKeyUp)

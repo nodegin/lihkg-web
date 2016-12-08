@@ -89,7 +89,10 @@ class Category extends React.PureComponent {
   }
 
   componentWillUnmount() {
-    this.props.actions.onUpdateActionHelper([])
+    //  Empty after <Thread/> unmount
+    setTimeout(() => {
+      this.props.actions.onUpdateActionHelper([])
+    }, 0)
   }
 
   componentWillReceiveProps({ location, params }) {
