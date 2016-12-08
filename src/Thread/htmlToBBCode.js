@@ -2,6 +2,7 @@ import map from '../FloatEditor/emotions'
 
 export default function(html) {
   // extra lines
+  html = html.replace(/\r?\n|\n/g, '')
   html = html.replace(/<br(.*?)>/gi, '\n')
   html = html.replace(/\n/g, '[br]')
 

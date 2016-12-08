@@ -113,6 +113,10 @@ class App extends React.PureComponent {
     window.requestAnimationFrame(step)
   }
 
+  trigger = false
+  resetTimeout = 0
+  showTimeout = 0
+
   render() {
     let { user } = this.props.app.user
     const linkRef = e => this.settings = e
@@ -152,10 +156,8 @@ class App extends React.PureComponent {
       </div>
     )
     /*  Action Helper  */
-    let trigger = false
-    let resetTimeout, showTimeout
     const onUp = e => {
-      clearTimeout(showTimeout)
+      clearTimeout(this.showTimeout)
       if (this.state.actionHelper !== null) {
         const elem = document.elementFromPoint(this.state.pointerXY.x, this.state.pointerXY.y)
         const selected = this.props.app.pageActions.find(x => x.id === elem.id)
@@ -172,15 +174,15 @@ class App extends React.PureComponent {
       }
       const x = e.touches ? e.touches[0].clientX : e.clientX || 0
       const y = e.touches ? e.touches[0].clientY : e.clientY || 0
-      if (trigger) {
-        clearTimeout(resetTimeout)
+      if (this.trigger) {
+        clearTimeout(this.resetTimeout)
         this.setState({ hidingSelection: true })
-        showTimeout = setTimeout(() => {
+        this.showTimeout = setTimeout(() => {
           this.setState({ actionHelper: { x, y } })
         }, 450)
       }
-      resetTimeout = setTimeout(() => trigger = false, 350)
-      trigger = true
+      this.resetTimeout = setTimeout(() => this.trigger = false, 350)
+      this.trigger = true
     }
     const onMove = e => {
       if (this.state.actionHelper) {
