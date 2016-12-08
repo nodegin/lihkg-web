@@ -185,6 +185,7 @@ class Thread extends React.PureComponent {
 
   componentDidMount() {
     this.loadPosts(this.props.params.id, this.props.params.page)
+    this.savedHelper = this.props.app.pageActions
     this.props.actions.onUpdateActionHelper([
       { id: 'new-thread', text: '新主題', callback: () => {
         this.refs.editor.close()
@@ -200,7 +201,7 @@ class Thread extends React.PureComponent {
   }
 
   componentWillUnmount() {
-    this.props.actions.onUpdateActionHelper([])
+    this.props.actions.onUpdateActionHelper(this.savedHelper)
 
     window.removeEventListener('keyup', this.handleKeyUp)
   }
