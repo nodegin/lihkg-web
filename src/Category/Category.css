@@ -4,13 +4,21 @@
 .Category-splited.split {
   display: flex;
 }
+.Category-splited:not(.split).category > .Category-thread,
+.Category-splited:not(.split).thread > .Category-main {
+  display: none;
+}
 .Category-main, .Category-thread {
   overflow: hidden;
   width: 100%;
 }
-.Category-splited:not(.split).category > .Category-thread,
-.Category-splited:not(.split).thread > .Category-main {
-  display: none;
+.Category-main .Category-main-actions {
+  margin-bottom: 2em;
+  text-align: center;
+}
+.Category-main .Category-main-actions > a {
+  cursor: pointer;
+  margin: 0 1em;
 }
 @media only screen and (max-width: 1199px) {
   .Category-splited.split.category > .Category-thread,
@@ -40,18 +48,6 @@
   }
   .App.light .Category-splited.split .Category-main {
     background: #f9f9f9;
-  }
-  .Category-splited.split .Category-main h2 {
-    margin-left: 16px;
-    position: relative;
-    text-align: left;
-  }
-  .Category-splited.split .Category-main h2 > .Category-main-reload {
-    cursor: pointer;
-    display: block;
-    position: absolute;
-    right: 16px;
-    top: 0;
   }
 }
 .Category-more {

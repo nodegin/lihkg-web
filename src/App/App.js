@@ -95,6 +95,8 @@ class App extends React.PureComponent {
       location.reload(true)
     }
     this.props.actions.onSetCategories(list)
+
+    setTimeout(() => document.body.style.opacity = 1, 400)
   }
 
   scrollToTop() {
@@ -207,12 +209,12 @@ class App extends React.PureComponent {
         <header>
           <div>
             <div className="App-headerLeft">
-              <a href="#" onClick={ toggleDrawer } style={{ textDecoration: 'none' }}>
+              <a id="menu" href="#" onClick={ toggleDrawer } style={{ textDecoration: 'none' }}>
                 <Icon name="content" size="large"/>
               </a>
               <div className="App-whatsNew" onClick={ showUpdate }></div>
+              <span style={{ fontWeight: 'bold' }}>LIHKG 討論區</span>
             </div>
-            <b className="App-logo" onClick={ this.scrollToTop }>△</b>
             <div className="App-headerRight">{
               !user ? <div>
                 <Link to="/auth/login">登入</Link>

@@ -20,7 +20,14 @@ class Thread extends React.PureComponent {
   constructor(props) {
     super(props)
     this.loadPage = page => this.loadPosts(this.props.params.id, page)
-    this.reloadPosts = () => this.loadPosts(this.props.params.id, this.props.params.page, false)
+    let lastF5 = 0
+    this.reloadPosts = () => {
+      if ((Date.now() - lastF5) / 1000 < 3) {
+        return alert('您的 F5 速度太快了吧...')
+      }
+      this.loadPosts(this.props.params.id, this.props.params.page, false)
+      lastF5 = Date.now()
+    }
     this.likeThread = this.rateThread.bind(this, 'like')
     this.dislikeThread = this.rateThread.bind(this, 'dislike')
     this.bookmark = this.bookmark.bind(this)
@@ -187,6 +194,7 @@ class Thread extends React.PureComponent {
     this.loadPosts(this.props.params.id, this.props.params.page)
     this.savedHelper = this.props.app.pageActions
     this.props.actions.onUpdateActionHelper([
+      { id: 'open-drawer', text: '打開選單', callback: () => document.querySelector('#menu').click() },
       { id: 'new-thread', text: '新主題', callback: () => {
         this.refs.editor.close()
         this.props.newTopicEditor.toggle()
@@ -195,9 +203,7 @@ class Thread extends React.PureComponent {
         this.props.newTopicEditor.close()
         this.refs.editor.toggle()
       } },
-      { id: 'go-bottom', text: '跳去最底', callback: () => {
-        window.scrollTo(0, document.body.scrollHeight)
-      } },
+      { id: 'go-bottom', text: '跳去最底', callback: () => window.scrollTo(0, document.body.scrollHeight) },
     ])
 
     window.addEventListener('keyup', this.handleKeyUp)
@@ -304,6 +310,13 @@ class Thread extends React.PureComponent {
           <b className="Thread-spaceFill"/>
         </div>
         { bottom }
+        { bottom ? null : (
+          <div className="Thread-buttons">
+            <b className="Thread-spaceFill"/>
+            <div className="Thread-buttons-btn" onClick={ this.reply }>回覆</div>
+            <b className="Thread-spaceFill"/>
+          </div>
+        ) }
       </div>
     )
     let posts = data.item_data

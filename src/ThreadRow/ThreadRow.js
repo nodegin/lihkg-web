@@ -38,7 +38,7 @@ class ThreadRow extends React.PureComponent {
           { moment(data.last_reply_time * 1000).fromNow() }
           { ' - ' }
           <span className={ cf('ThreadRow-row-hotThread', data.no_of_reply > highlightThreshold) }>{ data.no_of_reply - 1 } 回覆</span>
-          <span> { isVisited && replyNumDelta > 0 ? `(${replyNumDelta} 新回覆)` : null }</span>
+          { isVisited && replyNumDelta > 0 ? <span style={{ color: '#26A69A' }}> ({ replyNumDelta }個新回覆)</span> : null }
         </small>
         <div className="ThreadRow-row-titleWrapper">
           <div className="ThreadRow-row-title">

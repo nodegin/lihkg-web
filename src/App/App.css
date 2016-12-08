@@ -41,20 +41,6 @@ header a {
 .App.light header a {
   color: #000;
 }
-.App-logo {
-  color: #90CAF9;
-  cursor: pointer;
-  display: inline-block;
-  font-size: 1.6em;
-  height: 44px;
-  text-shadow: 0 0 8px #90CAF9, 0 0 2px #90CAF9;
-  vertical-align: middle;
-  width: 44px;
-}
-.App.light .App-logo {
-  color: #000;
-  text-shadow: 0 0 8px rgba(0, 0, 0, .5);
-}
 .App-headerLeft, .App-headerRight {
   position: absolute;
   top: 0;
