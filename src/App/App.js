@@ -58,7 +58,6 @@ class App extends React.PureComponent {
   state = {
     drawerOpen: false,
     modalOpen: false,
-    hidingSelection: false,
     actionHelper: null,
     pointerXY: {},
   }
@@ -167,7 +166,6 @@ class App extends React.PureComponent {
           selected.callback()
         }
         this.setState({ actionHelper: null })
-        setTimeout(() => this.setState({ hidingSelection: false }), 50)
       }
     }
     const onDown = e => {
@@ -178,12 +176,11 @@ class App extends React.PureComponent {
       const y = e.touches ? e.touches[0].clientY : e.clientY || 0
       if (this.trigger) {
         clearTimeout(this.resetTimeout)
-        this.setState({ hidingSelection: true })
         this.showTimeout = setTimeout(() => {
           this.setState({ actionHelper: { x, y } })
-        }, 250)
+        }, 300)
       }
-      this.resetTimeout = setTimeout(() => this.trigger = false, 400)
+      this.resetTimeout = setTimeout(() => this.trigger = false, 350)
       this.trigger = true
     }
     const onMove = e => {
@@ -198,7 +195,7 @@ class App extends React.PureComponent {
 
     return (
       <div
-        className={ `App ${ this.props.app.darkMode ? 'dark' : 'light' } ${ this.state.hidingSelection ? 'noselect' : '' }` }
+        className={ `App ${ this.props.app.darkMode ? 'dark' : 'light' } ${ this.state.actionHelper ? 'noselect' : '' }` }
         onMouseDown={ onDown }
         onMouseMove={ onMove }
         onMouseUp={ onUp }
