@@ -9,7 +9,7 @@ const initialStates = {
   officeMode: false,
   splitMode: false,
   categories: [],
-  visitedThreads: JSON.parse(storage.getItem('vts')) || [],
+  visitedThreads: JSON.parse(storage.getItem('vth')) || [],
   pageActions: [],
 }
 
@@ -57,16 +57,22 @@ const app = (state = initialStates, action = {}) => {
       }
     case types.SET_VISITED_THREAD:
       const visitedThreads = [...state.visitedThreads]
-      if (visitedThreads.indexOf(action.threadId) < 0) {
-        visitedThreads.push(action.threadId)
+      const index = visitedThreads.findIndex(c => c.threadId === action.threadId)
+      if (index < 0) {
+        visitedThreads.push({
+          threadId: action.threadId,
+          replyNum: action.replyNum,
+        })
+      } else {
+        visitedThreads[index].replyNum = action.replyNum
       }
-      storage.setItem('vts', JSON.stringify(visitedThreads))
+      storage.setItem('vth', JSON.stringify(visitedThreads))
       return {
         ...state,
         visitedThreads,
       }
     case types.DELETE_VISITED_THREAD:
-      storage.removeItem('vts')
+      storage.removeItem('vth')
       return {
         ...state,
         visitedThreads: [],

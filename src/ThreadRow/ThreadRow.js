@@ -8,11 +8,15 @@ import './ThreadRow.css'
 class ThreadRow extends React.PureComponent {
 
   render() {
-    const { data } = this.props
+    const { app, data } = this.props
     let cateogryRowClassName = 'ThreadRow-row'
-    if (this.props.app.visitedThreads.indexOf(+data.thread_id) >= 0) {
+    const index = app.visitedThreads.findIndex(c => c.threadId.toString() === data.thread_id)
+    const isVisited = index >= 0
+    const replyNumDelta = isVisited ?  data.no_of_reply - 1 - app.visitedThreads[index].replyNum : null
+    if (isVisited) {
       cateogryRowClassName += ' visited'
     }
+    const lastReadPage = isVisited && app.visitedThreads[index].replyNum > 0 ? Math.ceil(app.visitedThreads[index].replyNum / 25) : 1
     const handlePageChange = (e, item) => browserHistory.push(`/thread/${ data.thread_id }/page/${ item.value }`)
     const color = data.user.level === '999' ? '#FF9800' : (data.user.gender === 'M' ? '#7986CB' : '#F06292')
     const cf = (className, cond) => cond ? className : ''
@@ -35,10 +39,11 @@ class ThreadRow extends React.PureComponent {
           { moment(data.last_reply_time * 1000).fromNow() }
           { ' - ' }
           <span className={ cf('ThreadRow-row-hotThread', data.no_of_reply > highlightThreshold) }>{ data.no_of_reply - 1 } 回覆</span>
+          { isVisited && replyNumDelta > 0 ? <span style={{ color: '#26A69A' }}> ({ replyNumDelta }個新回覆)</span> : null }
         </small>
         <div className="ThreadRow-row-titleWrapper">
           <div className="ThreadRow-row-title">
-            <Link to={ `/thread/${ data.thread_id }`}>{ data.title }</Link>
+            <Link to={ `/thread/${ data.thread_id }/page/${ lastReadPage }`}>{ data.title }</Link>
             {
               this.props.lastRead && this.props.lastRead >= 1 ? (
                 <span>

@@ -23,7 +23,19 @@ class Category extends React.PureComponent {
     super(props)
     this.linkCategoryRef = e => this.categoryList = ReactDOM.findDOMNode(e)
     this.loadThreads = this.loadThreads.bind(this)
-    this.reloadThreads = () => this.loadThreads(this.state.category.cat_id, this.state.page)
+    let lastF5 = 0
+    this.reloadThreads = e => {
+      e.preventDefault()
+      if ((Date.now() - lastF5) / 1000 < 3) {
+        return alert('您的 F5 速度太快了吧...')
+      }
+      this.loadThreads(this.state.category.cat_id, this.state.page)
+      lastF5 = Date.now()
+    }
+    this.postThread = e => {
+      e.preventDefault()
+      this.refs.editor.toggle()
+    }
     this.loadMore = () => this.loadThreads(this.state.category.cat_id, this.state.page + 1)
     this.toggleBwMode = e => {
       e.preventDefault()
@@ -84,12 +96,16 @@ class Category extends React.PureComponent {
     }
     this.setState({ pane })
     this.props.actions.onUpdateActionHelper([
+      { id: 'open-drawer', text: '打開選單', callback: () => document.querySelector('#menu').click() },
       { id: 'new-topic', text: '新主題', callback: () => this.refs.editor.toggle() },
     ])
   }
 
   componentWillUnmount() {
-    this.props.actions.onUpdateActionHelper([])
+    //  Empty after <Thread/> unmount
+    setTimeout(() => {
+      this.props.actions.onUpdateActionHelper([])
+    }, 0)
   }
 
   componentWillReceiveProps({ location, params }) {
@@ -114,9 +130,9 @@ class Category extends React.PureComponent {
   }
 
   render() {
-    let titleExtra = [ <div key="0" className="Category-main-reload" onClick={ this.reloadThreads }>F5</div> ]
+    let titleExtra = null
     if (this.state.category.cat_id === '1') {
-      titleExtra.push(<small key="1"><a href="#" onClick={ this.toggleBwMode }>{ ` (${ this.state.bwAll ? '只顯示吹水台文章' : '顯示所有台的文章' })` }</a></small>)
+      titleExtra = <small><a href="#" onClick={ this.toggleBwMode }>{ ` (${ this.state.bwAll ? '只顯示吹水台文章' : '顯示所有台的文章' })` }</a></small>
     }
     let threads = this.state.threads
     threads = threads.map(c => {
@@ -138,6 +154,10 @@ class Category extends React.PureComponent {
         <FloatEditor ref="editor" { ...this.props } catId={ this.state.category.cat_id } />
         <div ref={ this.linkCategoryRef } className="Category-main">
           <h2>{ this.state.category.name }{ titleExtra }</h2>
+          <div className="Category-main-actions">
+            <a href="#" onClick={ this.reloadThreads }>F5</a>
+            <a href="#" onClick={ this.postThread }>發文</a>
+          </div>
           { threads }
           <br/>
           { threads.length < 1 ? null : <div className="Category-more" onClick={ this.loadMore }>

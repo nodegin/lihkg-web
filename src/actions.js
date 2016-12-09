@@ -50,9 +50,10 @@ export const onSetCategories = categories => ({
 })
 
 export const SET_VISITED_THREAD = 'SET_VISITED_THREAD'
-export const onSetVisitedThread = threadId => ({
+export const onSetVisitedThread = (threadId, replyNum) => ({
   type: SET_VISITED_THREAD,
   threadId,
+  replyNum,
 })
 
 export const DELETE_VISITED_THREAD = 'DELETE_VISITED_THREAD'

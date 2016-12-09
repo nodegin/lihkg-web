@@ -58,7 +58,6 @@ class App extends React.PureComponent {
   state = {
     drawerOpen: false,
     modalOpen: false,
-    hidingSelection: false,
     actionHelper: null,
     pointerXY: {},
   }
@@ -95,6 +94,8 @@ class App extends React.PureComponent {
       location.reload(true)
     }
     this.props.actions.onSetCategories(list)
+
+    setTimeout(() => document.body.style.opacity = 1, 400)
   }
 
   scrollToTop() {
@@ -112,6 +113,10 @@ class App extends React.PureComponent {
     }
     window.requestAnimationFrame(step)
   }
+
+  trigger = false
+  resetTimeout = 0
+  showTimeout = 0
 
   render() {
     let { user } = this.props.app.user
@@ -152,10 +157,8 @@ class App extends React.PureComponent {
       </div>
     )
     /*  Action Helper  */
-    let trigger = false
-    let resetTimeout, showTimeout
     const onUp = e => {
-      clearTimeout(showTimeout)
+      clearTimeout(this.showTimeout)
       if (this.state.actionHelper !== null) {
         const elem = document.elementFromPoint(this.state.pointerXY.x, this.state.pointerXY.y)
         const selected = this.props.app.pageActions.find(x => x.id === elem.id)
@@ -163,7 +166,6 @@ class App extends React.PureComponent {
           selected.callback()
         }
         this.setState({ actionHelper: null })
-        setTimeout(() => this.setState({ hidingSelection: false }), 100)
       }
     }
     const onDown = e => {
@@ -172,15 +174,14 @@ class App extends React.PureComponent {
       }
       const x = e.touches ? e.touches[0].clientX : e.clientX || 0
       const y = e.touches ? e.touches[0].clientY : e.clientY || 0
-      if (trigger) {
-        clearTimeout(resetTimeout)
-        this.setState({ hidingSelection: true })
-        showTimeout = setTimeout(() => {
+      if (this.trigger) {
+        clearTimeout(this.resetTimeout)
+        this.showTimeout = setTimeout(() => {
           this.setState({ actionHelper: { x, y } })
-        }, 450)
+        }, 300)
       }
-      resetTimeout = setTimeout(() => trigger = false, 350)
-      trigger = true
+      this.resetTimeout = setTimeout(() => this.trigger = false, 350)
+      this.trigger = true
     }
     const onMove = e => {
       if (this.state.actionHelper) {
@@ -194,7 +195,7 @@ class App extends React.PureComponent {
 
     return (
       <div
-        className={ `App ${ this.props.app.darkMode ? 'dark' : 'light' } ${ this.state.hidingSelection ? 'noselect' : '' }` }
+        className={ `App ${ this.props.app.darkMode ? 'dark' : 'light' } ${ this.state.actionHelper ? 'noselect' : '' }` }
         onMouseDown={ onDown }
         onMouseMove={ onMove }
         onMouseUp={ onUp }
@@ -205,12 +206,12 @@ class App extends React.PureComponent {
         <header>
           <div>
             <div className="App-headerLeft">
-              <a href="#" onClick={ toggleDrawer } style={{ textDecoration: 'none' }}>
+              <a id="menu" href="#" onClick={ toggleDrawer } style={{ textDecoration: 'none' }}>
                 <Icon name="content" size="large"/>
               </a>
               <div className="App-whatsNew" onClick={ showUpdate }></div>
+              <span style={{ fontWeight: 'bold' }}>LIHKG 討論區</span>
             </div>
-            <b className="App-logo" onClick={ this.scrollToTop }>△</b>
             <div className="App-headerRight">{
               !user ? <div>
                 <Link to="/auth/login">登入</Link>
