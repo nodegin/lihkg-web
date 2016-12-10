@@ -7,6 +7,7 @@ import moment from 'moment'
 import { Dropdown, Icon, Modal, Form } from 'semantic-ui-react'
 import FloatEditor from '../FloatEditor/FloatEditor'
 import htmlToBBCode, { map } from './htmlToBBCode'
+import Gallery from '../Gallery/Gallery'
 import './Thread.css'
 
 class Thread extends React.PureComponent {
@@ -15,6 +16,7 @@ class Thread extends React.PureComponent {
     error: null,
     shareText: null,
     authorFilter: null,
+    galleryMode: false,
   }
 
   constructor(props) {
@@ -259,6 +261,7 @@ class Thread extends React.PureComponent {
     const openShareModal = () => {
       this.setState({ shareText: `${ data.title } - LIHKG Web\n\nhttps://lihkg.na.cx/thread/${ this.props.params.id }/page/${ page }` })
     }
+    const toggleGallery = () => this.setState({ galleryMode: !this.state.galleryMode })
     const links = position => (
       <div className="Thread-links">
         <div className="Thread-links-channel">
@@ -268,6 +271,7 @@ class Thread extends React.PureComponent {
         <b className="Thread-spaceFill"/>
         <div className="Thread-actions">
           <Icon name="star" size="large" onClick={ this.bookmark } style={ this.props.app.bookmarks[this.props.params.id] ? { color: '#FBC02D' } : {} }/>
+          <Icon name="picture" size="large" onClick={ toggleGallery }/>
           <Icon name="share alternate" size="large" onClick={ openShareModal }/>
         </div>
         <Dropdown inline scrolling text={ `第 ${ page } 頁` } pointing={ position } options={
@@ -406,6 +410,9 @@ class Thread extends React.PureComponent {
             <FloatEditor ref="editor" { ...this.props } threadId={ this.props.params.id } loadPage={ this.loadPage } />
           </div>
         ) }
+        <Modal basic size="small" open={ this.state.galleryMode } onClose={ toggleGallery }>
+          <Gallery threadId={ this.props.params.id }/>
+        </Modal>
       </div>
     )
   }
