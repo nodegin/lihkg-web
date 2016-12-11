@@ -32,14 +32,11 @@ class Gallery extends Component {
         const images = []
         data.forEach(c => {
           const commentImages = (c.msg.match(imageRegex) || []).concat(c.msg.match(hollandRegex) || [])
-          if (commentImages && commentImages.length) {
-            // TODO: use a set
+          if (commentImages.length) {
             commentImages.forEach(image => {
               const key = image.replace('http://', '').replace('https://', '')
               if (!this.imageSet.has(key)) {
-                images.push({
-                  original: image,
-                })
+                images.push({ original: image })
                 this.imageSet.add(key)
               }
             })
