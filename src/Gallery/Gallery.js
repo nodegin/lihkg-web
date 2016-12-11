@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import ImageGallery from 'react-image-gallery'
-import { Loader } from 'semantic-ui-react'
+import { Loader, Grid, Image, Modal } from 'semantic-ui-react'
 import './Gallery.css'
 
 class Gallery extends Component {
@@ -8,6 +8,8 @@ class Gallery extends Component {
     images: [],
     page: 1,
     isFinishLoading: false,
+    openLightBox: false,
+    startIndex: 0,
   }
 
   constructor(props) {
@@ -19,6 +21,7 @@ class Gallery extends Component {
     if (!this._isMounted || this.state.isFinishLoading) return
     let list;
     const imageRegex = /https?:\/\/[a-zA-Z0-9\.\/\-_]+(jpg|png|gif)/g
+    const hollandRegex = /https?:\/\/holland.pk\/[a-zA-Z0-9]+/g
     try {
       list = await fetch(`https://lihkg.com/api_v1/thread/${ this.props.threadId }/page/${ this.state.page }`)
       list = await list.json()
@@ -28,7 +31,7 @@ class Gallery extends Component {
         const data = list.response.item_data
         const images = []
         data.forEach(c => {
-          const commentImages = c.msg.match(imageRegex)
+          const commentImages = (c.msg.match(imageRegex) || []).concat(c.msg.match(hollandRegex) || [])
           if (commentImages && commentImages.length) {
             // TODO: use a set
             commentImages.forEach(image => {
@@ -36,7 +39,6 @@ class Gallery extends Component {
               if (!this.imageSet.has(key)) {
                 images.push({
                   original: image,
-                  thumbnail: image,
                 })
                 this.imageSet.add(key)
               }
@@ -78,22 +80,37 @@ class Gallery extends Component {
       }
       return null
     }
-    const onClick = (event) => {
-      if (event.target.src) {
-        window.open(event.target.src)
-      }
+    const toggleLightBox = () => {
+      this.setState({ openLightBox: !this.state.openLightBox })
+      document.body.className = "dimmable dimmed scrolling"
+    }
+    const onImageClick = (index) => {
+      this.setState({ startIndex: index })
+      toggleLightBox()
     }
     return (
       <div className="gallery">
         { getLoadingText() }
-        <ImageGallery
-          items={ this.state.images }
-          infinite={ false }
-          showPlayButton={ false }
-          showIndex={ false }
-          lazyLoad={ true }
-          showFullscreenButton={ false }
-          onClick={ onClick } />
+        <Grid stackable centered columns={ 4 }>
+          {this.state.images.map((image, i) => {
+            return (
+              <Grid.Column key={ i }>
+                <Image onClick={ () => onImageClick(i) } src={ image.original } />
+              </Grid.Column>
+            )
+          })}
+        </Grid>
+        <Modal basic size="small" open={ this.state.openLightBox } onClose={ toggleLightBox }>
+          <ImageGallery
+            items={ this.state.images }
+            infinite={ false }
+            showPlayButton={ false }
+            showIndex={ false }
+            lazyLoad={ true }
+            showFullscreenButton={ false }
+            showThumbnails={ false }
+            startIndex={ this.state.startIndex }/>
+        </Modal>
       </div>
     );
   }

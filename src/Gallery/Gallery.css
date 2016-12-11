@@ -201,10 +201,9 @@
   text-align: center;
 }
 .image-gallery-slide img {
-    max-width: 80%;
-    height: auto;
-    max-height: 70vh;
-    cursor: pointer;
+  width: 100%;
+  height: auto;
+  max-height: 90vh;
 }
 .image-gallery-slide .image-gallery-description {
     background: rgba(0, 0, 0, 0.4);
@@ -325,10 +324,10 @@
     }
 }
 .gallery .noPictureText {
-  display: block;
-  text-align: center;
-  font-size: 2em;
+    display: block;
+    text-align: center;
+    font-size: 2em;
 }
-.gallery .noPictureText img {
-  width: 28px;
+.gallery .column img {
+    cursor: pointer;
 }
