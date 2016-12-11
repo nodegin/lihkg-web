@@ -201,7 +201,7 @@
   text-align: center;
 }
 .image-gallery-slide img {
-  width: 100%;
+  max-width: 100%;
   height: auto;
   max-height: 90vh;
 }
@@ -326,7 +326,11 @@
 .gallery .noPictureText {
     display: block;
     text-align: center;
-    font-size: 2em;
+    font-size: 24px;
+}
+.gallery .noPictureText img {
+    width: 40px;
+    margin-bottom: 10px;
 }
 .gallery .column img {
     cursor: pointer;

@@ -75,7 +75,7 @@ class Gallery extends Component {
         if (!this.state.isFinishLoading) {
           return <Loader size='massive'>撈緊，等陣</Loader>
         } else {
-          return <span className="noPictureText">冇圖 <img alt="dead" src={'https://lihkg.com/assets/faces/normal/dead.gif'}/></span>
+          return <div className="noPictureText"><img alt="dead" src={'https://lihkg.com/assets/faces/normal/dead.gif'}/><br/><span>隊長, 我看不到屎</span></div>
         }
       }
       return null
@@ -91,7 +91,7 @@ class Gallery extends Component {
     return (
       <div className="gallery">
         { getLoadingText() }
-        <Grid stackable centered columns={ 4 }>
+        <Grid columns={ 4 }>
           {this.state.images.map((image, i) => {
             return (
               <Grid.Column key={ i }>

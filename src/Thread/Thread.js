@@ -261,7 +261,14 @@ class Thread extends React.PureComponent {
     const openShareModal = () => {
       this.setState({ shareText: `${ data.title } - LIHKG Web\n\nhttps://lihkg.na.cx/thread/${ this.props.params.id }/page/${ page }` })
     }
-    const toggleGallery = () => this.setState({ galleryMode: !this.state.galleryMode })
+    const toggleGallery = () => {
+      this.setState({ galleryMode: !this.state.galleryMode })
+      document.body.style.overflow = 'hidden'
+    }
+    const onCloseGallery = () => {
+      toggleGallery()
+      document.body.style.overflow = 'visible'
+    }
     const links = position => (
       <div className="Thread-links">
         <div className="Thread-links-channel">
@@ -410,7 +417,7 @@ class Thread extends React.PureComponent {
             <FloatEditor ref="editor" { ...this.props } threadId={ this.props.params.id } loadPage={ this.loadPage } />
           </div>
         ) }
-        <Modal basic size="small" open={ this.state.galleryMode } onClose={ toggleGallery }>
+        <Modal  dimmer={ 'blurring' } basic size="small" open={ this.state.galleryMode } onClose={ onCloseGallery }>
           <Gallery threadId={ this.props.params.id }/>
         </Modal>
       </div>
