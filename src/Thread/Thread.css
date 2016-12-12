@@ -23,7 +23,7 @@
 /*  Reply block  */
 .Thread-replyBlock {
   background: #222;
-  border: 1px solid #000;
+  border: 1px solid rgba(128, 128, 128, .25);
   border-radius: 4px;
   line-height: 2rem;
   margin-bottom: 1em;
@@ -34,7 +34,6 @@
 }
 .App.light .Thread-replyBlock {
   background: #f9f9f9;
-  border: 1px solid #ddd;
 }
 .Thread-blockHeader {
   font-size: 1rem;
