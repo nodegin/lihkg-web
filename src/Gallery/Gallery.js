@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import ImageGallery from 'react-image-gallery'
-import { Loader, Grid, Image, Modal } from 'semantic-ui-react'
+import { Loader, Grid, Image, Modal, Icon } from 'semantic-ui-react'
 import './Gallery.css'
 
 class Gallery extends Component {
@@ -98,6 +98,9 @@ class Gallery extends Component {
           })}
         </Grid>
         <Modal basic size="small" open={ this.state.openLightBox } onClose={ toggleLightBox }>
+          <div style={{'textAlign': 'right', 'marginBottom': '10px'}}>
+            <Icon style={{'cursor': 'pointer'}} name='close' onClick={ toggleLightBox }/>
+          </div>
           <ImageGallery
             items={ this.state.images }
             infinite={ false }
