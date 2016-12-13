@@ -418,6 +418,9 @@ class Thread extends React.PureComponent {
           </div>
         ) }
         <Modal  dimmer={ 'blurring' } basic size="small" open={ this.state.galleryMode } onClose={ onCloseGallery }>
+          <div style={{'textAlign': 'right', 'marginBottom': '10px'}}>
+            <Icon style={{'cursor': 'pointer'}} name='close' onClick={ onCloseGallery }/>
+          </div>
           <Gallery threadId={ this.props.params.id }/>
         </Modal>
       </div>

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import ImageGallery from 'react-image-gallery'
-import { Loader, Grid, Image, Modal } from 'semantic-ui-react'
+import { Loader, Grid, Image, Modal, Icon } from 'semantic-ui-react'
 import './Gallery.css'
 
 class Gallery extends Component {
@@ -66,29 +66,29 @@ class Gallery extends Component {
   }
 
   render() {
+    let gridStyle = {'minHeight': '120px'}
     const loaderActive = this.state.images.length === 0
     const getLoadingText = () => {
       if (loaderActive) {
         if (!this.state.isFinishLoading) {
           return <Loader size='massive'>撈緊，等陣</Loader>
         } else {
+          gridStyle.display = 'none'
           return <div className="noPictureText"><img alt="dead" src={'https://lihkg.com/assets/faces/normal/dead.gif'}/><br/><span>隊長, 我看不到屎</span></div>
         }
       }
       return null
     }
-    const toggleLightBox = () => {
-      this.setState({ openLightBox: !this.state.openLightBox })
-      document.body.className = "dimmable dimmed scrolling"
-    }
+    const toggleLightBox = () => this.setState({ openLightBox: !this.state.openLightBox })
     const onImageClick = (index) => {
       this.setState({ startIndex: index })
       toggleLightBox()
     }
+    const onUnmount = () => document.body.className = 'dimmable dimmed blurring scrolling'
     return (
       <div className="gallery">
         { getLoadingText() }
-        <Grid columns={ 4 }>
+        <Grid style={ gridStyle } columns={ 4 }>
           {this.state.images.map((image, i) => {
             return (
               <Grid.Column key={ i }>
@@ -97,7 +97,10 @@ class Gallery extends Component {
             )
           })}
         </Grid>
-        <Modal basic size="small" open={ this.state.openLightBox } onClose={ toggleLightBox }>
+        <Modal basic size="small" open={ this.state.openLightBox } onClose={ toggleLightBox } onUnmount={ onUnmount }>
+          <div style={{'textAlign': 'right', 'marginBottom': '10px'}}>
+            <Icon style={{'cursor': 'pointer'}} name='close' onClick={ toggleLightBox }/>
+          </div>
           <ImageGallery
             items={ this.state.images }
             infinite={ false }
