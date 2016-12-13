@@ -76,6 +76,7 @@ class Category extends React.PureComponent {
         if (shouldScrollTop) {
           this.categoryList.scrollTop = 0
         }
+        window.cat_id = catId
       })
     } else {
       this.setState({

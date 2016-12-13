@@ -1,9 +1,9 @@
 /*
   Generator:
 
-  let match, msg = "<img src=\"\/assets\/faces\/fs\/smile.gif\" class=\"hkgmoji\" \/>"
-  msg = msg.replace(/<img(.*?)src="(.*?)"(.*?)>/gi, '[img]$2[/img]')
-  const iconsRegex = /\[img\].*?assets\/faces(.*?)\[\/img\]/
+  let match, msg = '<img src=\'/assets/faces/fs/smile.gif\' class=\'hkgmoji\' />'
+  msg = msg.replace(/<img(.*?)src='(.*?)'(.*?)>/gi, '[img]$2[/img]')
+  const iconsRegex = /\[img\].*?assets/faces(.*?)\[/img\]/
   while (match = iconsRegex.exec(msg)) {
     const url = match[1]
     msg = msg.replace(iconsRegex, url)
@@ -14,7 +14,7 @@
     return Object.assign(prev, {
       [curr]: vals[i]
     })
-  }, {})).replace(/"/g, '\'').replace(/:'/g, ': \'').replace(/,/g, ',\n  ')
+  }, {})).replace(/'/g, '\'').replace(/:'/g, ': \'').replace(/,/g, ',\n  ')
   console.log(result)
 */
 
@@ -176,8 +176,54 @@ const sad = {
   '/fs/superman.gif': '#superman#fs',
 }
 
+const lomoji = {
+  '/lomoji/05.png': '#:)#lme',
+  '/lomoji/01.png': '#mad#lme',
+  '/lomoji/02.png': '#unamused#lme',
+  '/lomoji/03.png': '#:-]#lme',
+  '/lomoji/04.png': '#smirking#lme',
+  '/lomoji/06.png': '#happy#lme',
+  '/lomoji/07.png': '#^3^#lme',
+  '/lomoji/08.png': '#:P#lme',
+  '/lomoji/09.png': '#love#lme',
+  '/lomoji/10.png': '#hoho#lme',
+  '/lomoji/11.png': '#tongue1#lme',
+  '/lomoji/12.png': '#tongue2#lme',
+  '/lomoji/13.png': '#tongue3#lme',
+  '/lomoji/14.png': '#wink#lme',
+  '/lomoji/15.png': '#ghost#lme',
+  '/lomoji/16.png': '#sad#lme',
+  '/lomoji/17.png': '#sleepy#lme',
+  '/lomoji/18.png': '#O:-)#lme',
+  '/lomoji/19.png': '#:(#lme',
+  '/lomoji/20.png': '#pain#lme',
+  '/lomoji/21.png': '#tired#lme',
+  '/lomoji/22.png': '#cry#lme',
+  '/lomoji/23.png': '#bawling#lme',
+  '/lomoji/24.png': '#scream#lme',
+  '/lomoji/25.png': '#shame#lme',
+  '/lomoji/26.png': '#think#lme',
+  '/lomoji/27.png': '#sick#lme',
+  '/lomoji/28.png': '#shy#lme',
+  '/lomoji/29.png': '#devil#lme',
+  '/lomoji/30.png': '#dizzy#lme',
+  '/lomoji/31.png': '#scared#lme',
+  '/lomoji/32.png': '#nervous#lme',
+  '/lomoji/33.png': '#angry#lme',
+  '/lomoji/34.png': '#ok#lme',
+  '/lomoji/35.png': '#yeah#lme',
+  '/lomoji/36.png': '#yo#lme',
+  '/lomoji/37.png': '#sosad#lme',
+  '/lomoji/38.png': '#addoil#lme',
+  '/lomoji/39.png': '#wound#lme',
+  '/lomoji/40.png': '#wfc#lme',
+  '/lomoji/41.png': '#shock#lme',
+  '/lomoji/42.png': '#:-)#lme'
+}
+
 export default {
   ...normal,
   ...big,
   ...sad,
+  ...lomoji,
 }
