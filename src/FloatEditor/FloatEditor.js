@@ -16,7 +16,15 @@ class FloatEditor extends React.PureComponent {
   }
 
   toggle() {
-    this.setState({ replying: !this.state.replying })
+    this.setState({
+      replying: !this.state.replying
+    }, () => {
+      if (this.props.threadId) {
+        this.textarea.focus()
+      } else {
+        this.titleInput.focus()
+      }
+    })
   }
 
   close() {
@@ -175,6 +183,7 @@ class FloatEditor extends React.PureComponent {
         <Button compact>發表</Button>
       </Form.Field>
     )
+    const linkTitleInputRef = e => this.titleInput = ReactDOM.findDOMNode(e)
     const linkTextareaRef = e => this.textarea = ReactDOM.findDOMNode(e)
     if (this.props.app.user.user) {
       const editorStyle = { marginBottom: this.state.replying ? 0 : -400, pointerEvents: this.state.replying ? 'auto' : 'none' }
@@ -201,7 +210,7 @@ class FloatEditor extends React.PureComponent {
               <Form className="FloatEditor-quickReply-editorInner" onSubmit={ handleSubmit }>
                 { buttons }
                 <Form.Field>
-                  <Form.Input name="title" placeholder="輸入貼文標題" value={ this.state.title } onChange={ handleTitleChange }/>
+                  <input ref={ linkTitleInputRef } name="title" placeholder="輸入貼文標題" value={ this.state.title } onChange={ handleTitleChange }/>
                 </Form.Field>
                 <Form.Field className="FloatEditor-quickReply-editor-main">
                   <TextArea ref={ linkTextareaRef } name="content" placeholder="輸入貼文內文" value={ this.state.content } onChange={ handleContentChange }/>
